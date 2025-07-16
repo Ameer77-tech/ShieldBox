@@ -1,10 +1,10 @@
 import React from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { motion, AnimatePresence } from "motion/react";
-import Home from "./pages/home";
-import Dashboard from "./pages/home";
-import Login from "./pages/auth/login";
-import CreateAccount from "./pages/auth/createAccount";
+import Home from "./pages/Home";
+import Dashboard from "./pages/Dashboard";
+import Login from "./pages/auth/Login";
+import CreateAccount from "./pages/auth/CreateAccount";
 
 const App = () => {
   return (
