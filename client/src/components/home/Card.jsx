@@ -17,7 +17,7 @@ const card = ({ title, content, index, img }) => {
       transition={{
         type:spring,
         duration:0.5,
-        stiffness: 90,
+        stiffness: 40,
         delay: index * 0.1
       }}
       className="card bg-base-100 md:w-96 md:h-96 w-80 shadow-sm overflow-none">

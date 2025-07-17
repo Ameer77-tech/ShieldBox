@@ -10,6 +10,14 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@fontsource/audiowide": "^5.2.6",
+    "@fontsource/inter": "^5.2.6",
+    "@fontsource/orbitron": "^5.2.6",
+    "@fontsource/poppins": "^5.2.6",
+    "@fontsource/rajdhani": "^5.2.6",
+    "@fontsource/raleway": "^5.2.6",
+    "@fontsource/roboto": "^5.2.6",
+    "@fontsource/sora": "^5.2.6",
     "@tailwindcss/vite": "^4.1.11",
     "axios": "^1.10.0",
     "motion": "^12.23.6",

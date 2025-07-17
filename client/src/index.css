@@ -1,4 +1,12 @@
 @import "tailwindcss";
+@import "@fontsource/inter";
+@import "@fontsource/poppins";
+@import "@fontsource/roboto";
+@import "@fontsource/orbitron";
+@import "@fontsource/sora";
+@import "@fontsource/rajdhani";
+@import "@fontsource/raleway";
+@import "@fontsource/audiowide";
 
 @plugin "daisyui" {
   themes: all;
@@ -8,6 +16,7 @@ body, html {
     height: screen;
     width: screen;
     scroll-behavior: smooth;
+    font-family: "sora";
 }
 
 body::-webkit-scrollbar{

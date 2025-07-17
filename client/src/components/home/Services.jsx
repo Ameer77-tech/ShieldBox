@@ -39,7 +39,7 @@ const Services = () => {
       <h1 className="md:text-4xl text-2xl font-bold text-center mb-20 mt-10">
         Services
       </h1>
-      <div className=" md:px-10 grid md:grid-cols-3  place-items-center align-center gap-y-15">
+      <div className=" md:px-10 grid md:grid-cols-3 place-items-center align-center gap-y-15">
         {card.map((c, idx) => (
           <Card key={idx} title={c.title} content={c.content} index={idx} img={c.img} />
         ))}

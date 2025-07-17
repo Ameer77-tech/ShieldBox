@@ -46,7 +46,7 @@ const HomeHeader = ({ active, setactive }) => {
 
         <Link
           to="/"
-          className="font-semibold tracking-wider text-2xl cursor-pointer text-[#00D1B2] select-none"
+          className="font-[rajdhani] font-semibold tracking-wider text-2xl cursor-pointer text-[#00D1B2] select-none"
         >
           ShieldBox
         </Link>
@@ -76,7 +76,7 @@ const HomeHeader = ({ active, setactive }) => {
         </ul>
       </div>
       <div className="navbar-end">
-        <button className="btn btn-soft btn-primary px-7">Login</button>
+       <Link to="login"> <button className="btn btn-soft btn-primary px-7">Login</button> </Link>
       </div>
     </div>
   );
