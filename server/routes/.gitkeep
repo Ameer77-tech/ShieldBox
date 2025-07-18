@@ -1,0 +1,25 @@
+UserModel -
+ 
+id , 
+name ,
+email ,
+createdAt,
+data : [ref - section]
+
+
+SectionModel - 
+ id ,
+ author : [ref - user] 
+ name ,
+ items : [
+    {
+        { type : mongoose.mixed }
+    }
+ ]
+
+
+
+
+
+
+
