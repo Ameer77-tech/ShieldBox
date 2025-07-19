@@ -5,13 +5,11 @@ import dotenv from 'dotenv'
 dotenv.config()
 
 import connectdb from '../config/DbConn.js'
-import userModel from '../models/user-model.js'
-import sectionModel from '../models/section-model.js'
-import mongoose from 'mongoose'
 
 import cookieParser from 'cookie-parser'
 
 import authRoutes from '../routes/authRoutes/auth.route.js'
+
 
 app.use(express.json())
 app.use(express.urlencoded({extended : true}))
@@ -27,7 +25,6 @@ app.use('/api/auth', authRoutes)
 app.get('/',(req,res)=>{
     res.send("Running")
 })
-
 
 app.listen(PORT,()=>{
     console.log("Running")
