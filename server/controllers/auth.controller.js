@@ -1,6 +1,10 @@
 import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
 import userModel from "../models/user-model.js";
+import dotenv from "dotenv";
+dotenv.config();
+import setCookie from "../middlewares/setCookie.js";
+
 
 export const register = async (req, res) => {
   if (req.body === undefined)
@@ -27,10 +31,16 @@ export const register = async (req, res) => {
         email,
         password: hashedPassword,
       });
-      if (created)
+      if (created) {
+        const token = setCookie(email)
+        res.cookie("token", token, {
+          httpOnly: true,
+          secure: true,
+        });
         res
           .status(200)
           .json({ reply: "User Created Succesfully", success: true });
+      }
       res.status(500).json({ reply: "User not Created", success: false });
     } catch (err) {
       console.log("Error creating user");
@@ -57,12 +67,10 @@ export const login = async (req, res) => {
   try {
     const user = await userModel.findOne({ email });
     if (!user)
-      return res
-        .status(401)
-        .json({
-          reply: "No user is registered with that email",
-          success: false,
-        });
+      return res.status(401).json({
+        reply: "No user is registered with that email",
+        success: false,
+      });
     try {
       const hashedPassword = user.password;
       const isMatched = await bcrypt.compare(password, hashedPassword);
@@ -71,9 +79,21 @@ export const login = async (req, res) => {
         return res
           .status(401)
           .json({ reply: "Invalid Password", success: false });
+        //setcookie
+       const token = setCookie(email)
+        res.cookie("token", token, {
+          httpOnly: true,
+          secure: true,
+        });    
+        //setcookie
       res.status(200).json({ reply: "User is authorized", success: true });
     } catch (err) {}
   } catch (err) {
     res.status(500).json({ reply: "Error finding user", success: false });
   }
 };
+
+export const logout = (req,res)=>{
+    res.clearCookie("token")
+    res.status(200).json({reply:"Logged Out Succesfully", success : true})
+}
