@@ -12,13 +12,13 @@ const userSchema = new mongoose.Schema(
     password: {
       type: String,
     },
-    isVerified : {
-      type : Boolean,
-      default : false
+    isVerified: {
+      type: Boolean,
+      default: false,
     },
     sections: {
       type: [mongoose.Schema.Types.ObjectId],
-      ref: "section-model",
+      ref: "section",
       default: [],
     },
   },

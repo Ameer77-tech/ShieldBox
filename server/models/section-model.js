@@ -7,7 +7,7 @@ const sectionSchema = new mongoose.Schema(
     },
     createdBy: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "user-model",
+      ref: "user",
     },
     items: {
       type: Object,
