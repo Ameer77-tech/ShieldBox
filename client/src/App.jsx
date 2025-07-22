@@ -6,7 +6,10 @@ import Dashboard from "./pages/Dashboard";
 import Login from "./pages/auth/Login";
 import CreateAccount from "./pages/auth/CreateAccount"
 import Verify from "./pages/auth/Verify";
-import Key from "./pages/auth/Key";
+import SetKey from "./pages/auth/SetKey";
+import EnterKey from "./pages/auth/EnterKey";
+import ResetAccount from "./pages/auth/ResetAccount";
+import NotFound from "./pages/NotFound";
 
 
 const AnimatedRoutes = () => {
@@ -21,7 +24,11 @@ const AnimatedRoutes = () => {
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<CreateAccount />} />
             <Route path="/verify" element={<Verify />} />
-             <Route path="/key" element={<Key />} />
+            <Route path="/setkey" element={<SetKey />} />
+            <Route path="/enterkey" element={<EnterKey/>} />
+            <Route path="/resetaccount" element={<ResetAccount/>} />
+            <Route path="/resetaccount" element={<ResetAccount/>} />
+            <Route path="*" element={<NotFound/>} />
           </Routes>
         </AnimatePresence>
       

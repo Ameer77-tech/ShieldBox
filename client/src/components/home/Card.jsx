@@ -15,9 +15,8 @@ const card = ({ title, content, index, img }) => {
         opacity:1
       }}
       transition={{
-        type:spring,
-        duration:0.5,
-        stiffness: 40,
+        ease : 'backOut',
+        duration:0.9,
         delay: index * 0.1
       }}
       className="card bg-base-100 md:w-96 md:h-96 w-80 shadow-sm overflow-none">

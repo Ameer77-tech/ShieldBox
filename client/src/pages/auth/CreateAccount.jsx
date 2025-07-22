@@ -47,14 +47,16 @@ const CreateAccount = () => {
           )}
         </label>
         <button className="btn btn-primary">Register</button>
-        <Link to="/login">
-          <p>
-            Already have an account,{" "}
+
+        <p>
+          Already have an account,{" "}
+          <Link to="/login">
+            {" "}
             <span className="text-[#1d4e7e] cursor-pointer hover:underline">
               Login
             </span>
-          </p>
-        </Link>
+          </Link>
+        </p>
       </form>
     </div>
   );

@@ -38,14 +38,15 @@ const Login = () => {
           )}
         </label>
         <button className="btn btn-primary">Login</button>
-        <Link to="/register">
-          <p>
-            Don't have an account,{" "}
+
+        <p>
+          Don't have an account,{" "}
+          <Link to="/register">
             <span className="text-[#1d4e7e] cursor-pointer hover:underline">
               Register
             </span>
-          </p>
-        </Link>
+          </Link>
+        </p>
       </form>
     </div>
   );

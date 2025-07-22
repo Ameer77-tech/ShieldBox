@@ -1,7 +1,8 @@
-import { keyframes } from "motion/react";
-import React, { useRef, useState } from "react";
 
-const Key = () => {
+import React, { useRef, useState } from "react";
+import { FiAlertTriangle } from "react-icons/fi";
+
+const SetKey = () => {
   const [keyArray, setKeyArray] = useState(["", "", "", "", "", ""]);
   const inputRef = useRef([]);
 
@@ -49,7 +50,7 @@ const Key = () => {
     <div className="flex justify-center items-center min-h-screen select-none">
       <div className="card bg-base-300 rounded-lg justify-evenly md:px-10 md:py-10 md:w-2/6 w-[90%] px-5 py-7 gap-10 items-center">
         <h1 className="text-xl font-[rajdhani] font-bold">
-          Enter a master key for your app
+          Set a secret key for your app
         </h1>
         <div className="flex justify-between w-full items-center ">
           {keyArray.map((digit, idx) => (
@@ -64,9 +65,11 @@ const Key = () => {
           ))}
         </div>
         <button className="btn btn-soft btn-info font-[rajdhani]">SET</button>
+        <div className="flex justify-center items-center"><p className="text-gray-700 text-sm inline text-center">Note:  Your key is never stored on our servers. Only you know it. If you lose or forget your key, we cannot help you recover it, and you will lose access to your data. Please write it down and keep it in a safe place.</p></div>  
       </div>
     </div>
   );
 };
 
-export default Key;
+
+export default SetKey;
