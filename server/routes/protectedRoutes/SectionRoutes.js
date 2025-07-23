@@ -11,6 +11,6 @@ const router = express.Router();
 router.post("/addsection", authorizeToken, addSection);
 router.delete("/deletesection/:sectionid", authorizeToken, deleteSection);
 router.get("/getsections", authorizeToken, readSection);
-router.put("/updatesection/:sectionid",authorizeToken, updateSection)
+router.put("/updatesection/:sectionid", authorizeToken, updateSection);
 
 export default router;

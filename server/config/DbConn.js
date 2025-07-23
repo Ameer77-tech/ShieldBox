@@ -7,6 +7,7 @@ try{
     console.log("Database Connected")
 }catch(err){
     console.log("Error Connecting to Database", err)
+    process.exit(1)
 }
 }
 

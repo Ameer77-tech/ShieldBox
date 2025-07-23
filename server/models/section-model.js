@@ -10,8 +10,8 @@ const sectionSchema = new mongoose.Schema(
       ref: "user",
     },
     items: {
-      type: Object,
-      default: {},
+      type: [Object],
+      default : []
     },
   },
   { timestamps: true }

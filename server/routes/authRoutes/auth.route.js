@@ -10,8 +10,8 @@ router.post('/login', login)
 router.delete('/logout',logout)
 router.post('/verify', verify)
 router.get('/checkauth', authorizeToken, (req,res)=>{
-    const  email  = req.user
-    res.json({ email })
+    const email  = req.user
+    res.status(200).json({ reply : "Authorized", success : true, email })
 })
 
 export default router
