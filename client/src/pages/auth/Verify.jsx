@@ -1,27 +1,98 @@
-import React from 'react'
+import React, { useEffect, useState } from "react";
+import { checkAuth } from "../../utils/AuthApi";
+import { useLocation, useNavigate } from "react-router-dom";
+import { verifyCode } from "../../utils/AuthApi";
 
 const Verify = () => {
+  const navigate = useNavigate();
+  const location = useLocation();
+  const [email, setemail] = useState("");
+  const [code, setcode] = useState("");
+  const [status, setstatus] = useState("");
+  const [error, seterror] = useState(false);
+  const data = location.state;
+  const [loading, setLoading] = useState(false);
+  useEffect(() => {
+    if (data != null) {
+      console.log(data.email);
+      setemail(data.email);
+      return;
+    }
+    checkAuthorization();
+  }, []);
+
+  const checkAuthorization = async () => {
+    setLoading(true);
+    const isAuthenticated = await checkAuth();
+    if (!isAuthenticated) {
+      navigate("/login");
+    } else {
+      setLoading(false);
+      navigate("/dashboard");
+    }
+  };
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    if (code === "") {
+      setstatus("Enter Your Code");
+      return;
+    }
+    const res = await verifyCode(code, email);
+    if (!res.success) {
+      seterror(false);
+      setstatus(res.reply);
+    } else {
+      seterror(true);
+      setstatus(res.reply);
+      navigate("/dashboard", {
+        state: {
+          email,
+        },
+      });
+    }
+  };
+
+  if (loading) {
+    return (
+      <div className="min-h-screen grid place-items-center">
+        <span className="loading loading-ring h-20 w-20"></span>
+      </div>
+    );
+  }
   return (
     <div className="flex justify-center items-center min-h-screen select-none">
-      <form className="card bg-base-300 rounded-lg justify-evenly md:px-10 md:py-10 md:w-2/6 w-[90%] px-5 py-7 gap-10 items-center">
-        <h1 className="text-2xl font-bold text-center text-blue-800">Enter the Verification Code Sent To Your Email</h1>
-           <input
-            required
-            type="text"
-            placeholder="code"
-            className="input input-md w-full text-center text-lg"
-          />
-           <button className="btn btn-soft btn-info">Submit</button>
-           <p>
-            Did not receive the code,{" "}
-            <button 
-            className="text-[#1d4e7e] cursor-pointer hover:underline">
-              Resend code
-            </button>
-          </p>
+      <form
+        onSubmit={(e) => handleSubmit(e)}
+        className="card bg-base-300 rounded-lg justify-evenly md:px-10 md:py-10 md:w-2/6 w-[90%] px-5 py-7 gap-10 items-center"
+      >
+        <h1 className="text-2xl font-bold text-center text-blue-800">
+          Enter the Verification Code Sent To Your Email
+        </h1>
+        <input
+          onChange={(e) => setcode(e.target.value)}
+          required
+          type="text"
+          placeholder="code"
+          value={code}
+          className="input input-md w-full text-center text-lg"
+        />
+        <button className="btn btn-soft btn-info">Submit</button>
+        <p>
+          Did not receive the code,{" "}
+          <button className="text-[#1d4e7e] cursor-pointer hover:underline">
+            Resend code
+          </button>
+        </p>
+        <p
+          className={`absolute bottom-10 ${
+            error ? "text-red-600" : "text-[#1d4f7f]"
+          }`}
+        >
+          {status}
+        </p>
       </form>
-      </div>
-  )
-}
+    </div>
+  );
+};
 
-export default Verify
+export default Verify;

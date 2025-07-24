@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
 import { motion, AnimatePresence } from "motion/react";
 import Home from "./pages/Home";
@@ -16,38 +16,16 @@ import Section from "./pages/Section";
 
 const AnimatedRoutes = () => {
   const location = useLocation();
+  
+
   return (
     <>
       <AnimatePresence mode="wait" location={location}>
         <Routes>
           <Route path="/" element={<Home />} />
-          <Route
-            path="/dashboard"
-            element={
-              <div className="md:flex md:justify-between md:items-center">
-                <NavBar />
-                <Dashboard />
-              </div>
-            }
-          />
-          <Route
-            path="/allsections"
-            element={
-              <div className="md:flex md:justify-between md:items-center">
-                <NavBar />
-                <Sections />
-              </div>
-            }
-          />
-          <Route
-            path="/section/:sectionid"
-            element={
-              <div className="md:flex md:justify-between md:items-center">
-                <NavBar />
-                <Section />
-              </div>
-            }
-          />
+          <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/allsections" element={<Sections />} />
+          <Route path="/section/:sectionid" element={<Section />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<CreateAccount />} />
           <Route path="/verify" element={<Verify />} />

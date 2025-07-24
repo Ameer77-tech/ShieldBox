@@ -13,6 +13,7 @@ export const register = async (req, res) => {
       .json({ reply: "Body must'nt be Empty", success: false });
   const { name, email, password } = req.body;
 
+
   if (name === undefined || email === undefined || password === undefined)
     return res
       .status(401)
@@ -115,6 +116,7 @@ export const verify = async (req, res) => {
     if(req.body === undefined)
       return res.status(401).json({reply:"Body must'nt be empty", success : false})
     const { code , email } = req.body
+    console.log(code, email)
     if(code === undefined || email === undefined)
       return res.status(401).json({reply:"fill the input", success : false})
     

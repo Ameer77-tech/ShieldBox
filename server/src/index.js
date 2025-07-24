@@ -7,13 +7,18 @@ dotenv.config();
 import connectdb from "../config/DbConn.js";
 
 import cookieParser from "cookie-parser";
+import cors from "cors";
 
 import authRoutes from "../routes/authRoutes/auth.route.js";
 import SectionRoutes from "../routes/protectedRoutes/SectionRoutes.js";
 import ItemRoute from "../routes/protectedRoutes/ItemRoute.js";
 
-
-
+app.use(
+  cors({
+    origin: "http://localhost:5173", // ✅ exact origin of your frontend
+    credentials: true, // ✅ allow cookies/auth headers
+  })
+);
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());

@@ -1,22 +1,101 @@
 import React, { useState } from "react";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { motion, AnimatePresence } from "framer-motion";
+import { register } from "../../utils/AuthApi";
+
 
 const CreateAccount = () => {
-  const [show, setshow] = useState(false);
+  const navigate = useNavigate()
+  const [show, setShow] = useState(false);
+  const [status, setstatus] = useState("")
+  const [error, seterror] = useState(false)
+  const [formData, setFormData] = useState({
+    name: "",
+    email: "",
+    password: ""
+  });
+  const [errors, setErrors] = useState({
+    name: "",
+    email: "",
+    password: ""
+  });
+
+  const validate = () => {
+    const newErrors = { name: "", email: "", password: "" };
+
+    if (!formData.name.trim()) {
+      newErrors.name = "Username is required";
+    }
+
+    if (!formData.email.trim()) {
+      newErrors.email = "Email is required";
+    } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
+      newErrors.email = "Enter a valid email";
+    }
+
+    if (!formData.password) {
+      newErrors.password = "Password is required";
+    } else if (formData.password.length < 6) {
+      newErrors.password = "Password must be at least 6 characters";
+    }
+
+    setErrors(newErrors);
+    return !newErrors.name && !newErrors.email && !newErrors.password;
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    if (validate()) {
+       const res = await register(formData)
+       if(!res.success){
+        seterror(true)
+        setstatus(res.reply)
+       }
+       else{
+        seterror(false)
+        setstatus(res.reply)
+        navigate('/verify',{ state : { fromRegister : true, email : formData.email }})
+       }
+    }
+  };
+
   return (
     <div className="flex justify-center items-center min-h-screen w-full select-none">
-      <form className="card bg-base-300 rounded-lg justify-evenly md:px-10 px-5 py-10 md:py-20 md:w-2/6 w-[90%] gap-10 items-center">
+      <form
+        onSubmit={handleSubmit}
+        className="card bg-base-300 rounded-lg justify-evenly md:px-10 px-5 py-10 md:py-20 md:w-2/6 w-[90%] gap-10 items-center"
+      >
         <h1 className="text-2xl font-bold">Create your account</h1>
+
+        {/* Username */}
         <label className="floating-label w-full">
-          <span>username</span>
+          <span>Username</span>
           <input
             required
             type="text"
             placeholder="username"
             className="input input-md w-full"
+            value={formData.name}
+            onChange={(e) =>
+              setFormData({ ...formData, name: e.target.value })
+            }
           />
+          <AnimatePresence>
+            {errors.name && (
+              <motion.p
+                className="text-red-500 text-sm mt-1 ml-1"
+                initial={{ opacity: 0, y: -5 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -5 }}
+              >
+                {errors.username}
+              </motion.p>
+            )}
+          </AnimatePresence>
         </label>
+
+        {/* Email */}
         <label className="floating-label w-full">
           <span>Your Email</span>
           <input
@@ -24,32 +103,71 @@ const CreateAccount = () => {
             type="text"
             placeholder="mail@site.com"
             className="input input-md w-full"
+            value={formData.email}
+            onChange={(e) =>
+              setFormData({ ...formData, email: e.target.value })
+            }
           />
+          <AnimatePresence>
+            {errors.email && (
+              <motion.p
+                className="text-red-500 text-sm mt-1 ml-1"
+                initial={{ opacity: 0, y: -5 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -5 }}
+              >
+                {errors.email}
+              </motion.p>
+            )}
+          </AnimatePresence>
         </label>
+
+        {/* Password */}
         <label className="floating-label w-full relative">
           <span>Password</span>
           <input
             required
-            type={`${show ? "text" : "password"}`}
+            type={show ? "text" : "password"}
             placeholder="password"
             className="input input-md w-full"
+            value={formData.password}
+            onChange={(e) =>
+              setFormData({ ...formData, password: e.target.value })
+            }
           />
-          {show ? (
-            <FaEye
-              onClick={() => setshow(!show)}
-              className={`text-red-600 absolute right-5 top-2/4 -translate-y-2/4 cursor-pointer z-10`}
-            />
-          ) : (
-            <FaEyeSlash
-              onClick={() => setshow(!show)}
-              className={`text-[#1d4e7e] absolute right-5 top-2/4 -translate-y-2/4 cursor-pointer z-10`}
-            />
-          )}
+          <div className="absolute right-5 top-2/4 -translate-y-2/4 z-10 cursor-pointer">
+            {show ? (
+              <FaEye
+                className="text-red-600"
+                onClick={() => setShow(!show)}
+              />
+            ) : (
+              <FaEyeSlash
+                className="text-[#1d4e7e]"
+                onClick={() => setShow(!show)}
+              />
+            )}
+          </div>
+          <AnimatePresence>
+            {errors.password && (
+              <motion.p
+                className="text-red-500 text-sm mt-1 ml-1 fixed font-bold"
+                initial={{ opacity: 0, y: -5 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -5 }}
+              >
+                {errors.password}
+              </motion.p>
+            )}
+          </AnimatePresence>
         </label>
-        <button className="btn btn-primary">Register</button>
+
+        <button type="submit" className="btn btn-primary w-full">
+          Register
+        </button>
 
         <p>
-          Already have an account,{" "}
+          Already have an account,
           <Link to="/login">
             {" "}
             <span className="text-[#1d4e7e] cursor-pointer hover:underline">
@@ -57,6 +175,7 @@ const CreateAccount = () => {
             </span>
           </Link>
         </p>
+         <p className={`absolute bottom-10 ${error ? 'text-red-600' : 'text-[#1d4f7f]'}`}>{status}</p>
       </form>
     </div>
   );
