@@ -5,10 +5,28 @@ import { Link } from 'react-router-dom'
 export default function SectionCard() {
   return (
     <motion.div
-      initial={{ opacity: 0}}
-      whileInView={{ opacity: 1}}
-      viewport={{ once: true }}
-      transition={{ duration: 0.6, ease: "easeInOut" }}
+    initial = {{
+      opacity : 0,
+      scale : 0.98,
+      y : -20
+    }}
+    whileHover={{
+      scale : 1.03,
+      rotate: -2
+    }}
+    whileInView={{
+      scale : 1,
+      opacity : 1,
+      y : 0
+    }}
+    transition={{
+      whileInView : {
+        ease : 'easeInOut',
+        duration : 0.7
+      }
+    }}
+    >
+    <div
       className="card w-90 bg-neutral shadow-lg hover:shadow-xl transition ring-1 ring-primary/30"
     >
       <div className="card-body items-center text-center">
@@ -21,6 +39,7 @@ export default function SectionCard() {
           <button className="btn btn-error btn-md">Delete</button>
         </div>
       </div>
+    </div>
     </motion.div>
   );
 }

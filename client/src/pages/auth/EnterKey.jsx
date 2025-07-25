@@ -1,11 +1,14 @@
-import React, { useRef, useState, useEffect } from "react";
+import React, { useRef, useState, useEffect, useContext } from "react";
 import { FiAlertTriangle } from "react-icons/fi";
 import { Link, useNavigate } from "react-router-dom";
 import { checkAuth } from "../../utils/AuthApi";
+import { secretKeyContext } from "../../contexts/KeyContext";
 
 const EnterKey = () => {
   const navigate = useNavigate();
+  const { secretkey, setSecretKey } = useContext(secretKeyContext);
   const [loading, setLoading] = useState(true);
+  const [status, setStatus] = useState("");
   useEffect(() => {
     checkAuthorization();
   }, []);
@@ -19,7 +22,8 @@ const EnterKey = () => {
       setLoading(false);
     }
   };
-
+  const [keyArray, setKeyArray] = useState(["", "", "", "", "", ""]);
+  const inputRef = useRef([]);
   if (loading) {
     return (
       <div className="min-h-screen grid place-items-center">
@@ -27,8 +31,6 @@ const EnterKey = () => {
       </div>
     );
   }
-  const [keyArray, setKeyArray] = useState(["", "", "", "", "", ""]);
-  const inputRef = useRef([]);
 
   const handleInput = (e, idx) => {
     let value = e.target.value;
@@ -72,6 +74,17 @@ const EnterKey = () => {
       }
     }
   };
+  const handleSubmit = () => {
+    const input = keyArray.join("");
+    if (input.length < 6) {
+      setStatus("Key must be 6 digits long");
+      return;
+    } else {
+      setSecretKey(input);
+      sessionStorage.setItem("secretkey", input)
+      navigate("/dashboard");
+    }
+  };
   return (
     <div className="flex justify-center items-center min-h-screen select-none">
       <div className="card bg-base-300 rounded-lg justify-evenly md:px-10 md:py-10 md:w-2/6 w-[90%] px-5 py-7 gap-10 items-center">
@@ -90,12 +103,15 @@ const EnterKey = () => {
             ></input>
           ))}
         </div>
-        <button className="btn btn-soft btn-info font-[rajdhani]">
+        <button
+          onClick={handleSubmit}
+          className="btn btn-soft btn-info font-[rajdhani]"
+        >
           CONTINUE
         </button>
         <p>
           Forgot the Key ?{" "}
-          <Link to="resetaccount" className="text-red-700 hover:underline">
+          <Link to="/resetaccount" className="text-red-700 hover:underline">
             Reset Account
           </Link>
         </p>

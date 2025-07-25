@@ -161,3 +161,16 @@ export const verify = async (req, res) => {
     
     
 };
+
+export const setKey = async (req,res)=>{
+  const email = req.user
+  console.log(email)
+  try{
+    await userModel.findOneAndUpdate({ email },{
+      isKeySet : true
+    })
+    res.status(200).json({ reply : "Key is Set", success : true })
+  }catch(err){
+    res.status(500).json({ reply : "Server Error", success : false })
+  }
+}

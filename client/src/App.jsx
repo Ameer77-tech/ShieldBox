@@ -11,21 +11,21 @@ import EnterKey from "./pages/auth/EnterKey";
 import ResetAccount from "./pages/auth/ResetAccount";
 import NotFound from "./pages/NotFound";
 import Sections from "./pages/Sections";
-import NavBar from "./components/dashboard/NavBar";
 import Section from "./pages/Section";
 
 const AnimatedRoutes = () => {
   const location = useLocation();
-  
 
   return (
     <>
       <AnimatePresence mode="wait" location={location}>
         <Routes>
           <Route path="/" element={<Home />} />
+
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/allsections" element={<Sections />} />
           <Route path="/section/:sectionid" element={<Section />} />
+
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<CreateAccount />} />
           <Route path="/verify" element={<Verify />} />

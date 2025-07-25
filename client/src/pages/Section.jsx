@@ -7,10 +7,13 @@ import {
 } from "react-icons/fa";
 import NavBar from "../components/dashboard/NavBar";
 import { Link, useNavigate } from "react-router-dom";
-import { useEffect, useState } from "react"
+import { useContext, useEffect, useState } from "react";
 import { checkAuth } from "../utils/AuthApi";
+import { secretKeyContext } from "../contexts/KeyContext";
+import { motion } from "motion/react";
 
 export default function InsideSection() {
+  const { secretKey, setSecretKey } = useContext(secretKeyContext);
   const navigate = useNavigate();
   const [loading, setLoading] = useState(true);
   useEffect(() => {
@@ -19,11 +22,18 @@ export default function InsideSection() {
 
   const checkAuthorization = async () => {
     setLoading(true);
-    const isAuthenticated = await checkAuth();
-    if (!isAuthenticated) {
+    const response = await checkAuth();
+    if (!response.success) {
       navigate("/login");
+    } else if (!response.isKeySet) {
+      navigate("/setkey");
     } else {
-      setLoading(false);
+      const savedKey = sessionStorage.getItem("secretkey");
+      if (!savedKey) navigate("/enterkey");
+      else {
+        setSecretKey(savedKey);
+        setLoading(false);
+      }
     }
   };
 
@@ -49,8 +59,39 @@ export default function InsideSection() {
           </Link>
 
           <div className="flex md:w-full justify-center items-center md:gap-5 gap-3">
-            <h1 className="md:text-2xl text-sm font-bold">Personal Section</h1>{" "}
-            <FaFolderOpen size={25} />
+            <h1 className="md:text-2xl text-sm font-bold overflow-hidden">
+              <motion.p
+                initial={{
+                  y: "-100%",
+                }}
+                animate={{
+                  y: 0,
+                }}
+                transition={{
+                  ease: "easeInOut",
+                  duration: 0.7,
+                }}
+              >
+                Personal Section
+              </motion.p>
+            </h1>{" "}
+            <div className="overflow-hidden">
+              <motion.div
+                initial={{
+                  x: "-100%",
+                }}
+                animate={{
+                  x: 0,
+                }}
+                transition={{
+                  ease: "easeInOut",
+                  duration: 0.3,
+                  delay: 0.7,
+                }}
+              >
+                <FaFolderOpen size={25} />
+              </motion.div>
+            </div>
           </div>
 
           <button className="btn btn-primary">
@@ -61,7 +102,7 @@ export default function InsideSection() {
 
         {/* Items Table */}
         <div className="overflow-x-auto">
-          <table className="table w-full">
+          <table className="table w-full overflow-hidden">
             <thead>
               <tr>
                 <th>Name</th>
@@ -70,8 +111,33 @@ export default function InsideSection() {
               </tr>
             </thead>
             <tbody>
-              {[1, 2, 3].map((item) => (
-                <tr key={item}>
+              {[
+                1, 2, 3, 4, 5, 6, 7, 8, 9, 1, 2, 3, 5, 5, 4, 4, 4, 4, 4, 4, 4,
+                4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4,
+              ].map((item) => (
+                <motion.tr
+                  initial={{
+                    opacity: 0,
+                    scale: 0.99,
+                    y: -20,
+                  }}
+                  whileHover={{
+                    scale: 1.01,
+                  }}
+                  whileInView={{
+                    scale: 1,
+                    opacity: 1,
+                    y: 0,
+                  }}
+                  transition={{
+                    whileInView: {
+                      ease: "easeInOut",
+                      duration: 0.7,
+                    },
+                  }}
+                  viewport={{ once: true }}
+                  key={item}
+                >
                   <td className="font-medium">Gmail</td>
                   <td>454545</td>
                   <td>
@@ -82,7 +148,7 @@ export default function InsideSection() {
                       <FaTrash />
                     </button>
                   </td>
-                </tr>
+                </motion.tr>
               ))}
             </tbody>
           </table>

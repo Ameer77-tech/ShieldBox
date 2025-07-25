@@ -1,8 +1,8 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import { Link, useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
-import { login } from "../../utils/AuthApi";
+import { checkAuth, login } from "../../utils/AuthApi";
 import axios from "axios";
 
 const Login = () => {
@@ -12,6 +12,21 @@ const Login = () => {
   const [status, setStatus] = useState("");
   const [formData, setFormData] = useState({ email: "", password: "" });
   const [errors, setErrors] = useState({ email: "", password: "" });
+ 
+   useEffect(() => {
+     isLogged()
+   }, [])
+   
+   
+  const isLogged = async ()=>{
+    const res = await checkAuth()
+    if(res){
+      navigate('/dashboard')
+    }
+    else{
+      return
+    }
+  }
 
   const validate = () => {
     const newErrors = { email: "", password: "" };
@@ -24,7 +39,7 @@ const Login = () => {
 
     if (!formData.password) {
       newErrors.password = "Password is required";
-    } else if (formData.password.length < 3) {
+    } else if (formData.password.length < 6) {
       newErrors.password = "Password must be at least 6 characters";
     }
 
@@ -42,7 +57,7 @@ const Login = () => {
       } else {
         setinCorrect(false);
         setStatus(res.reply);
-        navigate("/dashboard");
+        navigate("/enterkey");
       }
     }
   };

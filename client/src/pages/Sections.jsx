@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 import Search from "../components/sections/Search";
 import SectionCard from "../components/sections/SectionCard";
 import { FaPlus } from "react-icons/fa";
@@ -6,9 +6,11 @@ import NavBar from "../components/dashboard/NavBar";
 import { Link, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { checkAuth } from "../utils/AuthApi";
+import { secretKeyContext } from "../contexts/KeyContext";
 
 const Sections = () => {
   const navigate = useNavigate();
+  const { secretKey, setSecretKey } = useContext(secretKeyContext);
   const [loading, setLoading] = useState(true);
   useEffect(() => {
     checkAuthorization();
@@ -16,11 +18,18 @@ const Sections = () => {
 
   const checkAuthorization = async () => {
     setLoading(true);
-    const isAuthenticated = await checkAuth();
-    if (!isAuthenticated) {
+    const response = await checkAuth();
+    if (!response.success) {
       navigate("/login");
+    } else if (!response.isKeySet) {
+      navigate("/setkey");
     } else {
-      setLoading(false);
+      const savedKey = sessionStorage.getItem("secretkey");
+      if (!savedKey) navigate("/enterkey");
+      else {
+        setSecretKey(savedKey);
+        setLoading(false);
+      }
     }
   };
 
@@ -44,8 +53,23 @@ const Sections = () => {
             Add Section
           </button>
         </div>
-        <div className="mt-5 grid md:grid-cols-3 grid-cols-1 md:gap-5 gap-5">
+        <div className="mt-5 flex flex-wrap md:gap-5 gap-5">
           <SectionCard />
+          <SectionCard />
+          <SectionCard />
+           <SectionCard />
+          <SectionCard />
+          <SectionCard />
+           <SectionCard />
+          <SectionCard />
+          <SectionCard />
+           <SectionCard />
+          <SectionCard />
+          <SectionCard />
+           <SectionCard />
+          <SectionCard />
+          <SectionCard />
+           <SectionCard />
           <SectionCard />
           <SectionCard />
         </div>

@@ -16,6 +16,10 @@ const userSchema = new mongoose.Schema(
       type: Boolean,
       default: false,
     },
+    isKeySet: {
+      type: Boolean,
+      default: false,
+    },
     sections: {
       type: [mongoose.Schema.Types.ObjectId],
       ref: "section",

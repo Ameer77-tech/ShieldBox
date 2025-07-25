@@ -39,12 +39,12 @@ const Verify = () => {
     }
     const res = await verifyCode(code, email);
     if (!res.success) {
-      seterror(false);
-      setstatus(res.reply);
-    } else {
       seterror(true);
       setstatus(res.reply);
-      navigate("/dashboard", {
+    } else {
+      seterror(false);
+      setstatus(res.reply);
+      navigate("/setkey", {
         state: {
           email,
         },
@@ -84,7 +84,7 @@ const Verify = () => {
           </button>
         </p>
         <p
-          className={`absolute bottom-10 ${
+          className={`absolute bottom-17 ${
             error ? "text-red-600" : "text-[#1d4f7f]"
           }`}
         >

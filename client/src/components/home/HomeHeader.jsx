@@ -1,10 +1,24 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import { motion } from "motion/react";
 
 const HomeHeader = ({ active, setactive }) => {
   return (
     <div className="navbar shadow-sm md:px-20 lg:px-20 fixed backdrop-blur-lg bg-black/30 w-full z-10">
-      <div className="navbar-start">
+      <motion.div
+        initial={{
+          y: "-140%",
+        }}
+        animate={{
+          y: 0,
+        }}
+        transition={{
+          ease: "easeInOut",
+          duration: 0.9,
+          delay: 0.7,
+        }}
+        className="navbar-start"
+      >
         <div className="dropdown">
           <div tabIndex={0} role="button" className="btn btn-ghost lg:hidden">
             <svg
@@ -50,10 +64,23 @@ const HomeHeader = ({ active, setactive }) => {
         >
           ShieldBox
         </Link>
-      </div>
-      <div className="navbar-center hidden lg:flex">
+      </motion.div>
+      <motion.div className="navbar-center hidden lg:flex">
         <ul className="menu menu-horizontal px-1 gap-5">
-          <li>
+          <motion.li
+            initial={{
+              y: "-140%",
+            }}
+            animate={{
+              y: 0,
+            }}
+            transition={{
+              ease: "easeInOut",
+              duration: 0.9,
+              delay: 0.8,
+            }}
+            className="overflow-hidden"
+          >
             <a
               href="#home"
               className={`text-md ${active === "home" ? "text-[#00D1B2]" : ""}`}
@@ -61,8 +88,20 @@ const HomeHeader = ({ active, setactive }) => {
             >
               Home
             </a>
-          </li>
-          <li>
+          </motion.li>
+          <motion.li
+           initial={{
+              y: "-140%",
+            }}
+            animate={{
+              y: 0,
+            }}
+            transition={{
+              ease: "easeInOut",
+              duration: 0.9,
+              delay: 0.9,
+            }}
+          >
             <a
               href="#services"
               className={`text-md ${
@@ -72,11 +111,30 @@ const HomeHeader = ({ active, setactive }) => {
             >
               Services
             </a>
-          </li>
+          </motion.li>
         </ul>
-      </div>
+      </motion.div>
       <div className="navbar-end">
-       <Link to="login"> <button className="btn btn-soft btn-primary px-7">Login</button> </Link>
+        <Link to="login">
+          {" "}
+          <button className="btn btn-soft btn-primary px-7 overflow-hidden">
+            <motion.span
+              initial={{
+                y: "-140%",
+              }}
+              animate={{
+                y: 0,
+              }}
+              transition={{
+                ease: "easeInOut",
+                duration: 0.9,
+                delay: 1,
+              }}
+            >
+              Login
+            </motion.span>
+          </button>{" "}
+        </Link>
       </div>
     </div>
   );

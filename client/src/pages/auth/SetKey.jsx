@@ -1,23 +1,30 @@
-import { checkAuth } from "../../utils/AuthApi";
+import { checkAuth, isKeySet } from "../../utils/AuthApi";
 import { useNavigate } from "react-router-dom";
-import React, { useRef, useState, useEffect } from "react";
+import React, { useRef, useState, useEffect, useContext } from "react";
+import { secretKeyContext } from "../../contexts/KeyContext";
 
 const SetKey = () => {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(true);
+  const [status, setstatus] = useState("");
+  const { key, setSecretKey } = useContext(secretKeyContext);
   useEffect(() => {
     checkAuthorization();
   }, []);
 
   const checkAuthorization = async () => {
     setLoading(true);
-    const isAuthenticated = await checkAuth();
-    if (!isAuthenticated) {
+    const response = await checkAuth();
+    if (!response.success) {
       navigate("/login");
+    } else if (response.isKeySet) {
+      navigate("/dashboard");
     } else {
       setLoading(false);
     }
   };
+  const [keyArray, setKeyArray] = useState(["", "", "", "", "", ""]);
+  const inputRef = useRef([]);
 
   if (loading) {
     return (
@@ -26,8 +33,6 @@ const SetKey = () => {
       </div>
     );
   }
-  const [keyArray, setKeyArray] = useState(["", "", "", "", "", ""]);
-  const inputRef = useRef([]);
 
   const handleInput = (e, idx) => {
     let value = e.target.value;
@@ -71,6 +76,24 @@ const SetKey = () => {
       }
     }
   };
+
+  const setTheKey = async () => {
+    const key = keyArray.join("");
+    if (key.length < 6) {
+      setstatus("Key must be 6 digits long");
+    } else {
+      let ok = confirm("Continue to set the Key ?");
+      if (!ok) {
+        return;
+      }
+      setstatus("");
+      setSecretKey(key);
+      setKeyArray(["", "", "", "", "", ""]);
+      const response = await isKeySet();
+      if (!response) console.log("Error occured");
+      else navigate("/dashboard");
+    }
+  };
   return (
     <div className="flex justify-center items-center min-h-screen select-none">
       <div className="card bg-base-300 rounded-lg justify-evenly md:px-10 md:py-10 md:w-2/6 w-[90%] px-5 py-7 gap-10 items-center">
@@ -89,7 +112,15 @@ const SetKey = () => {
             ></input>
           ))}
         </div>
-        <button className="btn btn-soft btn-info font-[rajdhani]">SET</button>
+        <p className="text-red-600 absolute md:bottom-2/4 bottom-53 text-sm">
+          {status}
+        </p>
+        <button
+          onClick={setTheKey}
+          className="btn btn-soft btn-info font-[rajdhani]"
+        >
+          SET
+        </button>
         <div className="flex justify-center items-center">
           <p className="text-gray-700 text-sm inline text-center">
             Note: Your key is never stored on our servers. Only you know it. If

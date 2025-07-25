@@ -7,7 +7,9 @@ export const checkAuth = async () => {
     const { data } = await axios.get(`${apiUrl}/api/auth/checkauth`, {
       withCredentials: true,
     });
-    return data.success;
+    const success = data.success
+    const isKeySet = data.isKeySet
+    return  { success, isKeySet }
   } catch (err) {
     console.log(err, "Cant check auth");
     return false;
@@ -68,3 +70,13 @@ export const verifyCode = async (code, email) => {
     }
   }
 };
+
+export const isKeySet = async ()=>{
+  try{
+    const { data } = await axios.put(`${apiUrl}/api/auth/setkey`, {} ,{ withCredentials : true })
+    return data.success
+  }catch(err){
+    console.log(err)
+    return false
+  }
+}

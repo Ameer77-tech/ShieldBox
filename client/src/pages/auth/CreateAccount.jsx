@@ -1,8 +1,8 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import { Link, useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
-import { register } from "../../utils/AuthApi";
+import { checkAuth, register } from "../../utils/AuthApi";
 
 
 const CreateAccount = () => {
@@ -20,6 +20,21 @@ const CreateAccount = () => {
     email: "",
     password: ""
   });
+
+    useEffect(() => {
+       isLogged()
+     }, [])
+     
+     
+    const isLogged = async ()=>{
+      const res = await checkAuth()
+      if(res){
+        navigate('/dashboard')
+      }
+      else{
+        return
+      }
+    }
 
   const validate = () => {
     const newErrors = { name: "", email: "", password: "" };
