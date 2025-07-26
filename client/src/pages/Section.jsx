@@ -1,19 +1,20 @@
 import {
   FaArrowLeft,
   FaPlus,
-  FaEdit,
-  FaTrash,
   FaFolderOpen,
 } from "react-icons/fa";
 import NavBar from "../components/dashboard/NavBar";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { useContext, useEffect, useState } from "react";
 import { checkAuth } from "../utils/AuthApi";
 import { secretKeyContext } from "../contexts/KeyContext";
 import { motion } from "motion/react";
+import ItemField from "../components/sections/ItemField";
 
 export default function InsideSection() {
   const { secretKey, setSecretKey } = useContext(secretKeyContext);
+  const params = useParams()
+  const id = params.sectionid
   const navigate = useNavigate();
   const [loading, setLoading] = useState(true);
   useEffect(() => {
@@ -111,45 +112,10 @@ export default function InsideSection() {
               </tr>
             </thead>
             <tbody>
-              {[
-                1, 2, 3, 4, 5, 6, 7, 8, 9, 1, 2, 3, 5, 5, 4, 4, 4, 4, 4, 4, 4,
-                4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4,
-              ].map((item) => (
-                <motion.tr
-                  initial={{
-                    opacity: 0,
-                    scale: 0.99,
-                    y: -20,
-                  }}
-                  whileHover={{
-                    scale: 1.01,
-                  }}
-                  whileInView={{
-                    scale: 1,
-                    opacity: 1,
-                    y: 0,
-                  }}
-                  transition={{
-                    whileInView: {
-                      ease: "easeInOut",
-                      duration: 0.7,
-                    },
-                  }}
-                  viewport={{ once: true }}
-                  key={item}
-                >
-                  <td className="font-medium">Gmail</td>
-                  <td>454545</td>
-                  <td>
-                    <button className="btn btn-xs btn-neutral mr-2">
-                      <FaEdit />
-                    </button>
-                    <button className="btn btn-xs btn-error">
-                      <FaTrash />
-                    </button>
-                  </td>
-                </motion.tr>
-              ))}
+              {[1,3,3,3,3,3,3,3,3,3].map((item, idx) => {
+                return <ItemField key={idx}/>
+              }
+              )}
             </tbody>
           </table>
         </div>

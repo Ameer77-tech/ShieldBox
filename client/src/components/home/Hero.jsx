@@ -17,8 +17,8 @@ const Hero = () => {
               y : 0
             }}
             transition={{
-              ease : "easeInOut",
-              duration : 0.9
+              ease : "anticipate",
+              duration : 1.2
               
             }}
             className="font-[rajdhani] md:text-7xl text-5xl font-bold bg-gradient-to-r from-[#ffffff] to-[#3abdf8] text-transparent bg-clip-text">
@@ -37,6 +37,9 @@ const Hero = () => {
               whileHover={{
                 scale: 1.08,
                 rotate: -2,
+              }}
+              whileTap={{
+                scale:1 
               }}
               className="font-[rajdhani] btn btn-primary mt-10 md:text-lg"
             >

@@ -1,6 +1,9 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef } from "react";
 import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
-import { motion, AnimatePresence } from "motion/react";
+import { AnimatePresence } from "motion/react";
+import LocomotiveScroll from "locomotive-scroll";
+import "locomotive-scroll/dist/locomotive-scroll.css";
+
 import Home from "./pages/Home";
 import Dashboard from "./pages/Dashboard";
 import Login from "./pages/auth/Login";
@@ -14,29 +17,26 @@ import Sections from "./pages/Sections";
 import Section from "./pages/Section";
 
 const AnimatedRoutes = () => {
-  const location = useLocation();
+  const location = useLocation()
 
   return (
-    <>
+ 
       <AnimatePresence mode="wait" location={location}>
-        <Routes>
+        <Routes location={location} key={location.pathname}>
           <Route path="/" element={<Home />} />
-
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/allsections" element={<Sections />} />
           <Route path="/section/:sectionid" element={<Section />} />
-
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<CreateAccount />} />
           <Route path="/verify" element={<Verify />} />
           <Route path="/setkey" element={<SetKey />} />
           <Route path="/enterkey" element={<EnterKey />} />
           <Route path="/resetaccount" element={<ResetAccount />} />
-          <Route path="/resetaccount" element={<ResetAccount />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </AnimatePresence>
-    </>
+   
   );
 };
 

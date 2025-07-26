@@ -106,8 +106,8 @@ const NavBar = () => {
       <div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
-        className={`z-10 navbar hidden fixed top-0 
-        md:block py-10 px-0 flex-col justify-between items-start min-h-screen bg-base-300 md:max-w-1/5 max-w-3/4  shadow-black`}
+        className={`z-10 navbar hidden fixed top-0 left-0 transform-none
+        md:block py-10 px-0 flex-col justify-between items-start h-screen bg-base-300 md:max-w-1/5 max-w-3/4  shadow-black`}
       >
         <div className="navbar-start w-full flex flex-col justify-evenly items-center h-35 border-b-1 border-b-slate-600">
           <FaUserCircle size={80} />

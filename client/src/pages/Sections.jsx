@@ -7,11 +7,13 @@ import { Link, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { checkAuth } from "../utils/AuthApi";
 import { secretKeyContext } from "../contexts/KeyContext";
+import { getAllSections } from "../utils/AppApi";
 
 const Sections = () => {
   const navigate = useNavigate();
   const { secretKey, setSecretKey } = useContext(secretKeyContext);
   const [loading, setLoading] = useState(true);
+  const [allSections, setAllSections] = useState([]);
   useEffect(() => {
     checkAuthorization();
   }, []);
@@ -27,10 +29,22 @@ const Sections = () => {
       const savedKey = sessionStorage.getItem("secretkey");
       if (!savedKey) navigate("/enterkey");
       else {
+        getSections();
         setSecretKey(savedKey);
         setLoading(false);
       }
     }
+  };
+
+  const getSections = async () => {
+    const response = await getAllSections();
+    if (response.success) {
+      const { sections } = response;
+      const existingSections = sections.map((section) => {
+        return { name: section.name, items: section.items?.length, id : section._id };
+      });
+      setAllSections(existingSections);
+    } else console.log("Error fetching sections");
   };
 
   if (loading) {
@@ -54,24 +68,16 @@ const Sections = () => {
           </button>
         </div>
         <div className="mt-5 flex flex-wrap md:gap-5 gap-5">
-          <SectionCard />
-          <SectionCard />
-          <SectionCard />
-           <SectionCard />
-          <SectionCard />
-          <SectionCard />
-           <SectionCard />
-          <SectionCard />
-          <SectionCard />
-           <SectionCard />
-          <SectionCard />
-          <SectionCard />
-           <SectionCard />
-          <SectionCard />
-          <SectionCard />
-           <SectionCard />
-          <SectionCard />
-          <SectionCard />
+          {allSections.map((section, idx) => {
+            return (
+              <SectionCard
+                key={idx}
+                name={section.name}
+                itemsPresent={section.items}
+                id = {section.id}
+              />
+            );
+          })}
         </div>
       </div>
     </div>

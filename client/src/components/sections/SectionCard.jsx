@@ -2,7 +2,7 @@ import { FaFolderOpen } from "react-icons/fa";
 import { motion, spring } from "motion/react";
 import { Link } from 'react-router-dom'
 
-export default function SectionCard() {
+export default function SectionCard({ name, itemsPresent, id }) {
   return (
     <motion.div
     initial = {{
@@ -31,10 +31,10 @@ export default function SectionCard() {
     >
       <div className="card-body items-center text-center">
         <FaFolderOpen className="text-primary text-6xl mb-4" />
-        <h2 className="text-2xl font-bold">Personal</h2>
-        <p className="text-sm text-gray-500 mb-4">12 items</p>
+        <h2 className="text-2xl font-bold">{ name }</h2>
+        <p className="text-sm text-gray-500 mb-4">{itemsPresent} items</p>
         <div className="card-actions justify-center">
-          <Link to="/section/3433"><button className="btn btn-primary btn-md">View</button></Link>
+          <Link to={`/section/${id}`}><button className="btn btn-primary btn-md">View</button></Link>
           <button className="btn btn-neutral btn-md">Rename</button>
           <button className="btn btn-error btn-md">Delete</button>
         </div>

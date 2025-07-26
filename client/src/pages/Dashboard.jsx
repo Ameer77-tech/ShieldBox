@@ -1,4 +1,4 @@
-import React, { Suspense, useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import MainHeading from "../components/dashboard/MainHeading";
 import Summary from "../components/dashboard/Summary";
 import NavBar from "../components/dashboard/NavBar";
@@ -9,9 +9,19 @@ import { secretKeyContext } from "../contexts/KeyContext";
 const Dashboard = () => {
   const navigate = useNavigate();
   const { secretKey, setSecretKey } = useContext(secretKeyContext);
+  const [coords, setCoords] = useState({ x: 0, y: 0 });
   const [loading, setLoading] = useState(true);
+
   useEffect(() => {
     checkAuthorization();
+
+    // Attach mousemove once
+    const handleMouseMove = (e) => {
+      setCoords({ x: e.clientX, y: e.clientY });
+    };
+    window.addEventListener("mousemove", handleMouseMove);
+
+    return () => window.removeEventListener("mousemove", handleMouseMove);
   }, []);
 
   const checkAuthorization = async () => {
@@ -32,8 +42,6 @@ const Dashboard = () => {
     }
   };
 
-  const circle = document.getElementById('cursor-follower')
-
   if (loading) {
     return (
       <div className="min-h-screen grid place-items-center">
@@ -43,8 +51,15 @@ const Dashboard = () => {
   }
 
   return (
-    <div className="md:flex md:justify-between md:items-center relative">
-      <div id="cursor-follower" className="z-100 absolute top-1/4 left-2/4 h-2 w-2 shadow-black shadow-xl bg-white rounded-full"></div>
+    <div className="md:flex md:justify-between md:items-center relative min-h-screen">
+      <div
+        id="cursor-follower"
+        style={{
+          left: coords.x + "px",
+          top: coords.y + "px",
+        }}
+        className="fixed h-2 w-2 bg-white rounded-full z-50 pointer-events-none transition-transform duration-75 ease-out"
+      ></div>
       <NavBar />
       <div className="w-full min-h-screen flex flex-col md:ml-76">
         <MainHeading />
