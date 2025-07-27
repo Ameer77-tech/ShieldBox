@@ -5,7 +5,7 @@ import { FiMenu } from "react-icons/fi";
 import { AnimatePresence, motion, spring } from "framer-motion";
 import { FaUserCircle } from "react-icons/fa";
 
-const NavBar = () => {
+const NavBar = ({userName}) => {
   const [showNav, setShowNav] = useState(false);
 
   return (
@@ -103,16 +103,22 @@ const NavBar = () => {
 
       {/* PC NAVBAR --------------------------------------------------------------------------------------------------------------------------------------------------------- PC NAVBAR */}
 
-      <div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
+      <motion.div
+        initial={{ x : '-100%' }}
+        animate={{ x : 0 }}
+        transition={{
+          delay : 0.3,
+          type : spring,
+          stiffness : 30,
+          duration : 0.5
+        }}
         className={`z-10 navbar hidden fixed top-0 left-0 transform-none
         md:block py-10 px-0 flex-col justify-between items-start h-screen bg-base-300 md:max-w-1/5 max-w-3/4  shadow-black`}
       >
         <div className="navbar-start w-full flex flex-col justify-evenly items-center h-35 border-b-1 border-b-slate-600">
           <FaUserCircle size={80} />
           <p className="text-lg tracking-wide">
-            <span className="">Ameer Shaik</span>
+            <span className="">{userName}</span>
           </p>
         </div>
         <div className="navbar-center md:h-100 h-150 w-full items-start mt-10">
@@ -136,7 +142,7 @@ const NavBar = () => {
                   className="bg-base-200 -z-10"
                 >
                   <li className="py-1">
-                    <Link to="/allsections">View Sections</Link>
+                    <Link to="/sections">View Sections</Link>
                   </li>
                   <li className="py-1">
                     <Link to="/addsection">Add New Section</Link>
@@ -172,7 +178,7 @@ const NavBar = () => {
           <FiSettings />
           <Link to="/settings">Account Settings</Link>
         </div>
-      </div>
+      </motion.div>
     </>
   );
 };

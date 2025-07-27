@@ -1,19 +1,41 @@
-import React from 'react'
+import React from "react";
+import { motion } from "motion/react";
 
 const SummaryCard = (props) => {
   return (
-     <div className="card md:w-96 bg-base-100 md:card-xl shadow-sm ">
-        <div className="card-body">
-          <h2 className="card-title">{props.title}</h2>
-          <p className="text-4xl">
-            {props.count}
-          </p>
-          <div className="justify-end card-actions">
-            <button className="btn btn-soft btn-primary text-accent hover:text-white">{props.button}</button>
-          </div>
+    <div className="card md:w-96 bg-base-100 md:card-xl shadow-sm">
+      <div className="card-body">
+        <div className="overflow-hidden">
+          <motion.h2
+            initial={{ x: "-100%" }}
+            animate={{ x: 0 }}
+            transition={{ ease: "easeInOut", duration: 0.9, delay: props.index * 0.3 }}
+            className="card-title"
+          >
+            {props.title}
+          </motion.h2>
+        </div>
+        <motion.p
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 2 }}
+          className="text-4xl"
+        >
+          {props.count}
+        </motion.p>
+        <div className="justify-end card-actions">
+          <motion.button
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 2 }}
+            className="btn btn-soft btn-primary text-sky-600 hover:text-white"
+          >
+            {props.button}
+          </motion.button>
         </div>
       </div>
-  )
-}
+    </div>
+  );
+};
 
-export default SummaryCard
+export default SummaryCard;

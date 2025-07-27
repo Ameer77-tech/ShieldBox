@@ -1,8 +1,4 @@
-import {
-  FaArrowLeft,
-  FaPlus,
-  FaFolderOpen,
-} from "react-icons/fa";
+import { FaArrowLeft, FaPlus, FaFolderOpen } from "react-icons/fa";
 import NavBar from "../components/dashboard/NavBar";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { useContext, useEffect, useState } from "react";
@@ -10,11 +6,14 @@ import { checkAuth } from "../utils/AuthApi";
 import { secretKeyContext } from "../contexts/KeyContext";
 import { motion } from "motion/react";
 import ItemField from "../components/sections/ItemField";
+import { getItems } from "../utils/AppApi";
 
 export default function InsideSection() {
+  const [Items, setItems] = useState([]);
+  const [Loading, setloading] = useState(false);
   const { secretKey, setSecretKey } = useContext(secretKeyContext);
-  const params = useParams()
-  const id = params.sectionid
+  const params = useParams();
+  const id = params.sectionid;
   const navigate = useNavigate();
   const [loading, setLoading] = useState(true);
   useEffect(() => {
@@ -32,12 +31,25 @@ export default function InsideSection() {
       const savedKey = sessionStorage.getItem("secretkey");
       if (!savedKey) navigate("/enterkey");
       else {
+        getFields();
         setSecretKey(savedKey);
         setLoading(false);
       }
     }
   };
 
+  const getFields = async () => {
+    setloading(true);
+    const response = await getItems(id);
+    let { items } = response;
+    if (response.success) {
+      setItems(items);
+      setloading(false);
+    } else {
+      console.log("Server Error");
+      setloading(false);
+    }
+  };
   if (loading) {
     return (
       <div className="min-h-screen grid place-items-center">
@@ -50,9 +62,10 @@ export default function InsideSection() {
       <NavBar />
 
       <div className="p-6 w-full md:ml-76">
+        {Loading && <span className="loading loading-spinner loading-xl absolute left-2/4 -translate-x-2/4 top-2/4"></span>}
         {/* Header */}
         <div className="flex justify-between items-center mb-6">
-          <Link to="/allsections">
+          <Link to="/sections">
             <button className="btn btn-sm btn-neutral">
               <FaArrowLeft className="mr-2" />
               Back
@@ -112,9 +125,20 @@ export default function InsideSection() {
               </tr>
             </thead>
             <tbody>
-              {[1,3,3,3,3,3,3,3,3,3].map((item, idx) => {
-                return <ItemField key={idx}/>
-              }
+              {Items.length < 1 ? (
+                <h3 className="text-[#858484]/20 font-[rajdhani] text-2xl mt-10">
+                  No Data
+                </h3>
+              ) : (
+                Items.map((item, idx) => {
+                  return (
+                    <ItemField
+                      key={idx}
+                      name={item.itemName}
+                      value={item.itemValue}
+                    />
+                  );
+                })
               )}
             </tbody>
           </table>

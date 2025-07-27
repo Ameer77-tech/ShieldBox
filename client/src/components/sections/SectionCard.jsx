@@ -34,7 +34,7 @@ export default function SectionCard({ name, itemsPresent, id }) {
         <h2 className="text-2xl font-bold">{ name }</h2>
         <p className="text-sm text-gray-500 mb-4">{itemsPresent} items</p>
         <div className="card-actions justify-center">
-          <Link to={`/section/${id}`}><button className="btn btn-primary btn-md">View</button></Link>
+          <Link to={`/sections/${id}`}><button className="btn btn-primary btn-md">View</button></Link>
           <button className="btn btn-neutral btn-md">Rename</button>
           <button className="btn btn-error btn-md">Delete</button>
         </div>

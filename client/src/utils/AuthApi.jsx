@@ -9,7 +9,8 @@ export const checkAuth = async () => {
     });
     const success = data.success
     const isKeySet = data.isKeySet
-    return  { success, isKeySet }
+    const name = data.name
+    return  { success, isKeySet, name }
   } catch (err) {
     console.log(err, "Cant check auth");
     return false;
@@ -79,4 +80,19 @@ export const isKeySet = async ()=>{
     console.log(err)
     return false
   }
+}
+
+export const logout =  async()=>{
+  try{
+     const { data } = await axios.delete(`${apiUrl}/api/auth/logout`,{ withCredentials : true })
+     if(data.success)
+      return true
+    else
+      return false
+  }catch(err){
+    console.log(err)
+    return false
+  }
+ 
+  
 }

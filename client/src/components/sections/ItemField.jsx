@@ -5,7 +5,7 @@ import {
   FaTrash,
 } from "react-icons/fa";
 
-const ItemField = () => {
+const ItemField = ({ name, value }) => {
   return (
     <motion.tr
       initial={{
@@ -29,8 +29,8 @@ const ItemField = () => {
       }}
       viewport={{ once: true }}
     >
-      <td className="font-medium">Gmail</td>
-      <td>454545</td>
+      <td className="font-medium">{name}</td>
+      <td>{value}</td>
       <td>
         <button className="btn btn-xs btn-neutral mr-2">
           <FaEdit />

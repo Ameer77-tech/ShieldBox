@@ -5,7 +5,7 @@ import { FiAlertCircle } from "react-icons/fi"; // Feather icons
 const Footer = () => {
   return (
     <div className="grid grid-cols-2 place-items-center">
-      <button className="btn btn-outline btn-accent flex items-center gap-2">
+      <button className="btn btn-outline btn-info flex items-center gap-2">
         Download Backup
       </button>
       <button className="btn btn-outline btn-warning flex items-center gap-2">

@@ -1,68 +1,25 @@
 import React from "react";
+import { FaFolder } from "react-icons/fa";
+import { motion } from "motion/react";
 
-const RecentlyViewed = () => {
+const RecentlyViewed = ({ index }) => {
   return (
-    <div className="card card-border bg-base-100 w-full">
-      <div className="card-body gap-10">
-        <h2 className="card-title">Recently Viewed</h2>
-        <div className="grid md:grid-cols-3 md:mt-5 md:gap-6">
-          <div className="card bg-base-100 image-full w-90 shadow-sm">
-            <figure>
-              <img
-                src="https://img.daisyui.com/images/stock/photo-1606107557195-0e29a4b5b4aa.webp"
-                alt="Shoes"
-              />
-            </figure>
-            <div className="card-body">
-              <h2 className="card-title">Card Title</h2>
-              <p>
-                A card component has a figure, a body part, and inside body
-                there are title and actions parts
-              </p>
-              <div className="card-actions justify-end">
-                <button className="btn btn-primary">Buy Now</button>
-              </div>
-            </div>
-          </div>
-          <div className="card bg-base-100 image-full w-90 shadow-sm">
-            <figure>
-              <img
-                src="https://img.daisyui.com/images/stock/photo-1606107557195-0e29a4b5b4aa.webp"
-                alt="Shoes"
-              />
-            </figure>
-            <div className="card-body">
-              <h2 className="card-title">Card Title</h2>
-              <p>
-                A card component has a figure, a body part, and inside body
-                there are title and actions parts
-              </p>
-              <div className="card-actions justify-end">
-                <button className="btn btn-primary">Buy Now</button>
-              </div>
-            </div>
-          </div>
-          <div className="card bg-base-100 image-full w-90 shadow-sm">
-            <figure>
-              <img
-                src="https://img.daisyui.com/images/stock/photo-1606107557195-0e29a4b5b4aa.webp"
-                alt="Shoes"
-              />
-            </figure>
-            <div className="card-body">
-              <h2 className="card-title">Card Title</h2>
-              <p>
-                A card component has a figure, a body part, and inside body
-                there are title and actions parts
-              </p>
-              <div className="card-actions justify-end">
-                <button className="btn btn-primary">Buy Now</button>
-              </div>
-            </div>
-          </div>
+    <motion.div 
+    initial={{opacity:0}}
+    whileInView={{opacity:1}}
+    transition={{delay:index*0.2}}
+    className="card image-full w-90 shadow-sm">
+      <figure>
+        <img src="/card-bg.jpg" alt="Shoes" />
+      </figure>
+      <div className="card-body justify-between">
+        <h2 className="card-title text-3xl">Personal</h2>
+        <div className="card-actions justify-between items-center">
+          <FaFolder size={30} />
+          <button className="btn btn-primary">View</button>
         </div>
       </div>
-    </div>
+    </motion.div>
   );
 };
 
