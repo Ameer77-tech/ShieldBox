@@ -1,0 +1,4 @@
+const setData = (userData)=>{
+    localStorage.setItem("user-data",JSON.stringify(userData))
+}
+export default setData

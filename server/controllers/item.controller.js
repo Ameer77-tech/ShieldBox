@@ -70,6 +70,7 @@ export const deleteItem = async (req, res) => {
   const email = req.user;
   const sectionId = req.params.sectionid;
   const { itemName } = req.body;
+  
 
   try {
     const user = await userModel.findOne({ email });

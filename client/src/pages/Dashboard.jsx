@@ -7,24 +7,21 @@ import { useNavigate } from "react-router-dom";
 import { secretKeyContext } from "../contexts/KeyContext";
 import { motion } from "motion/react";
 import { FiLogOut } from "react-icons/fi";
+import { userContext } from "../contexts/UserContext";
+import getData from "../utils/getDataFromStorage";
 
 const Dashboard = () => {
   const navigate = useNavigate();
   const { secretKey, setSecretKey } = useContext(secretKeyContext);
-  const [userName, setuserName] = useState("");
-  const [coords, setCoords] = useState({ x: 0, y: 0 });
+  const { userData, setUserData } = useContext(userContext);
+  const [user, setUser] = useState({
+    name: "",
+    email: "",
+  });
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     checkAuthorization();
-
-    // Attach mousemove once
-    const handleMouseMove = (e) => {
-      setCoords({ x: e.clientX, y: e.clientY });
-    };
-    window.addEventListener("mousemove", handleMouseMove);
-
-    return () => window.removeEventListener("mousemove", handleMouseMove);
   }, []);
 
   const checkAuthorization = async () => {
@@ -39,10 +36,39 @@ const Dashboard = () => {
       const savedKey = sessionStorage.getItem("secretkey") || "";
       if (!savedKey) navigate("/enterkey");
       else {
-        setuserName(response.name);
+        setUserData(() => ({
+          theme : response.theme,
+          email: response.email,
+          userName: response.name,
+        }));
+        console.log(response.theme)
+        setDataInStorage(response.email, response.name, response.theme);
+        getDataFromStorage();
         setSecretKey(savedKey);
         setLoading(false);
       }
+    }
+  };
+
+  const setDataInStorage = (email, name, theme) => {
+    const existingData = getData()
+    let userData = {
+      ...existingData,
+      email,
+      userName : name,
+      theme
+    };
+    localStorage.setItem("user-data", JSON.stringify(userData));
+  };
+  const getDataFromStorage = () => {
+    const existingData = getData()
+    if (existingData === "") console.log("error fetching data or no data");
+    else {
+      setUserData(existingData);
+      setUser({
+        name: existingData.userName,
+        email: existingData.email,
+      });
     }
   };
 
@@ -62,7 +88,7 @@ const Dashboard = () => {
 
   return (
     <div className="md:flex md:justify-between md:items-center relative min-h-screen">
-      <NavBar userName={userName} />
+      <NavBar userName={user.name} />
       <div className="w-full min-h-screen flex flex-col md:ml-76">
         <div className="flex justify-between items-center px-5 md:h-40 pt-5">
           <MainHeading />

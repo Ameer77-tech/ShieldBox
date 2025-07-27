@@ -1,5 +1,6 @@
 import React from "react";
 import { motion } from "motion/react";
+import { Link } from "react-router-dom";
 
 const SummaryCard = (props) => {
   return (
@@ -9,7 +10,11 @@ const SummaryCard = (props) => {
           <motion.h2
             initial={{ x: "-100%" }}
             animate={{ x: 0 }}
-            transition={{ ease: "easeInOut", duration: 0.9, delay: props.index * 0.3 }}
+            transition={{
+              ease: "easeInOut",
+              duration: 0.9,
+              delay: props.index * 0.3,
+            }}
             className="card-title"
           >
             {props.title}
@@ -24,14 +29,16 @@ const SummaryCard = (props) => {
           {props.count}
         </motion.p>
         <div className="justify-end card-actions">
-          <motion.button
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 2 }}
-            className="btn btn-soft btn-primary text-sky-600 hover:text-white"
-          >
-            {props.button}
-          </motion.button>
+          <Link to="/sections">
+            <motion.button
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 2 }}
+              className="btn btn-soft btn-primary text-sky-600 hover:text-white"
+            >
+              {props.button}
+            </motion.button>
+          </Link>
         </div>
       </div>
     </div>

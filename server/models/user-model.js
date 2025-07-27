@@ -20,6 +20,10 @@ const userSchema = new mongoose.Schema(
       type: Boolean,
       default: false,
     },
+    theme: {
+      type: String,
+      default: "dark",
+    },
     sections: {
       type: [mongoose.Schema.Types.ObjectId],
       ref: "section",

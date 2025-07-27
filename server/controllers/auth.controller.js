@@ -13,7 +13,6 @@ export const register = async (req, res) => {
       .json({ reply: "Body must'nt be Empty", success: false });
   const { name, email, password } = req.body;
 
-
   if (name === undefined || email === undefined || password === undefined)
     return res
       .status(401)
@@ -26,20 +25,18 @@ export const register = async (req, res) => {
         .json({ reply: "User already exists", success: false });
     const hashedPassword = await bcrypt.hash(password, 10);
     try {
-       const result = Math.floor(100000 + Math.random() * 900000);
-       await sendCode(email,result)
-       const code = result.toString()
+      const result = Math.floor(100000 + Math.random() * 900000);
+      await sendCode(email, result);
+      const code = result.toString();
       try {
         const pendingUser = await pendingUserModel.findOneAndUpdate(
           { email },
           {
             $setOnInsert: {
               name,
-              password : hashedPassword,
+              password: hashedPassword,
             },
-            $set: { code,
-              expiresAt: new Date(Date.now() + 10 * 60 * 1000),
-             }, 
+            $set: { code, expiresAt: new Date(Date.now() + 10 * 60 * 1000) },
           },
           {
             upsert: true,
@@ -96,11 +93,13 @@ export const login = async (req, res) => {
       res.cookie("token", token, {
         httpOnly: true,
         secure: true,
+        maxAge: 7 * 24 * 60 * 60 * 1000, //7days
+        sameSite: "lax",
       });
       //setcookie
       res.status(200).json({ reply: "User is authorized", success: true });
     } catch (err) {
-      res.status(500).json({reply : "Error", success : false})
+      res.status(500).json({ reply: "Error", success: false });
     }
   } catch (err) {
     res.status(500).json({ reply: "Error finding user", success: false });
@@ -113,64 +112,77 @@ export const logout = (req, res) => {
 };
 
 export const verify = async (req, res) => {
-    if(req.body === undefined)
-      return res.status(401).json({reply:"Body must'nt be empty", success : false})
-    const { code , email } = req.body
-    console.log(code, email)
-    if(code === undefined || email === undefined)
-      return res.status(401).json({reply:"fill the input", success : false})
-    
-    try{
-      const userData = await pendingUserModel.findOne({email})
-      if(!userData)
-        return res.status(401).json({reply:"No users found or Code expired", success : false})
-      const originalCode = userData.code
-      
-      const { name, password } = userData
-      const pendingEmail = userData.email
-      
-      if(code !== originalCode)
-        return res.status(401).json({ reply : "Invalid Code", success : false })
-      try{
-        const response = await pendingUserModel.findOneAndDelete({ email })
-        
-        try{
-          const user = await userModel.create({
-            name,
-            email,
-            password,
-            isVerified : true,
-          })
-          const token = setCookie(email)
-          res.cookie("token",token,{
-            httpOnly : true,
-            secure : true,
-            expires: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000), // 7 days from now
-          })
-          res.status(200).json({ reply : "User successfully registered", success : true })
-        }catch(err){
-           res.status(500).json({ reply : "Server Error (can't create user)", success : false })
-        }
-      }catch(err){
-         res.status(500).json({ reply : "Server Error (can't delete user)", success : false })
+  if (req.body === undefined)
+    return res
+      .status(401)
+      .json({ reply: "Body must'nt be empty", success: false });
+  const { code, email } = req.body;
+  console.log(code, email);
+  if (code === undefined || email === undefined)
+    return res.status(401).json({ reply: "fill the input", success: false });
+
+  try {
+    const userData = await pendingUserModel.findOne({ email });
+    if (!userData)
+      return res
+        .status(401)
+        .json({ reply: "No users found or Code expired", success: false });
+    const originalCode = userData.code;
+
+    const { name, password } = userData;
+    const pendingEmail = userData.email;
+
+    if (code !== originalCode)
+      return res.status(401).json({ reply: "Invalid Code", success: false });
+    try {
+      const response = await pendingUserModel.findOneAndDelete({ email });
+
+      try {
+        const user = await userModel.create({
+          name,
+          email,
+          password,
+          isVerified: true,
+        });
+        const token = setCookie(email);
+        res.cookie("token", token, {
+          httpOnly: true,
+          secure: true,
+          expires: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000), // 7 days from now
+          sameSite: "lax",
+        });
+        res
+          .status(200)
+          .json({ reply: "User successfully registered", success: true });
+      } catch (err) {
+        res
+          .status(500)
+          .json({ reply: "Server Error (can't create user)", success: false });
       }
+    } catch (err) {
+      res
+        .status(500)
+        .json({ reply: "Server Error (can't delete user)", success: false });
     }
-    catch(err){
-        res.status(500).json({ reply : "Server Error (can't find user)", success : false })
-    }
-    
-    
+  } catch (err) {
+    res
+      .status(500)
+      .json({ reply: "Server Error (can't find user)", success: false });
+  }
 };
 
-export const setKey = async (req,res)=>{
-  const email = req.user
-  console.log(email)
-  try{
-    await userModel.findOneAndUpdate({ email },{
-      isKeySet : true
-    })
-    res.status(200).json({ reply : "Key is Set", success : true })
-  }catch(err){
-    res.status(500).json({ reply : "Server Error", success : false })
+export const setKey = async (req, res) => {
+  const email = req.user;
+  console.log(email);
+  try {
+    await userModel.findOneAndUpdate(
+      { email },
+      {
+        isKeySet: true,
+      }
+    );
+    res.status(200).json({ reply: "Key is Set", success: true });
+  } catch (err) {
+    res.status(500).json({ reply: "Server Error", success: false });
   }
-}
+};

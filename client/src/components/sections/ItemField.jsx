@@ -1,11 +1,23 @@
-import React from "react";
-import { motion } from 'motion/react'
-import {
-  FaEdit,
-  FaTrash,
-} from "react-icons/fa";
+import React, { useState } from "react";
+import { motion } from "motion/react";
+import { FaEdit, FaTrash } from "react-icons/fa";
+import { deleteItem } from "../../utils/AppApi";
 
-const ItemField = ({ name, value }) => {
+const ItemField = ({ name, value, sectionId, itemDeleteHandler }) => {
+  const [loading, setloading] = useState(false);
+
+  const handleItemDelete = async (name, id) => {
+    setloading(true);
+    const response = await deleteItem(name, id);
+    if (response.success) {
+      itemDeleteHandler(name);
+      setloading(false);
+    } else {
+      console.log("Error");
+      setloading(false);
+    }
+  };
+
   return (
     <motion.tr
       initial={{
@@ -35,8 +47,15 @@ const ItemField = ({ name, value }) => {
         <button className="btn btn-xs btn-neutral mr-2">
           <FaEdit />
         </button>
-        <button className="btn btn-xs btn-error">
-          <FaTrash />
+        <button
+          onClick={() => handleItemDelete(name, sectionId)}
+          className="btn btn-xs btn-error"
+        >
+          {loading ? (
+            <span className="loading loading-spinner loading-xs"></span>
+          ) : (
+            <FaTrash />
+          )}
         </button>
       </td>
     </motion.tr>

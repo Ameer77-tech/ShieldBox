@@ -1,21 +1,27 @@
-import { register, login, logout, verify, setKey }  from '../../controllers/auth.controller.js'
-import express from 'express'
-import authorizeToken from '../../middlewares/authorizeToken.js'
-import userModel from '../../models/user-model.js'
+import {
+  register,
+  login,
+  logout,
+  verify,
+  setKey,
+} from "../../controllers/auth.controller.js";
+import express from "express";
+import authorizeToken from "../../middlewares/authorizeToken.js";
+import userModel from "../../models/user-model.js";
 
+const router = express.Router();
 
-const router = express.Router()
+router.post("/register", register);
+router.post("/login", login);
+router.delete("/logout", logout);
+router.post("/verify", verify);
+router.get("/checkauth", authorizeToken, async (req, res) => {
+  const email = req.user;
+  const { isKeySet, name, theme } = await userModel.findOne({ email });
+  res
+    .status(200)
+    .json({ reply: "Authorized", success: true, email, name, isKeySet, theme });
+});
+router.put("/setkey", authorizeToken, setKey);
 
-router.post('/register', register)
-router.post('/login', login)
-router.delete('/logout',logout)
-router.post('/verify', verify)
-router.get('/checkauth', authorizeToken, async (req,res)=>{
-    const email  = req.user
-    const { isKeySet, name } = await userModel.findOne({ email })
-    res.status(200).json({ reply : "Authorized", success : true, email, name, isKeySet })
-})
-router.put('/setkey', authorizeToken, setKey)
-
-
-export default router
+export default router;

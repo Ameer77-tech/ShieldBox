@@ -1,45 +1,71 @@
 import { FaFolderOpen } from "react-icons/fa";
 import { motion, spring } from "motion/react";
-import { Link } from 'react-router-dom'
+import { Link } from "react-router-dom";
+import { deleteSection } from "../../utils/AppApi";
+import { useState } from "react";
 
-export default function SectionCard({ name, itemsPresent, id }) {
+export default function SectionCard({ name, itemsPresent, id, deleteHandler }) {
+  const [loading, setLoading] = useState(false);
+
+  const handleDelete = async (id) => {
+    setLoading(true);
+    const response = await deleteSection(id);
+    if (response) {
+      deleteHandler(id);
+      setLoading(false);
+    } else {
+      console.log("Error");
+      setLoading(false);
+    }
+  };
+
   return (
     <motion.div
-    initial = {{
-      opacity : 0,
-      scale : 0.98,
-      y : -20
-    }}
-    whileHover={{
-      scale : 1.03,
-      rotate: -2
-    }}
-    whileInView={{
-      scale : 1,
-      opacity : 1,
-      y : 0
-    }}
-    transition={{
-      whileInView : {
-        ease : 'easeInOut',
-        duration : 0.7
-      }
-    }}
+      initial={{
+        opacity: 0,
+        scale: 0.98,
+        y: -20,
+      }}
+      whileHover={{
+        scale: 1.03,
+        rotate: -2,
+      }}
+      whileInView={{
+        scale: 1,
+        opacity: 1,
+        y: 0,
+      }}
+      transition={{
+        whileInView: {
+          ease: "easeInOut",
+          duration: 0.7,
+        },
+      }}
+      exit={{ y: -20, opacity: 0 }}
     >
-    <div
-      className="card w-90 bg-neutral shadow-lg hover:shadow-xl transition ring-1 ring-primary/30"
-    >
-      <div className="card-body items-center text-center">
-        <FaFolderOpen className="text-primary text-6xl mb-4" />
-        <h2 className="text-2xl font-bold">{ name }</h2>
-        <p className="text-sm text-gray-500 mb-4">{itemsPresent} items</p>
-        <div className="card-actions justify-center">
-          <Link to={`/sections/${id}`}><button className="btn btn-primary btn-md">View</button></Link>
-          <button className="btn btn-neutral btn-md">Rename</button>
-          <button className="btn btn-error btn-md">Delete</button>
+      <div className="card w-90 bg-neutral shadow-lg hover:shadow-xl transition ring-1 ring-primary/30">
+        <div className="card-body items-center text-center">
+          <FaFolderOpen className="text-white text-6xl mb-4" />
+          <h2 className="text-2xl font-bold text-white">{name}</h2>
+          <p className="text-sm text-gray-500 mb-4">{itemsPresent} items</p>
+          <div className="card-actions justify-center">
+            <Link to={`/sections/${name}/${id}`}>
+              <button className="btn btn-primary btn-md">View</button>
+            </Link>
+            <button className="btn btn-neutral btn-md">Rename</button>
+            <button
+              onClick={() => handleDelete(id)}
+              className="btn btn-error btn-md"
+            >
+              {loading ? (
+                <span className="loading loading-spinner loading-sm"></span>
+              ) : (
+                "Delete"
+              )}
+            </button>
+          </div>
         </div>
       </div>
-    </div>
     </motion.div>
   );
 }

@@ -14,6 +14,21 @@ export const getAllSections = async () => {
   }
 };
 
+export const deleteSection = async (sectionId) => {
+  try {
+    const { data } = await axios.delete(
+      `${apiUrl}/api/deletesection/${sectionId}`,
+      {
+        withCredentials: true,
+      }
+    );
+    return data;
+  } catch (err) {
+    console.log(err, "Cant delete Section");
+    return false;
+  }
+};
+
 export const getItems = async (sectionId) => {
   try {
     const { data } = await axios.get(`${apiUrl}/api/${sectionId}/getitems`, {
@@ -22,6 +37,19 @@ export const getItems = async (sectionId) => {
     return data;
   } catch (err) {
     console.log(err, "Cant get Items (error)");
+    return false;
+  }
+};
+
+export const deleteItem = async (name, id) => {
+  try {
+    const { data } = await axios.delete(`${apiUrl}/api/${id}/deleteitem`, {
+      data: { itemName: name },
+      withCredentials: true,
+    });
+    return data;
+  } catch (err) {
+    console.log(err, "Cant delete Section");
     return false;
   }
 };
