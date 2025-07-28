@@ -2,16 +2,16 @@ import React from "react";
 import axios from "axios";
 const apiUrl = import.meta.env.VITE_APP_BACKEND;
 
-export const addSection = async (formData)=>{
-  try{
-    const { data } = await axios.post(`${apiUrl}/api/addsection`, formData, { withCredentials : true })
-    return data
-  }catch(err){
-    return { error : err.response.data.reply, success : false }
+export const addSection = async (formData) => {
+  try {
+    const { data } = await axios.post(`${apiUrl}/api/addsection`, formData, {
+      withCredentials: true,
+    });
+    return data;
+  } catch (err) {
+    return { error: err.response.data.reply, success: false };
   }
-  
-  
-}
+};
 
 export const getAllSections = async () => {
   try {
@@ -22,6 +22,21 @@ export const getAllSections = async () => {
   } catch (err) {
     console.log(err, "Cant get Sections");
     return false;
+  }
+};
+
+export const renameSection = async (sectionId, newName) => {
+  try {
+    const { data } = await axios.put(
+      `${apiUrl}/api/updatesection/${sectionId}`,
+      { newName },
+      {
+        withCredentials: true,
+      }
+    );
+    return data;
+  } catch (err) {
+    return { error: err.response.data.reply, success: false };
   }
 };
 

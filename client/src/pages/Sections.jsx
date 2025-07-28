@@ -20,6 +20,7 @@ const Sections = () => {
   const { secretKey, setSecretKey } = useContext(secretKeyContext);
   const [loading, setLoading] = useState(true);
   const [allSections, setAllSections] = useState([]);
+  const [isEditing, setisEditing] = useState("");
   useEffect(() => {
     checkAuthorization();
   }, []);
@@ -79,7 +80,7 @@ const Sections = () => {
     <div className="md:flex md:justify-between md:items-center">
       <NavBar />
 
-      <div className="md:w-full min-h-screen flex flex-col md:ml-76 md:p-10 p-5 relative">
+      <div className="md:w-full min-h-screen flex flex-col md:ml-76 md:p-10 p-5">
         <AnimatePresence>
           {" "}
           {showForm && (
@@ -114,11 +115,14 @@ const Sections = () => {
               allSections.map((section, idx) => {
                 return (
                   <SectionCard
-                    key={idx}
+                    key={section.id}
                     name={section.name}
                     itemsPresent={section.items}
                     id={section.id}
                     deleteHandler={deleteSection}
+                    isEditing={isEditing == section.id}
+                    setisEditing={setisEditing}
+                    getSections = {getSections}
                   />
                 );
               })

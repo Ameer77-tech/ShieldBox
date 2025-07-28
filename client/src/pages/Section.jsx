@@ -52,16 +52,14 @@ export default function InsideSection() {
     }
   };
 
-   const handleItemDelete = (name)=>{
-    const existing = [ ...Items ]
-    const updated = existing.filter(item=>{
-      if(name != item.itemName)
-        return true
-      else
-        return false
-    })
-    setItems(updated)
-   } 
+  const handleItemDelete = (name) => {
+    const existing = [...Items];
+    const updated = existing.filter((item) => {
+      if (name != item.itemName) return true;
+      else return false;
+    });
+    setItems(updated);
+  };
 
   if (loading) {
     return (
@@ -130,7 +128,10 @@ export default function InsideSection() {
         </div>
 
         {/* Items Table */}
-        <div className="overflow-x-auto">
+        {Items.length < 1 && (
+          <p className="text-gray-700 text-lg top-2/4 absolute left-2/4">Empty</p>
+        )}
+        <div className="overflow-x-auto relative">
           <table className="table w-full overflow-hidden">
             <thead>
               <tr>
