@@ -10,10 +10,13 @@ import { secretKeyContext } from "../contexts/KeyContext";
 import { getAllSections } from "../utils/AppApi";
 import { userContext } from "../contexts/UserContext";
 import getData from "../utils/getDataFromStorage";
+import AddSectionForm from "../components/sections/AddSectionForm";
+import { AnimatePresence } from "motion/react";
 
 const Sections = () => {
   const navigate = useNavigate();
   const { userData, setUserData } = useContext(userContext);
+  const [showForm, setshowForm] = useState(false);
   const { secretKey, setSecretKey } = useContext(secretKeyContext);
   const [loading, setLoading] = useState(true);
   const [allSections, setAllSections] = useState([]);
@@ -56,17 +59,15 @@ const Sections = () => {
     } else console.log("Error fetching sections");
   };
 
-  const deleteSection = (id)=>{
-    const existing = [...allSections]
-    const updatedSections = existing.filter(section=>{
-      if(id !== section.id)
-        return true
-      else
-        return false
-    })
-    setAllSections(updatedSections)
-  }
-   
+  const deleteSection = (id) => {
+    const existing = [...allSections];
+    const updatedSections = existing.filter((section) => {
+      if (id !== section.id) return true;
+      else return false;
+    });
+    setAllSections(updatedSections);
+  };
+
   if (loading) {
     return (
       <div className="min-h-screen grid place-items-center">
@@ -78,7 +79,17 @@ const Sections = () => {
     <div className="md:flex md:justify-between md:items-center">
       <NavBar />
 
-      <div className="md:w-full min-h-screen flex flex-col md:ml-76 md:p-10 p-5">
+      <div className="md:w-full min-h-screen flex flex-col md:ml-76 md:p-10 p-5 relative">
+        <AnimatePresence>
+          {" "}
+          {showForm && (
+            <AddSectionForm
+              setShowForm={setshowForm}
+              getSections={getSections}
+            />
+          )}
+        </AnimatePresence>
+
         <div className="flex items-center">
           <Link to="/dashboard">
             <FaChevronLeft size={25} className="hover:opacity-80" />
@@ -87,27 +98,32 @@ const Sections = () => {
         </div>
         <div className="flex justify-between items-center mt-13">
           <p className="font-medium text-3xl">My Sections</p>
-          <button className="btn btn-primary mr-2">
+          <button
+            onClick={() => setshowForm(true)}
+            className="btn btn-primary mr-2"
+          >
             <FaPlus className="mr-2" />
             Add Section
           </button>
         </div>
         <div className="mt-5 flex flex-wrap md:gap-5 gap-5">
-          {allSections.length < 1 ? (
-            <h3 className="text-gray-600/50 mt-5">No data</h3>
-          ) : (
-            allSections.map((section, idx) => {
-              return (
-                <SectionCard
-                  key={idx}
-                  name={section.name}
-                  itemsPresent={section.items}
-                  id={section.id}
-                  deleteHandler = {deleteSection}
-                />
-              );
-            })
-          )}
+          <AnimatePresence>
+            {allSections.length < 1 ? (
+              <h3 className="text-gray-600/50 mt-5">No data</h3>
+            ) : (
+              allSections.map((section, idx) => {
+                return (
+                  <SectionCard
+                    key={idx}
+                    name={section.name}
+                    itemsPresent={section.items}
+                    id={section.id}
+                    deleteHandler={deleteSection}
+                  />
+                );
+              })
+            )}
+          </AnimatePresence>
         </div>
       </div>
     </div>

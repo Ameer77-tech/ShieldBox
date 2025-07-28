@@ -5,6 +5,9 @@ const sectionSchema = new mongoose.Schema(
     name: {
       type: String,
     },
+    description : {
+      type : String
+    },
     createdBy: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "user",
@@ -13,6 +16,10 @@ const sectionSchema = new mongoose.Schema(
       type: [Object],
       default : []
     },
+    pinned : {
+      type : Boolean,
+      default : false
+    }
   },
   { timestamps: true }
 );

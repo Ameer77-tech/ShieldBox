@@ -14,7 +14,7 @@ export const addSection = async (req, res) => {
       .status(401)
       .json({ reply: "Body must'nt be Empty", success: false });
   const email = req.user;
-  const { sectionName } = req.body;
+  const { sectionName, description, important } = req.body;
   if (sectionName === undefined)
     return res
       .status(401)
@@ -33,6 +33,8 @@ export const addSection = async (req, res) => {
     try {
       const createdSection = await sectionModel.create({
         name: sectionName,
+        description : description,
+        pinned : important,
         createdBy: _id,
       });
       if (!createdSection) {
