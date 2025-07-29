@@ -12,6 +12,7 @@ import { userContext } from "../contexts/UserContext";
 import getData from "../utils/getDataFromStorage";
 import AddSectionForm from "../components/sections/AddSectionForm";
 import { AnimatePresence } from "motion/react";
+import { motion } from 'motion/react'
 
 const Sections = () => {
   const navigate = useNavigate();
@@ -110,9 +111,17 @@ const Sections = () => {
         <div className="mt-5 flex flex-wrap md:gap-5 gap-5">
           <AnimatePresence>
             {allSections.length < 1 ? (
-              <h3 className="text-gray-600/50 mt-5">No data</h3>
+              <motion.h3 
+              initial = {{opacity : 0}}
+              animate = {{
+                opacity : 1
+              }}
+              transition={{
+                delay : 0.5
+              }}
+              className="text-gray-600/50 mt-5">No data</motion.h3>
             ) : (
-              allSections.map((section, idx) => {
+              allSections.map((section) => {
                 return (
                   <SectionCard
                     key={section.id}

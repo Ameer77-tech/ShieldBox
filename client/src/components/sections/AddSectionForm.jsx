@@ -11,7 +11,7 @@ const AddSectionForm = ({ setShowForm, getSections }) => {
   const formRef = useRef(null);
   const [loading, setLoading] = useState(false);
   const [status, setstatus] = useState("")
-  const [errors, setErrors] = useState(false);
+  const [errors, setErrors] = useState({});
 
   const validate = () => {
     const newErrors = {};
@@ -42,7 +42,6 @@ const AddSectionForm = ({ setShowForm, getSections }) => {
         setShowForm(false);
         setFormData({ sectionName: "", description: "", important: false });
       } else {
-        console.log(response)
         setstatus(error)
         setLoading(false)
       };

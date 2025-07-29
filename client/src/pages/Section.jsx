@@ -4,14 +4,16 @@ import { Link, useNavigate, useParams } from "react-router-dom";
 import { useContext, useEffect, useState } from "react";
 import { checkAuth } from "../utils/AuthApi";
 import { secretKeyContext } from "../contexts/KeyContext";
-import { motion } from "motion/react";
+import { AnimatePresence, motion } from "motion/react";
 import ItemField from "../components/sections/ItemField";
 import { getItems } from "../utils/AppApi";
+import AddItemForm from "../components/sections/AddItemForm";
 
 export default function InsideSection() {
   const [Items, setItems] = useState([]);
   const [Loading, setloading] = useState(false);
   const { secretKey, setSecretKey } = useContext(secretKeyContext);
+  const [showForm, setShowForm] = useState(false);
   const params = useParams();
   const id = params.sectionid;
   const name = params.sectionname;
@@ -76,6 +78,15 @@ export default function InsideSection() {
         {Loading && (
           <span className="loading loading-spinner loading-xl absolute left-2/4 -translate-x-2/4 top-2/4"></span>
         )}
+        <AnimatePresence>
+          {showForm && (
+            <AddItemForm
+              setShowForm={setShowForm}
+              getFields={getFields}
+              sectionId={id}
+            />
+          )}
+        </AnimatePresence>
         {/* Header */}
         <div className="flex justify-between items-center mb-6">
           <Link to="/sections">
@@ -121,7 +132,7 @@ export default function InsideSection() {
             </div>
           </div>
 
-          <button className="btn btn-primary">
+          <button onClick={() => setShowForm(true)} className="btn btn-primary">
             <FaPlus className="mr-2" />
             Add Item
           </button>
@@ -129,7 +140,9 @@ export default function InsideSection() {
 
         {/* Items Table */}
         {Items.length < 1 && (
-          <p className="text-gray-700 text-lg top-2/4 absolute left-2/4">Empty</p>
+          <p className="text-gray-700 text-lg top-2/4 absolute left-2/4">
+            Empty
+          </p>
         )}
         <div className="overflow-x-auto relative">
           <table className="table w-full overflow-hidden">
@@ -140,19 +153,21 @@ export default function InsideSection() {
                 <th>Actions</th>
               </tr>
             </thead>
-            <tbody>
-              {Items.map((item, idx) => {
-                return (
-                  <ItemField
-                    key={idx}
-                    name={item.itemName}
-                    value={item.itemValue}
-                    sectionId={id}
-                    itemDeleteHandler={handleItemDelete}
-                  />
-                );
-              })}
-            </tbody>
+            <motion.tbody>
+              <AnimatePresence>
+                {Items.map((item) => {
+                  return (
+                    <ItemField
+                      key={id}
+                      name={item.itemName}
+                      value={item.itemValue}
+                      sectionId={id}
+                      itemDeleteHandler={handleItemDelete}
+                    />
+                  );
+                })}
+              </AnimatePresence>
+            </motion.tbody>
           </table>
         </div>
       </div>
