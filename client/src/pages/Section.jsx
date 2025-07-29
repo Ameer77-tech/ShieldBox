@@ -19,6 +19,7 @@ export default function InsideSection() {
   const name = params.sectionname;
   const navigate = useNavigate();
   const [loading, setLoading] = useState(true);
+  const [isEditing, setisEditing] = useState("");
   useEffect(() => {
     checkAuthorization();
   }, []);
@@ -155,14 +156,18 @@ export default function InsideSection() {
             </thead>
             <motion.tbody>
               <AnimatePresence>
-                {Items.map((item) => {
+                {Items.map((item, idx) => {
                   return (
                     <ItemField
-                      key={id}
+                      key={idx}
                       name={item.itemName}
                       value={item.itemValue}
                       sectionId={id}
+                      index={idx}
                       itemDeleteHandler={handleItemDelete}
+                      isEditing={isEditing === idx}
+                      setisEditing={setisEditing}
+                      getFields={getFields}
                     />
                   );
                 })}

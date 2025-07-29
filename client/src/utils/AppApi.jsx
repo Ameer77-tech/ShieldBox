@@ -82,7 +82,7 @@ export const getItems = async (sectionId) => {
   }
 };
 
-const updateFields = async (sectionId, formData) => {
+export const updateFields = async (sectionId, formData) => {
   try {
     const { data } = await axios.put(
       `${apiUrl}/api/${sectionId}/item/update`,

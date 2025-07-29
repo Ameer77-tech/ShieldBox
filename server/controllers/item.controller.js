@@ -70,7 +70,6 @@ export const deleteItem = async (req, res) => {
   const email = req.user;
   const sectionId = req.params.sectionid;
   const { itemName } = req.body;
-  
 
   try {
     const user = await userModel.findOne({ email });
@@ -97,37 +96,49 @@ export const deleteItem = async (req, res) => {
   }
 };
 
-export const updateItem = async (req,res) => {
+export const updateItem = async (req, res) => {
   if (req.body === undefined)
     return res
       .status(401)
       .json({ reply: "Body must'nt be Empty", success: false });
-      const email = req.user
-      const sectionId = req.params.sectionid
-      const { oldName ,updateName, updateValue } = req.body
-      try{
-        const { _id } = await userModel.findOne({ email })
-      
-      try{
-        const exists = await checkItemExists(_id, sectionId, updateName)
-        if(exists)
-          return res.status(409).json({ reply : "Item already Exists", success : false })
-      try{
-          const response = await sectionModel.findOneAndUpdate( { _id : sectionId, "items.itemName" : oldName },{
-            $set:{
-              "items.$.itemName" : updateName,
-              "items.$.itemValue": updateValue
-            }
-          }, { new : true } )
-          res.status(200).json({ reply : "Update Successfull", success : true, response })
-      }catch(err){
-        res.status(500).json({ reply: "Internal Server Error", success: false });
+  const email = req.user;
+  const sectionId = req.params.sectionid;
+  const { oldName, updateName, updateValue } = req.body;
+  try {
+    const { _id } = await userModel.findOne({ email });
+
+    try {
+      if (oldName !== updateName) {
+        const exists = await checkItemExists(_id, sectionId, updateName);
+        if (exists)
+          return res
+            .status(409)
+            .json({ reply: "Item already Exists", success: false });
+      } else {
+        try {
+          const response = await sectionModel.findOneAndUpdate(
+            { _id: sectionId, "items.itemName": oldName },
+            {
+              $set: {
+                "items.$.itemName": updateName,
+                "items.$.itemValue": updateValue,
+              },
+            },
+            { new: true }
+          );
+          res
+            .status(200)
+            .json({ reply: "Update Successfull", success: true, response });
+        } catch (err) {
+          res
+            .status(500)
+            .json({ reply: "Internal Server Error", success: false });
+        }
       }
-    }
-    catch(err){
+    } catch (err) {
       res.status(500).json({ reply: "Internal Server Error", success: false });
     }
-  }catch(err){
+  } catch (err) {
     res.status(500).json({ reply: "Internal Server Error", success: false });
   }
-}
+};
