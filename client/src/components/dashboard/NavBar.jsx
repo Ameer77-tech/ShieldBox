@@ -86,10 +86,12 @@ const NavBar = () => {
           </ul>
         </div>
 
-        <div className="w-full flex items-center gap-3 p-4 cursor-pointer py-2 hover:bg-gray-700/40 hover:text-white select-none">
-          <FiSettings />
-          <Link to="/settings">Account Settings</Link>
-        </div>
+        <Link to="/settings">
+          <div className="w-full flex items-center gap-3 p-4 cursor-pointer py-2 hover:bg-gray-700/40 hover:text-white select-none">
+            <FiSettings />
+            <p>Settings</p>
+          </div>
+        </Link>
       </motion.div>
     </>
   );

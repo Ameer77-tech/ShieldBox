@@ -20,6 +20,7 @@ const Sections = () => {
   const [showForm, setshowForm] = useState(false);
   const { secretKey, setSecretKey } = useContext(secretKeyContext);
   const [loading, setLoading] = useState(true);
+  const [sectionsLoading, setSectionsLoading] = useState(false)
   const [allSections, setAllSections] = useState([]);
   const [isEditing, setisEditing] = useState("");
   useEffect(() => {
@@ -47,6 +48,7 @@ const Sections = () => {
   };
 
   const getSections = async () => {
+    setSectionsLoading(true)
     const response = await getAllSections();
     if (response.success) {
       const { sections } = response;
@@ -57,6 +59,7 @@ const Sections = () => {
           id: section._id,
         };
       });
+      setSectionsLoading(false)
       setAllSections(existingSections);
     } else console.log("Error fetching sections");
   };
@@ -82,6 +85,7 @@ const Sections = () => {
       <NavBar />
 
       <div className="md:w-full min-h-screen flex flex-col md:ml-76 md:p-10 p-5">
+        { sectionsLoading && <span className="loading loading-spinner loading-xl absolute top-2/4 left-2/4 -translate-x-2/4"></span> }
         <AnimatePresence>
           {" "}
           {showForm && (

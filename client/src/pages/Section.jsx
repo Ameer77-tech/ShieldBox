@@ -20,6 +20,8 @@ export default function InsideSection() {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(true);
   const [isEditing, setisEditing] = useState("");
+  const [status, setstatus] = useState("")
+
   useEffect(() => {
     checkAuthorization();
   }, []);
@@ -46,6 +48,11 @@ export default function InsideSection() {
     setloading(true);
     const response = await getItems(id);
     let { items } = response;
+    if(items?.length < 1){
+      setstatus("Empty")
+      setloading(false)
+      return
+    }
     if (response.success) {
       setItems(items);
       setloading(false);
@@ -142,7 +149,7 @@ export default function InsideSection() {
         {/* Items Table */}
         {Items.length < 1 && (
           <p className="text-gray-700 text-lg top-2/4 absolute left-2/4">
-            Empty
+            {status}
           </p>
         )}
         <div className="overflow-x-auto relative">

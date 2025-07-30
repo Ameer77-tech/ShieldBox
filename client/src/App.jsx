@@ -13,6 +13,7 @@ import ResetAccount from "./pages/auth/ResetAccount";
 import NotFound from "./pages/NotFound";
 import Sections from "./pages/Sections";
 import Section from "./pages/Section";
+import AccSettings from "./pages/settings/AccSettings";
 
 const AnimatedRoutes = () => {
   const location = useLocation()
@@ -31,6 +32,7 @@ const AnimatedRoutes = () => {
           <Route path="/setkey" element={<SetKey />} />
           <Route path="/enterkey" element={<EnterKey />} />
           <Route path="/resetaccount" element={<ResetAccount />} />
+          <Route path="/settings" element={<AccSettings/>}/>
           <Route path="*" element={<NotFound />} />
         </Routes>
       </AnimatePresence>

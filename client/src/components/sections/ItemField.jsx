@@ -130,8 +130,13 @@ const ItemField = ({
           <button
             onClick={() => handleEdit("ok")}
             className="btn btn-xs btn-neutral mr-2 text-blue-600"
+            disabled={loading}
           >
-            Ok
+            {loading ? (
+              <span className="loading loading-spinner loading-xs"></span>
+            ) : (
+              "Ok"
+            )}
           </button>
         ) : (
           <button
