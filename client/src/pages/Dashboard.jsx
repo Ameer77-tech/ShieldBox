@@ -37,12 +37,10 @@ const Dashboard = () => {
       if (!savedKey) navigate("/enterkey");
       else {
         setUserData(() => ({
-          theme : response.theme,
           email: response.email,
           userName: response.name,
         }));
-        console.log(response.theme)
-        setDataInStorage(response.email, response.name, response.theme);
+        setDataInStorage(response.email, response.name);
         getDataFromStorage();
         setSecretKey(savedKey);
         setLoading(false);
@@ -60,6 +58,7 @@ const Dashboard = () => {
     };
     localStorage.setItem("user-data", JSON.stringify(userData));
   };
+
   const getDataFromStorage = () => {
     const existingData = getData()
     if (existingData === "") console.log("error fetching data or no data");

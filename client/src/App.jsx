@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
 import { AnimatePresence } from "motion/react";
 
@@ -16,6 +16,11 @@ import Section from "./pages/Section";
 import AccSettings from "./pages/settings/AccSettings";
 
 const AnimatedRoutes = () => {
+   const [theme, setTheme] = useState(localStorage.getItem("theme") || "dark");
+   useEffect(() => {
+      document.documentElement.setAttribute("data-theme", theme);
+   }, [])
+   
   const location = useLocation()
 
   return (

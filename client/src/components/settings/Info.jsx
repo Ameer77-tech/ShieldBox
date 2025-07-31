@@ -1,7 +1,7 @@
 import React, { useContext } from "react";
 import { userContext } from "../../contexts/UserContext";
 
-const Info = () => {
+const Info = ({name,email}) => {
   const { userData } = useContext(userContext);
   return (
     <div className="p-10">
@@ -10,16 +10,15 @@ const Info = () => {
         <div className="flex items-center justify-between hover:bg-gray-700/20 p-2 rounded">
           <p className="tracking-wider">
             Username -{" "}
-            <span className="text-blue-600">{userData.userName}</span>
+            <span className="text-blue-600">{name}</span>
           </p>
           <button className="btn btn-soft btn-accent">Change</button>
         </div>
         <div className="flex items-center justify-between hover:bg-gray-700/20  p-2 rounded">
           <p className="tracking-wider">
             Email address -{" "}
-            <span className="text-blue-600">{userData.email}</span>
+            <span className="text-blue-600">{email}</span>
           </p>
-          <button className="btn btn-soft btn-accent">Change</button>
         </div>
         <div className="mt-5">
           <button className="btn font-medium">Change Profile Picture</button>

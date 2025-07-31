@@ -57,32 +57,6 @@ const NavBar = () => {
             <li>
               <Link to="/important">Important</Link>
             </li>
-
-            <li className="bg-base-200">
-              <details open>
-                <summary className="py-2 cursor-pointer select-none bg-base-300 hover:bg-gray-700/40">
-                  Theme
-                </summary>
-                <ul>
-                  <li className="py-1 cursor-pointer">
-                    <a>
-                      Dark{" "}
-                      {userData.theme === "dark" && (
-                        <FiCheck size={17} className="text-right" />
-                      )}
-                    </a>
-                  </li>
-                  <li className="py-1 cursor-pointer">
-                    <a>
-                      Light{" "}
-                      {userData.theme === "light" && (
-                        <FiCheck size={17} className="text-right" />
-                      )}
-                    </a>
-                  </li>
-                </ul>
-              </details>
-            </li>
           </ul>
         </div>
 
