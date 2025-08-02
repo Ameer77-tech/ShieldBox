@@ -10,6 +10,7 @@ export const addItem = async (req, res) => {
   const email = req.user;
   const sectionId = req.params.sectionid;
   const { newItemName, newItemValue } = req.body;
+
   try {
     const { _id } = await userModel.findOne({ email });
     const exists = await checkItemExists(_id, sectionId, newItemName);
@@ -104,35 +105,38 @@ export const updateItem = async (req, res) => {
   const email = req.user;
   const sectionId = req.params.sectionid;
   const { oldName, updateName, updateValue } = req.body;
+
   try {
     const { _id } = await userModel.findOne({ email });
-
     try {
       if (oldName !== updateName) {
         const exists = await checkItemExists(_id, sectionId, updateName);
-        if (exists)
+        if (exists) {
           return res
             .status(409)
             .json({ reply: "Item already Exists", success: false });
-      } else {
-        try {
-          const response = await sectionModel.findOneAndUpdate(
-            { _id: sectionId, "items.itemName": oldName },
-            {
-              $set: {
-                "items.$.itemName": updateName,
-                "items.$.itemValue": updateValue,
+        } else {
+          try {
+            const response = await sectionModel.findOneAndUpdate(
+              { _id: sectionId, "items.itemName": oldName },
+              {
+                $set: {
+                  "items.$.itemName": updateName,
+                  "items.$.itemValue": updateValue,
+                },
               },
-            },
-            { new: true }
-          );
-          res
-            .status(200)
-            .json({ reply: "Update Successfull", success: true, response });
-        } catch (err) {
-          res
-            .status(500)
-            .json({ reply: "Internal Server Error", success: false });
+              { new: true }
+            );
+
+            res
+              .status(200)
+              .json({ reply: "Update Successfull", success: true, response });
+          } catch (err) {
+            console.log("Not ok");
+            res
+              .status(500)
+              .json({ reply: "Internal Server Error", success: false });
+          }
         }
       }
     } catch (err) {

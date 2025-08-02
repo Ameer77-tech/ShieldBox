@@ -14,6 +14,10 @@ const Dashboard = () => {
   const navigate = useNavigate();
   const { secretKey, setSecretKey } = useContext(secretKeyContext);
   const { userData, setUserData } = useContext(userContext);
+  const [totalCreated, setTotalCreated] = useState({
+    sections: 0,
+    items: 0,
+  });
   const [user, setUser] = useState({
     name: "",
     email: "",
@@ -40,6 +44,10 @@ const Dashboard = () => {
           email: response.email,
           userName: response.name,
         }));
+        setTotalCreated({
+          sections: response.totalSections,
+          items: response.totalItems,
+        });
         setDataInStorage(response.email, response.name);
         getDataFromStorage();
         setSecretKey(savedKey);
@@ -47,20 +55,19 @@ const Dashboard = () => {
       }
     }
   };
-
   const setDataInStorage = (email, name, theme) => {
-    const existingData = getData()
+    const existingData = getData();
     let userData = {
       ...existingData,
       email,
-      userName : name,
-      theme
+      userName: name,
+      theme,
     };
     localStorage.setItem("user-data", JSON.stringify(userData));
   };
 
   const getDataFromStorage = () => {
-    const existingData = getData()
+    const existingData = getData();
     if (existingData === "") console.log("error fetching data or no data");
     else {
       setUserData(existingData);
@@ -98,7 +105,7 @@ const Dashboard = () => {
         </div>
         <div>
           {" "}
-          <Summary />
+          <Summary data = {totalCreated}/>
         </div>
       </div>
     </div>

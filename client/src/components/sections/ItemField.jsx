@@ -156,6 +156,7 @@ const ItemField = ({
           </button>
         ) : (
           <button
+          disabled={loading}
             onClick={() => handleItemDelete(name, sectionId)}
             className="btn btn-xs btn-error"
           >

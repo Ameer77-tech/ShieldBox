@@ -9,24 +9,23 @@ const Login = () => {
   const navigate = useNavigate();
   const [show, setShow] = useState(false);
   const [inCorrect, setinCorrect] = useState(false);
+  const [loading, setloading] = useState(false);
   const [status, setStatus] = useState("");
   const [formData, setFormData] = useState({ email: "", password: "" });
   const [errors, setErrors] = useState({ email: "", password: "" });
- 
-   useEffect(() => {
-     isLogged()
-   }, [])
-   
-   
-  const isLogged = async ()=>{
-    const res = await checkAuth()
-    if(res){
-      navigate('/dashboard')
+
+  useEffect(() => {
+    isLogged();
+  }, []);
+
+  const isLogged = async () => {
+    const res = await checkAuth();
+    if (res) {
+      navigate("/dashboard");
+    } else {
+      return;
     }
-    else{
-      return
-    }
-  }
+  };
 
   const validate = () => {
     const newErrors = { email: "", password: "" };
@@ -50,13 +49,16 @@ const Login = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (validate()) {
+      setloading(true);
       const res = await login(formData);
       if (!res.success) {
         setinCorrect(true);
         setStatus(res.reply);
+        setloading(false);
       } else {
         setinCorrect(false);
         setStatus(res.reply);
+        setloading(false);
         navigate("/enterkey");
       }
     }
@@ -136,8 +138,16 @@ const Login = () => {
           </AnimatePresence>
         </label>
 
-        <button type="submit" className="btn btn-primary w-full">
-          Login
+        <button
+          disabled={loading}
+          type="submit"
+          className="btn btn-primary w-full"
+        >
+          {loading ? (
+            <span className="loading loading-spinner loading-md"></span>
+          ) : (
+            "Login"
+          )}
         </button>
 
         <p>

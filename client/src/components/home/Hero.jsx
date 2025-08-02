@@ -21,7 +21,7 @@ const Hero = () => {
               duration : 1.2
               
             }}
-            className="font-[rajdhani] md:text-7xl text-5xl font-bold bg-gradient-to-r from-[#ffffff] to-[#3abdf8] text-transparent bg-clip-text">
+            className="font-[rajdhani] md:text-7xl text-5xl font-bold text-purple-600">
               SHIELDBOX
             </motion.h1>
           </div>

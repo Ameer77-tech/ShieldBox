@@ -11,7 +11,7 @@ const NavBar = () => {
   return (
     <>
       {/* PC NAVBAR */}
-      <motion.div
+      <div
         initial={{ x: "-100%" }}
         animate={{
           x: 0,
@@ -41,12 +41,9 @@ const NavBar = () => {
                 <summary className="z-10 bg-base-300 hover:bg-gray-700/40">
                   Sections
                 </summary>
-                <div className="bg-base-200 -z-10">
+                <div className="-z-10 bg-transparent">
                   <li className="py-1">
                     <Link to="/sections">View Sections</Link>
-                  </li>
-                  <li className="py-1">
-                    <Link to="/addsection">Add New Section</Link>
                   </li>
                 </div>
               </details>
@@ -66,7 +63,7 @@ const NavBar = () => {
             <p>Settings</p>
           </div>
         </Link>
-      </motion.div>
+      </div>
     </>
   );
 };

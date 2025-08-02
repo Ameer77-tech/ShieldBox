@@ -12,6 +12,7 @@ const Verify = () => {
   const [error, seterror] = useState(false);
   const data = location.state;
   const [loading, setLoading] = useState(false);
+  const [Loading, setloading] = useState(false);
   useEffect(() => {
     if (data != null) {
       console.log(data.email);
@@ -37,13 +38,16 @@ const Verify = () => {
       setstatus("Enter Your Code");
       return;
     }
+    setloading(true);
     const res = await verifyCode(code, email);
     if (!res.success) {
       seterror(true);
       setstatus(res.reply);
+      setLoading(false);
     } else {
       seterror(false);
       setstatus(res.reply);
+      setLoading(false);
       navigate("/setkey", {
         state: {
           email,
@@ -76,7 +80,13 @@ const Verify = () => {
           value={code}
           className="input input-md w-full text-center text-lg"
         />
-        <button className="btn btn-soft btn-info">Submit</button>
+        <button disabled={loading} className="btn btn-soft btn-info">
+          {Loading ? (
+            <span className="loading loading-spinner loading-md"></span>
+          ) : (
+            "Submit"
+          )}
+        </button>
         <p>
           Did not receive the code,{" "}
           <button className="text-[#1d4e7e] cursor-pointer hover:underline">

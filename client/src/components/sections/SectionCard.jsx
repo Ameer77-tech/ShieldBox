@@ -39,7 +39,7 @@ export default function SectionCard({
       if (newName === name) setisEditing("");
       else {
         setLoading(true);
-        const response = await renameSection(id, newName);
+        await renameSection(id, newName);
         await getSections();
         setisEditing("");
         setLoading(false);
@@ -82,18 +82,19 @@ export default function SectionCard({
               type="text"
               onChange={(e) => setNewName(e.target.value)}
               value={newName}
-              className="p-2 text-center outline-none border-b-2 border-b-accent"
+              className="p-2 text-center outline-none border-b-2 border-b-accent text-accent"
             />
           ) : (
             <h2 className="text-2xl font-bold text-white">{name}</h2>
           )}
-          <p className="text-sm text-gray-500 mb-4">{itemsPresent}items</p>
+          <p className="text-sm text-gray-500 mb-4">{itemsPresent} items</p>
           <div className="card-actions justify-center">
             <Link to={`/sections/${name}/${id}`}>
               <button className="btn btn-primary btn-md">View</button>
             </Link>
             {isEditing ? (
               <button
+                disabled={loading}
                 onClick={() => handleRename("ok")}
                 className="btn btn-neutral btn-md text-blue-600"
               >
@@ -101,6 +102,7 @@ export default function SectionCard({
               </button>
             ) : (
               <button
+                disabled={loading}
                 onClick={() => handleRename("edit")}
                 className="btn btn-neutral btn-md"
               >
@@ -116,6 +118,7 @@ export default function SectionCard({
               </button>
             ) : (
               <button
+                disabled={loading}
                 onClick={() => handleDelete(id)}
                 className="btn btn-error btn-md"
               >

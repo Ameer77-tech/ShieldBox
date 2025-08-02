@@ -17,10 +17,22 @@ router.delete("/logout", logout);
 router.post("/verify", verify);
 router.get("/checkauth", authorizeToken, async (req, res) => {
   const email = req.user;
-  const { isKeySet, name, theme } = await userModel.findOne({ email });
-  res
-    .status(200)
-    .json({ reply: "Authorized", success: true, email, name, isKeySet, theme });
+  const { isKeySet, name, sections } = await userModel
+    .findOne({ email })
+    .populate("sections");
+  const totalSections = sections.length;
+  const totalItems = sections.reduce((acc, item) => {
+    return (acc = acc + item.items.length);
+  }, 0);
+  res.status(200).json({
+    reply: "Authorized",
+    success: true,
+    email,
+    name,
+    isKeySet,
+    totalSections,
+    totalItems,
+  });
 });
 router.put("/setkey", authorizeToken, setKey);
 

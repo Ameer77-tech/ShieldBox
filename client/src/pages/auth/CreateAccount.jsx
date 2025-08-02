@@ -4,37 +4,35 @@ import { Link, useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { checkAuth, register } from "../../utils/AuthApi";
 
-
 const CreateAccount = () => {
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   const [show, setShow] = useState(false);
-  const [status, setstatus] = useState("")
-  const [error, seterror] = useState(false)
+  const [status, setstatus] = useState("");
+  const [error, seterror] = useState(false);
+  const [loading, setloading] = useState(false)
   const [formData, setFormData] = useState({
     name: "",
     email: "",
-    password: ""
+    password: "",
   });
   const [errors, setErrors] = useState({
     name: "",
     email: "",
-    password: ""
+    password: "",
   });
 
-    useEffect(() => {
-       isLogged()
-     }, [])
-     
-     
-    const isLogged = async ()=>{
-      const res = await checkAuth()
-      if(res){
-        navigate('/dashboard')
-      }
-      else{
-        return
-      }
+  useEffect(() => {
+    isLogged();
+  }, []);
+
+  const isLogged = async () => {
+    const res = await checkAuth();
+    if (res) {
+      navigate("/dashboard");
+    } else {
+      return;
     }
+  };
 
   const validate = () => {
     const newErrors = { name: "", email: "", password: "" };
@@ -62,16 +60,20 @@ const CreateAccount = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (validate()) {
-       const res = await register(formData)
-       if(!res.success){
-        seterror(true)
-        setstatus(res.reply)
-       }
-       else{
-        seterror(false)
-        setstatus(res.reply)
-        navigate('/verify',{ state : { fromRegister : true, email : formData.email }})
-       }
+      setloading(true)
+      const res = await register(formData);
+      if (!res.success) {
+        seterror(true);
+        setstatus(res.reply);
+        setloading(false)
+      } else {
+        seterror(false);
+        setstatus(res.reply);
+        setloading(loading)
+        navigate("/verify", {
+          state: { fromRegister: true, email: formData.email },
+        });
+      }
     }
   };
 
@@ -92,9 +94,7 @@ const CreateAccount = () => {
             placeholder="username"
             className="input input-md w-full"
             value={formData.name}
-            onChange={(e) =>
-              setFormData({ ...formData, name: e.target.value })
-            }
+            onChange={(e) => setFormData({ ...formData, name: e.target.value })}
           />
           <AnimatePresence>
             {errors.name && (
@@ -152,10 +152,7 @@ const CreateAccount = () => {
           />
           <div className="absolute right-5 top-2/4 -translate-y-2/4 z-10 cursor-pointer">
             {show ? (
-              <FaEye
-                className="text-red-600"
-                onClick={() => setShow(!show)}
-              />
+              <FaEye className="text-red-600" onClick={() => setShow(!show)} />
             ) : (
               <FaEyeSlash
                 className="text-[#1d4e7e]"
@@ -177,8 +174,16 @@ const CreateAccount = () => {
           </AnimatePresence>
         </label>
 
-        <button type="submit" className="btn btn-primary w-full">
-          Register
+        <button
+          disabled={loading}
+          type="submit"
+          className="btn btn-primary w-full"
+        >
+          {loading ? (
+            <span className="loading loading-spinner loading-md"></span>
+          ) : (
+            "Login"
+          )}
         </button>
 
         <p>
@@ -190,7 +195,13 @@ const CreateAccount = () => {
             </span>
           </Link>
         </p>
-         <p className={`absolute bottom-10 ${error ? 'text-red-600' : 'text-[#1d4f7f]'}`}>{status}</p>
+        <p
+          className={`absolute bottom-10 ${
+            error ? "text-red-600" : "text-[#1d4f7f]"
+          }`}
+        >
+          {status}
+        </p>
       </form>
     </div>
   );

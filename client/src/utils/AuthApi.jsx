@@ -11,8 +11,9 @@ export const checkAuth = async () => {
     const isKeySet = data.isKeySet
     const name = data.name
     const email = data.email
-    const theme = data.theme
-    return  { success, isKeySet, name, email, theme }
+    const totalSections = data.totalSections
+    const totalItems = data.totalItems
+    return  { success, isKeySet, name, email, totalItems, totalSections }
   } catch (err) {
     console.log(err, "Cant check auth");
     return false;

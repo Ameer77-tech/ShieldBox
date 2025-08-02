@@ -6,17 +6,22 @@ import Tip from "./Tip";
 import Footer from "./Footer";
 import { motion } from "motion/react";
 
-const Summary = () => {
+const Summary = ({ data }) => {
   return (
     <motion.div className="md:p-5 flex flex-col gap-15">
       <div className="grid md:grid-cols-3 md:gap-6">
         <SummaryCard
           title="Sections Created"
-          count="12"
+          count={data.sections}
           button="View"
           index={1}
         />
-        <SummaryCard title="Items Added" count="25" button="View" index={2} />
+        <SummaryCard
+          title="Items Added"
+          count={data.items}
+          button="View"
+          index={2}
+        />
         <SummaryCard title="Important" count="3" button="Add More" index={3} />
       </div>
       <div className="p-5 shadow-xl">
