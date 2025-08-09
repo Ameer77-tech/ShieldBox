@@ -7,13 +7,22 @@ export const checkAuth = async () => {
     const { data } = await axios.get(`${apiUrl}/api/auth/checkauth`, {
       withCredentials: true,
     });
-    const success = data.success
-    const isKeySet = data.isKeySet
-    const name = data.name
-    const email = data.email
-    const totalSections = data.totalSections
-    const totalItems = data.totalItems
-    return  { success, isKeySet, name, email, totalItems, totalSections }
+    const success = data.success;
+    const isKeySet = data.isKeySet;
+    const name = data.name;
+    const email = data.email;
+    const totalSections = data.totalSections;
+    const totalItems = data.totalItems;
+    const important = data.important;
+    return {
+      success,
+      isKeySet,
+      name,
+      email,
+      totalItems,
+      totalSections,
+      important,
+    };
   } catch (err) {
     console.log(err, "Cant check auth");
     return false;
@@ -75,27 +84,29 @@ export const verifyCode = async (code, email) => {
   }
 };
 
-export const isKeySet = async ()=>{
-  try{
-    const { data } = await axios.put(`${apiUrl}/api/auth/setkey`, {} ,{ withCredentials : true })
-    return data.success
-  }catch(err){
-    console.log(err)
-    return false
+export const isKeySet = async () => {
+  try {
+    const { data } = await axios.put(
+      `${apiUrl}/api/auth/setkey`,
+      {},
+      { withCredentials: true }
+    );
+    return data.success;
+  } catch (err) {
+    console.log(err);
+    return false;
   }
-}
+};
 
-export const logout =  async()=>{
-  try{
-     const { data } = await axios.delete(`${apiUrl}/api/auth/logout`,{ withCredentials : true })
-     if(data.success)
-      return true
-    else
-      return false
-  }catch(err){
-    console.log(err)
-    return false
+export const logout = async () => {
+  try {
+    const { data } = await axios.delete(`${apiUrl}/api/auth/logout`, {
+      withCredentials: true,
+    });
+    if (data.success) return true;
+    else return false;
+  } catch (err) {
+    console.log(err);
+    return false;
   }
- 
-  
-}
+};

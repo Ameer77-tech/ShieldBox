@@ -6,7 +6,7 @@ import Tip from "./Tip";
 import Footer from "./Footer";
 import { motion } from "motion/react";
 
-const Summary = ({ data }) => {
+const Summary = ({ data, important }) => {
   return (
     <motion.div className="md:p-5 flex flex-col gap-15">
       <div className="grid md:grid-cols-3 md:gap-6">
@@ -22,7 +22,12 @@ const Summary = ({ data }) => {
           button="View"
           index={2}
         />
-        <SummaryCard title="Important" count="3" button="Add More" index={3} />
+        <SummaryCard
+          title="Important"
+          count={important}
+          button="View"
+          index={3}
+        />
       </div>
       <div className="p-5 shadow-xl">
         <h2 className="text-[#6a6a6b] mb-10 font-semibold text-sm">

@@ -18,6 +18,7 @@ const Dashboard = () => {
     sections: 0,
     items: 0,
   });
+  const [important, setImportant] = useState(0);
   const [user, setUser] = useState({
     name: "",
     email: "",
@@ -48,6 +49,7 @@ const Dashboard = () => {
           sections: response.totalSections,
           items: response.totalItems,
         });
+        setImportant(response.important);
         setDataInStorage(response.email, response.name);
         getDataFromStorage();
         setSecretKey(savedKey);
@@ -105,7 +107,7 @@ const Dashboard = () => {
         </div>
         <div>
           {" "}
-          <Summary data = {totalCreated}/>
+          <Summary data={totalCreated} important={important}/>
         </div>
       </div>
     </div>

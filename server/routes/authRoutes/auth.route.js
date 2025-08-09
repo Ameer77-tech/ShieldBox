@@ -24,6 +24,13 @@ router.get("/checkauth", authorizeToken, async (req, res) => {
   const totalItems = sections.reduce((acc, item) => {
     return (acc = acc + item.items.length);
   }, 0);
+  const important = sections.reduce((acc, section) => {
+    if (section.pinned) {
+      return acc + 1;
+    } else {
+      return acc;
+    }
+  }, 0);
   res.status(200).json({
     reply: "Authorized",
     success: true,
@@ -32,6 +39,7 @@ router.get("/checkauth", authorizeToken, async (req, res) => {
     isKeySet,
     totalSections,
     totalItems,
+    important,
   });
 });
 router.put("/setkey", authorizeToken, setKey);
