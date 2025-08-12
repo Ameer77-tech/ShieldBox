@@ -6,7 +6,7 @@ import { FaUserCircle } from "react-icons/fa";
 import { userContext } from "../../contexts/UserContext";
 
 const NavBar = () => {
-  const { userData, setUserData } = useContext(userContext);
+  const { userData } = useContext(userContext);
 
   return (
     <>
