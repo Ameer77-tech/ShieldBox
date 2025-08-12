@@ -144,3 +144,40 @@ export const updateSection = async (req, res) => {
     res.status(500).json({ reply: "Internal Server Error ", success: false });
   }
 };
+
+export const updateLastViewed = async (req, res) => {
+  if (!req.body || !req.body.sectionId) {
+    return res.status(400).json({ reply: "Section ID is required", success: false });
+  }
+
+  const email = req.user;
+  let userId;
+
+  try {
+    const user = await userModel.findOne({ email });
+    if (!user) {
+      return res.status(404).json({ reply: "User not found", success: false });
+    }
+    userId = user._id;
+  } catch (err) {
+    return res.status(500).json({ reply: "Internal Server Error", success: false });
+  }
+
+  const { sectionId } = req.body;
+
+  try {
+    const response = await sectionModel.findOneAndUpdate(
+      { createdBy: userId, _id: sectionId },
+      { $set: { lastViewed: new Date() } },
+      { new: true }
+    );
+
+    if (!response) {
+      return res.status(404).json({ reply: "Section not found", success: false });
+    }
+
+    res.status(200).json({ success: true, reply: "Updated Time", data: response });
+  } catch (err) {
+    res.status(500).json({ reply: "Server Error", success: false });
+  }
+};

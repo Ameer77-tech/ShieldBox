@@ -19,6 +19,9 @@ const sectionSchema = new mongoose.Schema(
     pinned : {
       type : Boolean,
       default : false
+    },
+    lastViewed : {
+      type : Date,
     }
   },
   { timestamps: true }

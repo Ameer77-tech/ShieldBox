@@ -6,8 +6,9 @@ import { checkAuth } from "../utils/AuthApi";
 import { secretKeyContext } from "../contexts/KeyContext";
 import { AnimatePresence, motion } from "motion/react";
 import ItemField from "../components/sections/ItemField";
-import { getItems } from "../utils/AppApi";
+import { getItems, updateLastViewed } from "../utils/AppApi";
 import AddItemForm from "../components/sections/AddItemForm";
+
 
 export default function InsideSection() {
   const [Items, setItems] = useState([]);
@@ -38,6 +39,7 @@ export default function InsideSection() {
       if (!savedKey) navigate("/enterkey");
       else {
         getFields();
+        updateLastViewed(id)
         setSecretKey(savedKey);
         setLoading(false);
       }

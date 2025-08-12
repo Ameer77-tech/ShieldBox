@@ -109,3 +109,17 @@ export const deleteItem = async (name, id) => {
     return false;
   }
 };
+
+export const updateLastViewed = async (sectionId) => {
+  try{
+    console.log("Inside");
+    
+    const response = await axios.put(`${apiUrl}/api/updatelastviewed`, { sectionId }, {
+      withCredentials : true
+    })
+    console.log(response);
+  }catch(err){
+    console.log("Cant Get To Backend");
+  
+  }
+}

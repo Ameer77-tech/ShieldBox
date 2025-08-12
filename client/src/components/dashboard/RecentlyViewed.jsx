@@ -1,26 +1,27 @@
+// FolderCard.jsx
 import React from "react";
-import { FaFolder } from "react-icons/fa";
-import { motion } from "motion/react";
+import { FaFolder } from "react-icons/fa"; // npm install react-icons
 
-const RecentlyViewed = ({ index }) => {
+export default function RecentlyViewed({ sectionName = "My Section", onView = () => {} }) {
   return (
-    <motion.div 
-    initial={{opacity:0}}
-    whileInView={{opacity:1}}
-    transition={{delay:index*0.2}}
-    className="card image-full w-90 shadow-sm">
-      <figure>
-        <img src="/card-bg.jpg" alt="Shoes" />
-      </figure>
-      <div className="card-body justify-between">
-        <h2 className="card-title text-3xl">Personal</h2>
-        <div className="card-actions justify-between items-center">
-          <FaFolder size={30} />
-          <button className="btn btn-primary">View</button>
+    <div className="card bg-base-200 hover:bg-base-300 shadow-lg transition w-60">
+      <div className="card-body items-center text-center p-6">
+        {/* Folder icon */}
+        <FaFolder size={40} className="text-primary mb-3" />
+
+        {/* Section name */}
+        <h2 className="card-title text-base font-semibold">{sectionName}</h2>
+
+        {/* View button */}
+        <div className="card-actions mt-3">
+          <button
+            className="btn btn-primary btn-sm"
+            onClick={onView}
+          >
+            View
+          </button>
         </div>
       </div>
-    </motion.div>
+    </div>
   );
-};
-
-export default RecentlyViewed;
+}
