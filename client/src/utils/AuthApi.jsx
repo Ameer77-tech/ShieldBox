@@ -7,13 +7,16 @@ export const checkAuth = async () => {
     const { data } = await axios.get(`${apiUrl}/api/auth/checkauth`, {
       withCredentials: true,
     });
-    const success = data.success;
-    const isKeySet = data.isKeySet;
-    const name = data.name;
-    const email = data.email;
-    const totalSections = data.totalSections;
-    const totalItems = data.totalItems;
-    const important = data.important;
+    const {
+      success,
+      isKeySet,
+      name,
+      email,
+      totalSections,
+      totalItems,
+      important,
+      recentViewedSections,
+    } = data;
     return {
       success,
       isKeySet,
@@ -22,6 +25,7 @@ export const checkAuth = async () => {
       totalItems,
       totalSections,
       important,
+      recentViewedSections,
     };
   } catch (err) {
     console.log(err, "Cant check auth");

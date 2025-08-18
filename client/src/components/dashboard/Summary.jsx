@@ -6,7 +6,8 @@ import Tip from "./Tip";
 import Footer from "./Footer";
 import { motion } from "motion/react";
 
-const Summary = ({ data, important }) => {
+const Summary = ({ data, important, recentViewedSections }) => {
+  
   return (
     <motion.div className="md:p-5 flex flex-col gap-15">
       <div className="grid md:grid-cols-3 md:gap-6">
@@ -33,10 +34,19 @@ const Summary = ({ data, important }) => {
         <h2 className="text-[#6a6a6b] mb-10 font-semibold text-sm">
           Recently Viewed
         </h2>
-        <div className="flex flex-wrap shrink-0 gap-5">
-          <RecentlyViewed index={1} />
-          <RecentlyViewed index={2} />
-          <RecentlyViewed index={3} />
+        <div className="flex flex-wrap shrink-0 gap-5 overflow-y-auto h-50">
+          {recentViewedSections.length < 1 ? (
+            <p>No Sections Viewed Recently</p>
+          ) : (
+            recentViewedSections.map((section) => (
+              <RecentlyViewed
+                index={1}
+                key={section.id}
+                id={section.id}
+                name={section.name}
+              />
+            ))
+          )}
         </div>
       </div>
       <h3 className="p-4 pb-2 text-xs opacity-60 tracking-wide">
@@ -44,17 +54,6 @@ const Summary = ({ data, important }) => {
       </h3>
       <div className="h-100 overflow-y-scroll">
         <ul className="list bg-base-100 rounded-box shadow-md gap-10">
-          <Activity />
-          <Activity />
-          <Activity />
-          <Activity />
-          <Activity />
-          <Activity />
-          <Activity />
-          <Activity />
-          <Activity />
-          <Activity />
-          <Activity />
           <Activity />
           <Activity />
           <Activity />

@@ -18,6 +18,7 @@ const Dashboard = () => {
     sections: 0,
     items: 0,
   });
+  const [recentViewedSections, setrecentViewedSections] = useState([]);
   const [important, setImportant] = useState(0);
   const [user, setUser] = useState({
     name: "",
@@ -49,6 +50,7 @@ const Dashboard = () => {
           sections: response.totalSections,
           items: response.totalItems,
         });
+        setrecentViewedSections(response.recentViewedSections); 
         setImportant(response.important);
         setDataInStorage(response.email, response.name);
         getDataFromStorage();
@@ -107,7 +109,11 @@ const Dashboard = () => {
         </div>
         <div>
           {" "}
-          <Summary data={totalCreated} important={important}/>
+          <Summary
+            data={totalCreated}
+            important={important}
+            recentViewedSections={recentViewedSections}
+          />
         </div>
       </div>
     </div>

@@ -20,17 +20,37 @@ router.get("/checkauth", authorizeToken, async (req, res) => {
   const { isKeySet, name, sections } = await userModel
     .findOne({ email })
     .populate("sections");
+
   const totalSections = sections.length;
-  const totalItems = sections.reduce((acc, item) => {
-    return (acc = acc + item.items.length);
-  }, 0);
-  const important = sections.reduce((acc, section) => {
-    if (section.pinned) {
-      return acc + 1;
-    } else {
-      return acc;
+  const totalItems = sections.reduce((acc, item) => acc + item.items.length, 0);
+  const important = sections.reduce(
+    (acc, section) => (section.pinned ? acc + 1 : acc),
+    0
+  );
+
+  // Check if all sections have the `lastViewed` key
+  const canSort = sections.every((section) => section.lastViewed);
+
+  // Sort only if all sections have the `lastViewed` key
+  const sortedSections = canSort
+    ? sections.sort((a, b) => new Date(b.lastViewed) - new Date(a.lastViewed))
+    : sections;
+
+  let recentViewedSections = sortedSections.map((section) => {
+    if (section.lastViewed) {
+      return {
+        id: section._id,
+        name: section.name,
+      };
     }
-  }, 0);
+  });
+
+  // Filter out undefined values
+  recentViewedSections = recentViewedSections.filter(
+    (section) => section !== undefined
+  );
+
+
   res.status(200).json({
     reply: "Authorized",
     success: true,
@@ -40,6 +60,7 @@ router.get("/checkauth", authorizeToken, async (req, res) => {
     totalSections,
     totalItems,
     important,
+    recentViewedSections,
   });
 });
 router.put("/setkey", authorizeToken, setKey);
