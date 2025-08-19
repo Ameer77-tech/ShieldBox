@@ -3,7 +3,7 @@ import React from "react";
 import { FaFolder } from "react-icons/fa"; 
 import { Link } from "react-router-dom";
 
-export default function RecentlyViewed({ id, name }) {
+const RecentlyViewed = React.memo(({ id, name }) => {
   return (
     <div className="card bg-base-200 hover:bg-base-300 shadow-lg transition w-60 h-50">
       <div className="card-body items-center text-center p-6">
@@ -23,4 +23,5 @@ export default function RecentlyViewed({ id, name }) {
       </div>
     </div>
   );
-}
+});
+export default RecentlyViewed

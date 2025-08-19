@@ -50,7 +50,7 @@ const Dashboard = () => {
           sections: response.totalSections,
           items: response.totalItems,
         });
-        setrecentViewedSections(response.recentViewedSections); 
+        setrecentViewedSections(response.recentViewedSections);
         setImportant(response.important);
         setDataInStorage(response.email, response.name);
         getDataFromStorage();
@@ -84,8 +84,10 @@ const Dashboard = () => {
 
   const handleLogout = async () => {
     const loggedOut = await logout();
-    if (loggedOut) navigate("/");
-    else console.log("error logging out");
+    if (loggedOut) {
+      navigate("/");
+      sessionStorage.clear();
+    } else console.log("error logging out");
   };
 
   if (loading) {
@@ -99,8 +101,8 @@ const Dashboard = () => {
   return (
     <div className="md:flex md:justify-between md:items-center relative min-h-screen">
       <NavBar userName={user.name} />
-      <div className="w-full min-h-screen flex flex-col md:ml-76">
-        <div className="flex justify-between items-center px-5 md:h-40 pt-5">
+      <div className="w-full min-h-screen flex flex-col md:ml-76 md:p-2 p-5">
+        <div className="flex justify-between items-center px-5 md:h-40 pt-5 mb-10">
           <MainHeading />
           <button onClick={handleLogout} className="btn btn-outline btn-error">
             <FiLogOut />

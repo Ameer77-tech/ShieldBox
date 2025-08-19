@@ -43,6 +43,7 @@ const Verify = () => {
     if (!res.success) {
       seterror(true);
       setstatus(res.reply);
+      setloading(false)
       setLoading(false);
     } else {
       seterror(false);
@@ -67,7 +68,7 @@ const Verify = () => {
     <div className="flex justify-center items-center min-h-screen select-none">
       <form
         onSubmit={(e) => handleSubmit(e)}
-        className="card bg-base-300 rounded-lg justify-evenly md:px-10 md:py-10 md:w-2/6 w-[90%] px-5 py-7 gap-10 items-center"
+        className="card bg-base-300 rounded-lg justify-evenly md:px-10 md:py-10 md:w-2/6 w-80 px-5 py-7 gap-10 items-center"
       >
         <h1 className="text-2xl font-bold text-center text-blue-800">
           Enter the Verification Code Sent To Your Email
@@ -80,7 +81,7 @@ const Verify = () => {
           value={code}
           className="input input-md w-full text-center text-lg"
         />
-        <button disabled={loading} className="btn btn-soft btn-info">
+        <button disabled={Loading} className="btn btn-soft btn-info">
           {Loading ? (
             <span className="loading loading-spinner loading-md"></span>
           ) : (
@@ -94,7 +95,7 @@ const Verify = () => {
           </button>
         </p>
         <p
-          className={`absolute bottom-17 ${
+          className={`md:absolute md:bottom-17 ${
             error ? "text-red-600" : "text-[#1d4f7f]"
           }`}
         >

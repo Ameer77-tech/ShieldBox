@@ -7,10 +7,9 @@ import Footer from "./Footer";
 import { motion } from "motion/react";
 
 const Summary = ({ data, important, recentViewedSections }) => {
-  
   return (
     <motion.div className="md:p-5 flex flex-col gap-15">
-      <div className="grid md:grid-cols-3 md:gap-6">
+      <div className="grid md:grid-cols-3 grid-cols-1 gap-5 md:gap-6">
         <SummaryCard
           title="Sections Created"
           count={data.sections}
@@ -34,7 +33,7 @@ const Summary = ({ data, important, recentViewedSections }) => {
         <h2 className="text-[#6a6a6b] mb-10 font-semibold text-sm">
           Recently Viewed
         </h2>
-        <div className="flex flex-wrap shrink-0 gap-5 overflow-y-auto h-50">
+        <div className="flex flex-wrap flex-col justify-center items-center shrink-0 gap-5 overflow-y-auto md:h-50 h-60">
           {recentViewedSections.length < 1 ? (
             <p>No Sections Viewed Recently</p>
           ) : (
@@ -52,9 +51,8 @@ const Summary = ({ data, important, recentViewedSections }) => {
       <h3 className="p-4 pb-2 text-xs opacity-60 tracking-wide">
         Your Activity
       </h3>
-      <div className="h-100 overflow-y-scroll">
-        <ul className="list bg-base-100 rounded-box shadow-md gap-10">
-          <Activity />
+      <div className="h-50 overflow-y-scroll">
+        <ul className="list bg-base-100 rounded-box shadow-md gap-5 md:gap-7">
           <Activity />
           <Activity />
           <Activity />

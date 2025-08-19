@@ -28,7 +28,7 @@ export const checkAuth = async () => {
       recentViewedSections,
     };
   } catch (err) {
-    console.log(err, "Cant check auth");
+    console.log(err);
     return false;
   }
 };

@@ -159,7 +159,7 @@ const Login = () => {
           </Link>
         </p>
         <p
-          className={`absolute bottom-10 ${
+          className={`md:absolute md:bottom-10 bottom-13 ${
             inCorrect ? "text-red-600" : "text-[#1d4f7f]"
           }`}
         >

@@ -16,7 +16,7 @@ import ItemRoute from "../routes/protectedRoutes/ItemRoute.js";
 app.use(
   cors({
     origin: "http://localhost:5173", // ✅ exact origin of your frontend
-    credentials: true, // ✅ allow cookies/auth headers
+    credentials: true, //
   })
 );
 app.use(express.json());
@@ -35,6 +35,6 @@ app.get("/", (req, res) => {
   res.send("Running");
 });
 
-app.listen(PORT, () => {
+app.listen(PORT, "0.0.0.0", () => {
   console.log("Running");
 });
