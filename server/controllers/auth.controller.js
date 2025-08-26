@@ -1,5 +1,6 @@
 import bcrypt from "bcrypt";
 import userModel from "../models/user-model.js";
+import sectionModel from "../models/section-model.js";
 import pendingUserModel from "../models/pending-user-model.js";
 import dotenv from "dotenv";
 dotenv.config();
@@ -117,26 +118,21 @@ export const verify = async (req, res) => {
       .status(401)
       .json({ reply: "Body must'nt be empty", success: false });
   const { code, email } = req.body;
-  console.log(code, email);
   if (code === undefined || email === undefined)
     return res.status(401).json({ reply: "fill the input", success: false });
-
   try {
     const userData = await pendingUserModel.findOne({ email });
-    if (!userData)
+    if (userData == null)
       return res
         .status(401)
         .json({ reply: "No users found or Code expired", success: false });
     const originalCode = userData.code;
-
     const { name, password } = userData;
     const pendingEmail = userData.email;
-
     if (code !== originalCode)
       return res.status(401).json({ reply: "Invalid Code", success: false });
     try {
       const response = await pendingUserModel.findOneAndDelete({ email });
-
       try {
         const user = await userModel.create({
           name,
@@ -184,5 +180,52 @@ export const setKey = async (req, res) => {
     res.status(200).json({ reply: "Key is Set", success: true });
   } catch (err) {
     res.status(500).json({ reply: "Server Error", success: false });
+  }
+};
+export const deleteAccount = async (req, res) => {
+  const email = req.user;
+  const { password } = req.body || null;
+  if (password === null) {
+    return res
+      .status(401)
+      .json({ reply: "PASSWORD IS REQUIRED", success: false });
+  }
+  try {
+    const user = await userModel.findOne({ email });
+    if (!user) {
+      return res
+        .status(401)
+        .json({ reply: "No User Registered With That Email", success: false });
+    } else {
+      const id = user._id;
+      const hashedPassword = user.password;
+      const matched = await bcrypt.compare(password, hashedPassword);
+      if (!matched) {
+        return res
+          .status(401)
+          .json({ reply: "Invalid Password", success: false });
+      } else {
+        try {
+          await userModel.findOneAndDelete({ email });
+          try {
+            await sectionModel.findOneAndDelete({ createdBy: id });
+          } catch (err) {
+            res
+              .status(500)
+              .json({ reply: "Internal Server Error", success: false });
+          }
+          res.clearCookie("token");
+          return res
+            .status(200)
+            .json({ reply: "Account Successfully Deleted", success: true });
+        } catch (err) {
+          res
+            .status(500)
+            .json({ reply: "Internal Server Error", success: false });
+        }
+      }
+    }
+  } catch (err) {
+    res.status(500).json({ reply: "Internal Server Error", success: false });
   }
 };

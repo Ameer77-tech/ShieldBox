@@ -86,7 +86,7 @@ export const updateFields = async (sectionId, formData) => {
   try {
     const { data } = await axios.put(
       `${apiUrl}/api/${sectionId}/item/update`,
-       formData ,
+      formData,
       {
         withCredentials: true,
       }
@@ -111,14 +111,15 @@ export const deleteItem = async (name, id) => {
 };
 
 export const updateLastViewed = async (sectionId) => {
-  try{
-    console.log("Inside");
-    const response = await axios.put(`${apiUrl}/api/updatelastviewed`, { sectionId }, {
-      withCredentials : true
-    })
-    console.log(response);
-  }catch(err){
-    console.log("Cant Get To Backend", + err);
-  
+  try {
+    const response = await axios.put(
+      `${apiUrl}/api/updatelastviewed`,
+      { sectionId },
+      {
+        withCredentials: true,
+      }
+    );
+  } catch (err) {
+    console.log("Cant Get To Backend", +err);
   }
-}
+};

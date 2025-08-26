@@ -13,9 +13,9 @@ const Verify = () => {
   const data = location.state;
   const [loading, setLoading] = useState(false);
   const [Loading, setloading] = useState(false);
+  
   useEffect(() => {
     if (data != null) {
-      console.log(data.email);
       setemail(data.email);
       return;
     }

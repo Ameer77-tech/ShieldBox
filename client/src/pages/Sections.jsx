@@ -91,6 +91,7 @@ const Sections = () => {
           {showForm && (
             <AddSectionForm
               setShowForm={setshowForm}
+              showForm = {showForm}
               getSections={getSections}
             />
           )}

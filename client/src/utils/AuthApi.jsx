@@ -114,3 +114,23 @@ export const logout = async () => {
     return false;
   }
 };
+export const deleteAccount = async (password) => {
+  try {
+    const response = await axios.post(
+      `${apiUrl}/api/auth/deleteaccount`,
+      { password },
+      {
+        withCredentials: true,
+      }
+    );
+    return {
+      success: true,
+      res: response.data.reply,
+    };
+  } catch (err) {
+    return {
+      success: false,
+      res: err,
+    };
+  }
+};

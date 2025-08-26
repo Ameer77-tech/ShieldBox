@@ -1,31 +1,34 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, lazy, Suspense } from "react";
 import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
 import { AnimatePresence } from "motion/react";
 
-import Home from "./pages/Home";
-import Dashboard from "./pages/Dashboard";
-import Login from "./pages/auth/Login";
-import CreateAccount from "./pages/auth/CreateAccount";
-import Verify from "./pages/auth/Verify";
-import SetKey from "./pages/auth/SetKey";
-import EnterKey from "./pages/auth/EnterKey";
-import ResetAccount from "./pages/auth/ResetAccount";
-import NotFound from "./pages/NotFound";
-import Sections from "./pages/Sections";
-import Section from "./pages/Section";
-import AccSettings from "./pages/settings/AccSettings";
+// ⬇ Lazy imports instead of eager imports
+const Home = lazy(() => import("./pages/Home"));
+const Dashboard = lazy(() => import("./pages/Dashboard"));
+const Login = lazy(() => import("./pages/auth/Login"));
+const CreateAccount = lazy(() => import("./pages/auth/CreateAccount"));
+const Verify = lazy(() => import("./pages/auth/Verify"));
+const SetKey = lazy(() => import("./pages/auth/SetKey"));
+const EnterKey = lazy(() => import("./pages/auth/EnterKey"));
+const ResetAccount = lazy(() => import("./pages/auth/ResetAccount"));
+const NotFound = lazy(() => import("./pages/NotFound"));
+const Sections = lazy(() => import("./pages/Sections"));
+const Section = lazy(() => import("./pages/Section"));
+const AccSettings = lazy(() => import("./pages/settings/AccSettings"));
 
 const AnimatedRoutes = () => {
-   const [theme, setTheme] = useState(localStorage.getItem("theme") || "dark");
-   useEffect(() => {
-      document.documentElement.setAttribute("data-theme", theme);
-   }, [])
-   
-  const location = useLocation()
+  const [theme, setTheme] = useState(localStorage.getItem("theme") || "dark");
+
+  useEffect(() => {
+    document.documentElement.setAttribute("data-theme", theme);
+  }, [theme]);
+
+  const location = useLocation();
 
   return (
- 
-      <AnimatePresence mode="wait" location={location}>
+    <AnimatePresence mode="wait" location={location}>
+      {/* Wrap routes in Suspense to show fallback while chunk loads */}
+      <Suspense fallback={<div className="p-6 text-center">Loading...</div>}>
         <Routes location={location} key={location.pathname}>
           <Route path="/" element={<Home />} />
           <Route path="/dashboard" element={<Dashboard />} />
@@ -37,20 +40,18 @@ const AnimatedRoutes = () => {
           <Route path="/setkey" element={<SetKey />} />
           <Route path="/enterkey" element={<EnterKey />} />
           <Route path="/resetaccount" element={<ResetAccount />} />
-          <Route path="/settings" element={<AccSettings/>}/>
+          <Route path="/settings" element={<AccSettings />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
-      </AnimatePresence>
-   
+      </Suspense>
+    </AnimatePresence>
   );
 };
 
-const App = () => {
-  return (
-    <BrowserRouter>
-      <AnimatedRoutes />
-    </BrowserRouter>
-  );
-};
+const App = () => (
+  <BrowserRouter>
+    <AnimatedRoutes />
+  </BrowserRouter>
+);
 
 export default App;
