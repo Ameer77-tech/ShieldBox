@@ -4,7 +4,7 @@ import ThemeController from "../Theme/ThemeController";
 
 const MainHeading = () => {
   return (
-    <div className="overflow-hidden flex gap-3 items-center">
+    <div className="overflow-hidden flex gap-3 items-center w-full justify-center md:justify-start">
       <motion.p 
       initial={{x:'-100%'}}
       animate={{x:0}}

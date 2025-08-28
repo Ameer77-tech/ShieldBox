@@ -91,7 +91,7 @@ const SetKey = () => {
       setKeyArray(["", "", "", "", "", ""]);
       const response = await isKeySet();
       if (!response) console.log("Error occured");
-      else navigate("/dashboard");
+      else navigate("/enterkey");
     }
   };
   return (

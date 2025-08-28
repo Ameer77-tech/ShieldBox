@@ -24,6 +24,7 @@ export const register = async (req, res) => {
       return res
         .status(409)
         .json({ reply: "User already exists", success: false });
+
     const hashedPassword = await bcrypt.hash(password, 10);
     try {
       const result = Math.floor(100000 + Math.random() * 900000);
@@ -37,7 +38,7 @@ export const register = async (req, res) => {
               name,
               password: hashedPassword,
             },
-            $set: { code, expiresAt: new Date(Date.now() + 10 * 60 * 1000) },
+            $set: { code },
           },
           {
             upsert: true,
@@ -122,6 +123,8 @@ export const verify = async (req, res) => {
     return res.status(401).json({ reply: "fill the input", success: false });
   try {
     const userData = await pendingUserModel.findOne({ email });
+    console.log(userData);
+
     if (userData == null)
       return res
         .status(401)

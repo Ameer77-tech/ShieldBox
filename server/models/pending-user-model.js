@@ -2,31 +2,32 @@ import mongoose from "mongoose";
 
 const pendingUserSchema = new mongoose.Schema(
   {
-    name : {
-      type : String,
+    name: {
+      type: String,
     },
     email: {
       type: String,
       unique: true,
     },
-    password : {
-        type : String
+    password: {
+      type: String,
     },
     code: {
       type: String,
       default: "",
     },
-    expiresAt : {
-    type: Date,
-    required: true,
-    index: { expires: 0 }
+    expiresAt: {
+      type: Date,
+      required: true,
+      index: { expires: 600 },
+    },
   },
-  },
- 
-  { timestamps: true },
- 
+
+  { timestamps: true }
 );
 
-const pendingUserModel = mongoose.models.pendingUser || mongoose.model("pendingUser",pendingUserSchema)
+const pendingUserModel =
+  mongoose.models.pendingUser ||
+  mongoose.model("pendingUser", pendingUserSchema);
 
-export default pendingUserModel
+export default pendingUserModel;

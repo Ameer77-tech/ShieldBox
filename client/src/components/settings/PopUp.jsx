@@ -6,6 +6,7 @@ import { useNavigate } from "react-router-dom";
 const PopUp = ({ onClose }) => {
   const [password, setPassword] = useState("");
   const [loading, setloading] = useState(false);
+  const [status, setstatus] = useState("");
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -16,15 +17,20 @@ const PopUp = ({ onClose }) => {
   }, []);
 
   const onDelete = async (password) => {
+    if (password == "") {
+      setstatus("Field cant be empty");
+      return;
+    }
     setloading(true);
     const { success, res } = await deleteAccount(password);
     if (success) {
+      setstatus(res.response.data.reply);
       localStorage.clear();
       sessionStorage.clear();
       navigate("/");
       setloading(false);
     } else {
-      console.log(res);
+      setstatus(res.response.data.reply);
       setloading(false);
     }
   };
@@ -79,6 +85,9 @@ const PopUp = ({ onClose }) => {
             Delete
           </button>
         </div>
+        <p className="text-center text-red-600 text-lg font-semibold">
+          {status}
+        </p>
       </motion.div>
     </div>
   );

@@ -48,12 +48,6 @@ const NavBar = () => {
                 </div>
               </details>
             </li>
-            <li>
-              <Link to="/recent">Recently Viewed</Link>
-            </li>
-            <li>
-              <Link to="/important">Important</Link>
-            </li>
           </ul>
         </div>
 

@@ -13,7 +13,7 @@ const Verify = () => {
   const data = location.state;
   const [loading, setLoading] = useState(false);
   const [Loading, setloading] = useState(false);
-  
+
   useEffect(() => {
     if (data != null) {
       setemail(data.email);
@@ -43,7 +43,7 @@ const Verify = () => {
     if (!res.success) {
       seterror(true);
       setstatus(res.reply);
-      setloading(false)
+      setloading(false);
       setLoading(false);
     } else {
       seterror(false);
@@ -70,8 +70,8 @@ const Verify = () => {
         onSubmit={(e) => handleSubmit(e)}
         className="card bg-base-300 rounded-lg justify-evenly md:px-10 md:py-10 md:w-2/6 w-80 px-5 py-7 gap-10 items-center"
       >
-        <h1 className="text-2xl font-bold text-center text-blue-800">
-          Enter the Verification Code Sent To Your Email
+        <h1 className="text-xl text-center">
+          Enter the Verification Code Sent To Your Email <span className="text-sky-500">{email}</span>
         </h1>
         <input
           onChange={(e) => setcode(e.target.value)}
