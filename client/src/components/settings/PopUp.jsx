@@ -23,14 +23,15 @@ const PopUp = ({ onClose }) => {
     }
     setloading(true);
     const { success, res } = await deleteAccount(password);
+    console.log(res);
     if (success) {
-      setstatus(res.response.data.reply);
+      setstatus(res);
       localStorage.clear();
       sessionStorage.clear();
       navigate("/");
       setloading(false);
     } else {
-      setstatus(res.response.data.reply);
+      setstatus(res);
       setloading(false);
     }
   };

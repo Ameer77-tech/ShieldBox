@@ -9,20 +9,20 @@ const Hero = () => {
       <div className="hero-content text-center">
         <div className="max-w-md">
           <div className="overflow-hidden">
-            <motion.h1 
-            initial={{
-              y : "100%"
-            }}
-            animate={{
-              y : 0
-            }}
-            transition={{
-              ease : "anticipate",
-              duration : 1.2
-              
-            }}
-            className="font-[rajdhani] md:text-7xl text-5xl font-bold text-purple-600">
-              SHIELDBOX
+            <motion.h1
+              initial={{
+                y: "100%",
+              }}
+              animate={{
+                y: 0,
+              }}
+              transition={{
+                ease: "anticipate",
+                duration: 1.2,
+              }}
+              className="font-[rajdhani] md:text-7xl text-5xl font-bold text-purple-600"
+            >
+              LockNest
             </motion.h1>
           </div>
           <p className="mb-3 mt-2 md:text-2xl">
@@ -39,7 +39,7 @@ const Hero = () => {
                 rotate: -2,
               }}
               whileTap={{
-                scale:1 
+                scale: 1,
               }}
               className="font-[rajdhani] btn btn-primary mt-10 md:text-lg"
             >

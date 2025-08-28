@@ -1,3 +1,4 @@
+import activityModel from "../models/activity-model.js";
 import sectionModel from "../models/section-model.js";
 import userModel from "../models/user-model.js";
 import updateUser from "../utils/addSectionToUser.js";
@@ -23,18 +24,16 @@ export const addSection = async (req, res) => {
     const { _id } = await userModel.findOne({ email });
     const response = await checkSectionExists(sectionName, _id);
     if (response) {
-      return res
-        .status(409)
-        .json({
-          reply: "Section with that name already exists",
-          success: false,
-        });
+      return res.status(409).json({
+        reply: "Section with that name already exists",
+        success: false,
+      });
     }
     try {
       const createdSection = await sectionModel.create({
         name: sectionName,
-        description : description,
-        pinned : important,
+        description: description,
+        pinned: important,
         createdBy: _id,
       });
       if (!createdSection) {
@@ -48,6 +47,18 @@ export const addSection = async (req, res) => {
           return res
             .status(500)
             .json({ reply: "User section not updated", success: false });
+        try {
+          const response = await activityModel.create({
+            userId: _id,
+            action: "Created a Section",
+          });
+          console.log(response);
+        } catch (err) {
+          res.status(500).json({
+            reply: "Internal Server Error (Cant log action)",
+            success: false,
+          });
+        }
         return res
           .status(200)
           .json({ reply: "Section Created", success: true });
@@ -68,6 +79,15 @@ export const addSection = async (req, res) => {
 export const deleteSection = async (req, res) => {
   const email = req.user;
   const sectionId = req.params.sectionid;
+  let id = null;
+  try {
+    const { _id } = userModel.findOne({ email });
+    id = _id;
+  } catch (err) {
+    return res
+      .status(500)
+      .json({ reply: "Internal Server Error", success: false });
+  }
   try {
     const deleted = await sectionModel.findOneAndDelete({ _id: sectionId });
     if (!deleted)
@@ -76,6 +96,17 @@ export const deleteSection = async (req, res) => {
         .json({ reply: "Error deleting section", success: false });
     try {
       const response = await deleteSectionFromUser(email, sectionId);
+      try {
+        const response = await activityModel.create({
+          userId: id,
+          action: "Deleted a Section",
+        });
+      } catch (err) {
+        res.status(500).json({
+          reply: "Internal Server Error (Cant log action)",
+          success: false,
+        });
+      }
       return res
         .status(200)
         .json({ reply: "Succesfully deleted a section", success: true });
@@ -92,13 +123,11 @@ export const readSection = async (req, res) => {
   try {
     const user = await userModel.findOne({ email }).populate("sections");
     const allSections = user.sections;
-    res
-      .status(200)
-      .json({
-        reply: "Get sections successfull",
-        success: true,
-        sections: allSections,
-      });
+    res.status(200).json({
+      reply: "Get sections successfull",
+      success: true,
+      sections: allSections,
+    });
   } catch (err) {
     console.log(err);
     res
@@ -123,17 +152,26 @@ export const updateSection = async (req, res) => {
     const { _id } = await userModel.findOne({ email });
     const response = await checkSectionExists(newName, _id);
     if (response)
-      return res
-        .status(409)
-        .json({
-          reply: "Section with that name already exists",
-          success: false,
-        });
+      return res.status(409).json({
+        reply: "Section with that name already exists",
+        success: false,
+      });
     try {
       const updated = await sectionModel.findOneAndUpdate(
         { _id: sectionId },
         { name: newName }
       );
+      try {
+        const response = await activityModel.create({
+          userId: _id,
+          action: "Renamed a Section",
+        });
+      } catch (err) {
+        res.status(500).json({
+          reply: "Internal Server Error (Cant log action)",
+          success: false,
+        });
+      }
       res.status(200).json({ reply: "Section renamed", success: true });
     } catch (err) {
       res
@@ -147,7 +185,9 @@ export const updateSection = async (req, res) => {
 
 export const updateLastViewed = async (req, res) => {
   if (!req.body || !req.body.sectionId) {
-    return res.status(400).json({ reply: "Section ID is required", success: false });
+    return res
+      .status(400)
+      .json({ reply: "Section ID is required", success: false });
   }
 
   const email = req.user;
@@ -160,7 +200,9 @@ export const updateLastViewed = async (req, res) => {
     }
     userId = user._id;
   } catch (err) {
-    return res.status(500).json({ reply: "Internal Server Error", success: false });
+    return res
+      .status(500)
+      .json({ reply: "Internal Server Error", success: false });
   }
 
   const { sectionId } = req.body;
@@ -173,10 +215,14 @@ export const updateLastViewed = async (req, res) => {
     );
 
     if (!response) {
-      return res.status(404).json({ reply: "Section not found", success: false });
+      return res
+        .status(404)
+        .json({ reply: "Section not found", success: false });
     }
 
-    res.status(200).json({ success: true, reply: "Updated Time", data: response });
+    res
+      .status(200)
+      .json({ success: true, reply: "Updated Time", data: response });
   } catch (err) {
     res.status(500).json({ reply: "Server Error", success: false });
   }

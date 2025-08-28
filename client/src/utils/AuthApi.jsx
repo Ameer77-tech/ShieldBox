@@ -123,6 +123,7 @@ export const deleteAccount = async (password) => {
         withCredentials: true,
       }
     );
+    
     return {
       success: true,
       res: response.data.reply,
@@ -130,7 +131,7 @@ export const deleteAccount = async (password) => {
   } catch (err) {
     return {
       success: false,
-      res: err,
+      res: err.data.reply,
     };
   }
 };

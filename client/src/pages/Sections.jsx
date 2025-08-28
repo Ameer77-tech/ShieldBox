@@ -12,7 +12,7 @@ import { userContext } from "../contexts/UserContext";
 import getData from "../utils/getDataFromStorage";
 import AddSectionForm from "../components/sections/AddSectionForm";
 import { AnimatePresence } from "motion/react";
-import { motion } from 'motion/react'
+import { motion } from "motion/react";
 
 const Sections = () => {
   const navigate = useNavigate();
@@ -20,7 +20,7 @@ const Sections = () => {
   const [showForm, setshowForm] = useState(false);
   const { secretKey, setSecretKey } = useContext(secretKeyContext);
   const [loading, setLoading] = useState(true);
-  const [sectionsLoading, setSectionsLoading] = useState(false)
+  const [sectionsLoading, setSectionsLoading] = useState(false);
   const [allSections, setAllSections] = useState([]);
   const [isEditing, setisEditing] = useState("");
   useEffect(() => {
@@ -48,7 +48,7 @@ const Sections = () => {
   };
 
   const getSections = async () => {
-    setSectionsLoading(true)
+    setSectionsLoading(true);
     const response = await getAllSections();
     if (response.success) {
       const { sections } = response;
@@ -59,7 +59,7 @@ const Sections = () => {
           id: section._id,
         };
       });
-      setSectionsLoading(false)
+      setSectionsLoading(false);
       setAllSections(existingSections);
     } else console.log("Error fetching sections");
   };
@@ -85,19 +85,21 @@ const Sections = () => {
       <NavBar />
 
       <div className="md:w-full min-h-screen flex flex-col md:ml-76 md:p-10 p-5">
-        { sectionsLoading && <span className="loading loading-spinner loading-xl absolute top-2/4 left-2/4 -translate-x-2/4"></span> }
+        {sectionsLoading && (
+          <span className="loading loading-spinner loading-xl absolute top-2/4 left-2/4 -translate-x-2/4"></span>
+        )}
         <AnimatePresence>
           {" "}
           {showForm && (
             <AddSectionForm
               setShowForm={setshowForm}
-              showForm = {showForm}
+              showForm={showForm}
               getSections={getSections}
             />
           )}
         </AnimatePresence>
 
-        <div className="flex items-center">
+        <div className="flex items-center ml-10">
           <Link to="/dashboard">
             <FaChevronLeft size={25} className="hover:opacity-80" />
           </Link>
@@ -116,15 +118,18 @@ const Sections = () => {
         <div className="mt-5 flex flex-wrap md:gap-5 gap-5">
           <AnimatePresence>
             {allSections.length < 1 ? (
-              <motion.h3 
-              initial = {{opacity : 0}}
-              animate = {{
-                opacity : 1
-              }}
-              transition={{
-                delay : 0.5
-              }}
-              className="text-gray-600/50 mt-5">No data</motion.h3>
+              <motion.h3
+                initial={{ opacity: 0 }}
+                animate={{
+                  opacity: 1,
+                }}
+                transition={{
+                  delay: 0.5,
+                }}
+                className="text-gray-600/50 mt-5"
+              >
+                No data
+              </motion.h3>
             ) : (
               allSections.map((section) => {
                 return (
@@ -136,7 +141,7 @@ const Sections = () => {
                     deleteHandler={deleteSection}
                     isEditing={isEditing == section.id}
                     setisEditing={setisEditing}
-                    getSections = {getSections}
+                    getSections={getSections}
                   />
                 );
               })
