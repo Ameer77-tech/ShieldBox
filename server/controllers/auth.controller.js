@@ -211,7 +211,7 @@ export const deleteAccount = async (req, res) => {
         try {
           await userModel.findOneAndDelete({ email });
           try {
-            await sectionModel.findOneAndDelete({ createdBy: id });
+            await sectionModel.deleteMany({ createdBy: id });
           } catch (err) {
             res
               .status(500)

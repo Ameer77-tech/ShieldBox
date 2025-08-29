@@ -100,9 +100,9 @@ export default function InsideSection() {
         {/* Header */}
         <div className="flex justify-between items-center mb-6">
           <Link to="/sections">
-            <button className="btn btn-sm btn-neutral">
+            <button className="btn btn-xs btn-neutral ml-10 md:ml-0">
               <FaArrowLeft className="mr-2" />
-              Back
+              back
             </button>
           </Link>
 
@@ -137,12 +137,12 @@ export default function InsideSection() {
                   delay: 0.7,
                 }}
               >
-                <FaFolderOpen size={25} />
+                <FaFolderOpen size={15} />
               </motion.div>
             </div>
           </div>
 
-          <button onClick={() => setShowForm(true)} className="btn btn-primary">
+          <button onClick={() => setShowForm(true)} className="btn btn-primary btn-sm text-[0.7rem]">
             <FaPlus className="mr-2" />
             Add Item
           </button>

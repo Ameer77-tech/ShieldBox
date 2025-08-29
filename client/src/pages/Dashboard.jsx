@@ -5,7 +5,6 @@ import NavBar from "../components/dashboard/NavBar";
 import { checkAuth, logout } from "../utils/AuthApi";
 import { useNavigate } from "react-router-dom";
 import { secretKeyContext } from "../contexts/KeyContext";
-import { motion } from "motion/react";
 import { FiLogOut } from "react-icons/fi";
 import { userContext } from "../contexts/UserContext";
 import getData from "../utils/getDataFromStorage";

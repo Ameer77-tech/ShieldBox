@@ -22,7 +22,7 @@ const Hero = () => {
               }}
               className="font-[rajdhani] md:text-7xl text-5xl font-bold text-purple-600"
             >
-              LockNest
+              SHIELDBOX
             </motion.h1>
           </div>
           <p className="mb-3 mt-2 md:text-2xl">

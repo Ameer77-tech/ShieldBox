@@ -107,7 +107,7 @@ const AddItemForm = ({ setShowForm, getFields, sectionId }) => {
             className={`input input-bordered w-full ${
               errors.value ? "input-error" : ""
             }`}
-            value={formData.newItemValue}
+            value={formData.newItemValue || ""}
             onChange={handleChange}
           />
           {errors.value && (

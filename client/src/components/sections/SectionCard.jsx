@@ -55,6 +55,10 @@ export default function SectionCard({
         scale: 0.98,
         y: -20,
       }}
+      whileTap={{
+        scale: 1.03,
+        rotate: -2,
+      }}
       whileHover={{
         scale: 1.03,
         rotate: -2,

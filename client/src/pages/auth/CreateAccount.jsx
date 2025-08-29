@@ -191,7 +191,7 @@ const CreateAccount = () => {
           <Link to="/login">
             {" "}
             <span className="text-[#1d4e7e] cursor-pointer hover:underline">
-              Login
+              Register
             </span>
           </Link>
         </p>

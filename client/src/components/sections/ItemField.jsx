@@ -99,7 +99,7 @@ const ItemField = ({
               }))
             }
             type="text"
-            value={formData.updateName}
+            value={formData.updateName || ""}
             name="updateName"
             className="p-2 text-center outline-none border-b-2 border-b-accent"
           />
@@ -156,7 +156,7 @@ const ItemField = ({
           </button>
         ) : (
           <button
-          disabled={loading}
+            disabled={loading}
             onClick={() => handleItemDelete(name, sectionId)}
             className="btn btn-xs btn-error"
           >

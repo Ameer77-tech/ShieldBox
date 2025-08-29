@@ -62,7 +62,7 @@ const HomeHeader = ({ active, setactive }) => {
           to="/"
           className="font-[rajdhani] font-semibold tracking-wider text-2xl cursor-pointer text-accent select-none"
         >
-          LockNest
+          ShieldBox
         </Link>
       </motion.div>
       <motion.div className="navbar-center hidden lg:flex">

@@ -123,15 +123,17 @@ export const deleteAccount = async (password) => {
         withCredentials: true,
       }
     );
-    
+    console.log(response);
+
     return {
       success: true,
       res: response.data.reply,
     };
   } catch (err) {
+    console.log(err);
     return {
       success: false,
-      res: err.data.reply,
+      res: err.response.data.reply,
     };
   }
 };
