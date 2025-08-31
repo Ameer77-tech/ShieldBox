@@ -137,7 +137,7 @@ export default function InsideSection() {
                   delay: 0.7,
                 }}
               >
-                <FaFolderOpen size={15} />
+                <FaFolderOpen size={20} />
               </motion.div>
             </div>
           </div>

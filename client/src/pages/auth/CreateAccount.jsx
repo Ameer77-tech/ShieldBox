@@ -9,7 +9,8 @@ const CreateAccount = () => {
   const [show, setShow] = useState(false);
   const [status, setstatus] = useState("");
   const [error, seterror] = useState(false);
-  const [loading, setloading] = useState(false)
+  const [loading, setloading] = useState(false);
+  const [Loading, setLoading] = useState(true);
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -30,6 +31,7 @@ const CreateAccount = () => {
     if (res) {
       navigate("/dashboard");
     } else {
+      setLoading(false);
       return;
     }
   };
@@ -60,22 +62,30 @@ const CreateAccount = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (validate()) {
-      setloading(true)
+      setloading(true);
       const res = await register(formData);
       if (!res.success) {
         seterror(true);
         setstatus(res.reply);
-        setloading(false)
+        setloading(false);
       } else {
         seterror(false);
         setstatus(res.reply);
-        setloading(loading)
+        setloading(loading);
         navigate("/verify", {
           state: { fromRegister: true, email: formData.email },
         });
       }
     }
   };
+
+  if (Loading) {
+    return (
+      <div className="min-h-screen grid place-items-center">
+        <span className="loading loading-ring h-20 w-20"></span>
+      </div>
+    );
+  }
 
   return (
     <div className="flex justify-center items-center min-h-screen w-full select-none">

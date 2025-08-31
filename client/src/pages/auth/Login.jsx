@@ -10,6 +10,7 @@ const Login = () => {
   const [show, setShow] = useState(false);
   const [inCorrect, setinCorrect] = useState(false);
   const [loading, setloading] = useState(false);
+  const [Loading, setLoading] = useState(true);
   const [status, setStatus] = useState("");
   const [formData, setFormData] = useState({ email: "", password: "" });
   const [errors, setErrors] = useState({ email: "", password: "" });
@@ -23,6 +24,7 @@ const Login = () => {
     if (res) {
       navigate("/dashboard");
     } else {
+      setLoading(false);
       return;
     }
   };
@@ -41,7 +43,6 @@ const Login = () => {
     } else if (formData.password.length < 6) {
       newErrors.password = "Password must be at least 6 characters";
     }
-
     setErrors(newErrors);
     return !newErrors.email && !newErrors.password;
   };
@@ -63,6 +64,14 @@ const Login = () => {
       }
     }
   };
+
+  if (Loading) {
+    return (
+      <div className="min-h-screen grid place-items-center">
+        <span className="loading loading-ring h-20 w-20"></span>
+      </div>
+    );
+  }
 
   return (
     <div className="flex justify-center items-center min-h-screen select-none">

@@ -99,7 +99,7 @@ const Sections = () => {
           )}
         </AnimatePresence>
 
-        <div className="flex items-center ml-10">
+        <div className="flex items-center ml-10 md:ml-0" >
           <Link to="/dashboard">
             <FaChevronLeft size={25} className="hover:opacity-80" />
           </Link>

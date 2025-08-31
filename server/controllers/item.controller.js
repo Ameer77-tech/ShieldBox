@@ -1,6 +1,7 @@
 import sectionModel from "../models/section-model.js";
 import userModel from "../models/user-model.js";
 import checkItemExists from "../utils/checkItemExists.js";
+import activityModel from "../models/activity-model.js";
 
 export const addItem = async (req, res) => {
   if (req.body === undefined)
@@ -31,6 +32,17 @@ export const addItem = async (req, res) => {
           },
         }
       );
+      try {
+        const response = await activityModel.create({
+          userId: _id,
+          action: "Added an item",
+        });
+      } catch (err) {
+        res.status(500).json({
+          reply: "Internal Server Error (Cant log action)",
+          success: false,
+        });
+      }
       res.status(200).json({ reply: "Item Added Successfully", success: true });
     } catch (err) {
       res.status(500).json({ reply: "Internal Server Error", success: false });
@@ -84,6 +96,18 @@ export const deleteItem = async (req, res) => {
           },
         }
       );
+      try {
+        const response = await activityModel.create({
+          userId: _id,
+          action: "Deleted an item",
+        });
+        console.log(response);
+      } catch (err) {
+        res.status(500).json({
+          reply: "Internal Server Error (Cant log action)",
+          success: false,
+        });
+      }
       res
         .status(200)
         .json({ reply: "Item Successfully deleted", success: true });
@@ -127,7 +151,18 @@ export const updateItem = async (req, res) => {
               },
               { new: true }
             );
-
+            try {
+              const response = await activityModel.create({
+                userId: _id,
+                action: "Updated an item",
+              });
+  
+            } catch (err) {
+              res.status(500).json({
+                reply: "Internal Server Error (Cant log action)",
+                success: false,
+              });
+            }
             res
               .status(200)
               .json({ reply: "Update Successfull", success: true, response });
@@ -149,7 +184,18 @@ export const updateItem = async (req, res) => {
             },
             { new: true }
           );
-
+          try {
+            const response = await activityModel.create({
+              userId: _id,
+              action: "Updated an item",
+            });
+        
+          } catch (err) {
+            res.status(500).json({
+              reply: "Internal Server Error (Cant log action)",
+              success: false,
+            });
+          }
           res
             .status(200)
             .json({ reply: "Update Successfull", success: true, response });

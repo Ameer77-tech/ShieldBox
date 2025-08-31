@@ -26,8 +26,10 @@ const AccSettings = () => {
       navigate("/login");
     } else if (!response.isKeySet) {
       navigate("/setkey");
-    }else{
-      setloading(false)
+    } else {
+      const savedKey = sessionStorage.getItem("secretkey") || "";
+      if (!savedKey) navigate("/enterkey");
+      else setloading(false);
     }
   };
   useEffect(() => {

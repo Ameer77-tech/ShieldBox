@@ -9,6 +9,7 @@ import {
 import express from "express";
 import authorizeToken from "../../middlewares/authorizeToken.js";
 import userModel from "../../models/user-model.js";
+import activityModel from "../../models/activity-model.js";
 
 const router = express.Router();
 
@@ -22,7 +23,6 @@ router.get("/checkauth", authorizeToken, async (req, res) => {
   try {
     const user = await userModel.findOne({ email }).populate("sections");
 
-    // Check if the user exists
     if (!user) {
       return res.status(404).json({
         reply: "User not found",
@@ -41,11 +41,7 @@ router.get("/checkauth", authorizeToken, async (req, res) => {
       (acc, section) => (section.pinned ? acc + 1 : acc),
       0
     );
-
-    // Check if all sections have the `lastViewed` key
     const canSort = sections.every((section) => section.lastViewed);
-
-    // Sort only if all sections have the `lastViewed` key
     const sortedSections = canSort
       ? sections.sort((a, b) => new Date(b.lastViewed) - new Date(a.lastViewed))
       : sections;
