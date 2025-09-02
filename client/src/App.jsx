@@ -26,13 +26,15 @@ const AnimatedRoutes = () => {
 
   return (
     <AnimatePresence mode="wait" location={location}>
-      {/* Wrap routes in Suspense to show fallback while chunk loads */}
       <Suspense fallback={<div className="p-6 text-center">Loading...</div>}>
         <Routes location={location} key={location.pathname}>
           <Route path="/" element={<Home />} />
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/sections" element={<Sections />} />
-          <Route path="/sections/:sectionname/:sectionid" element={<Section />} />
+          <Route
+            path="/sections/:sectionname/:sectionid"
+            element={<Section />}
+          />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<CreateAccount />} />
           <Route path="/verify" element={<Verify />} />

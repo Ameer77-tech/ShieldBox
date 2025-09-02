@@ -7,6 +7,7 @@ export const checkAuth = async () => {
     const { data } = await axios.get(`${apiUrl}/api/auth/checkauth`, {
       withCredentials: true,
     });
+
     const {
       success,
       isKeySet,
@@ -16,7 +17,9 @@ export const checkAuth = async () => {
       totalItems,
       important,
       recentViewedSections,
+      activity,
     } = data;
+
     return {
       success,
       isKeySet,
@@ -26,6 +29,7 @@ export const checkAuth = async () => {
       totalSections,
       important,
       recentViewedSections,
+      activity,
     };
   } catch (err) {
     console.log(err);

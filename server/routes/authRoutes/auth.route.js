@@ -19,6 +19,7 @@ router.delete("/logout", logout);
 router.post("/verify", verify);
 router.get("/checkauth", authorizeToken, async (req, res) => {
   const email = req.user;
+  let id;
 
   try {
     const user = await userModel.findOne({ email }).populate("sections");
@@ -31,6 +32,7 @@ router.get("/checkauth", authorizeToken, async (req, res) => {
     }
 
     const { isKeySet, name, sections } = user;
+    id = user._id;
 
     const totalSections = sections.length;
     const totalItems = sections.reduce(
@@ -54,11 +56,21 @@ router.get("/checkauth", authorizeToken, async (req, res) => {
         };
       }
     });
-
-    // Filter out undefined values
     recentViewedSections = recentViewedSections.filter(
       (section) => section !== undefined
     );
+    let activity;
+    try {
+      const logs = await activityModel.find({ userId: id });
+      activity = logs.map((activity) => {
+        return { action: activity.action, time: activity.createdAt };
+      });
+    } catch (err) {
+      res.status(500).json({
+        reply: "Internal Server Error",
+        success: false,
+      });
+    }
 
     res.status(200).json({
       reply: "Authorized",
@@ -70,6 +82,7 @@ router.get("/checkauth", authorizeToken, async (req, res) => {
       totalItems,
       important,
       recentViewedSections,
+      activity,
     });
   } catch (err) {
     console.error(err);

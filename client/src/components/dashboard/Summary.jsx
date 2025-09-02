@@ -1,12 +1,22 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import SummaryCard from "./SummaryCard";
 import RecentlyViewed from "./RecentlyViewed";
 import Activity from "./Activity";
 import Tip from "./Tip";
 import Footer from "./Footer";
 import { motion } from "motion/react";
+import { checkAuth } from "../../utils/AuthApi";
 
 const Summary = ({ data, important, recentViewedSections }) => {
+  const [activities, setactivities] = useState([]);
+  useEffect(() => {
+    async function getActivity() {
+      const { activity } = await checkAuth();
+      setactivities(activity);
+    }
+    getActivity();
+  }, []);
+
   return (
     <motion.div className="md:p-5 flex flex-col gap-15">
       <div className="grid md:grid-cols-3 grid-cols-1 gap-5 md:gap-6">
@@ -51,14 +61,21 @@ const Summary = ({ data, important, recentViewedSections }) => {
       <h3 className="p-4 pb-2 text-xs opacity-60 tracking-wide">
         Your Activity
       </h3>
-      <div className="h-50 overflow-y-scroll">
+      <div className="h-100 overflow-y-scroll">
         <ul className="list bg-base-100 rounded-box shadow-md gap-5 md:gap-7">
-          <Activity />
-          <Activity />
-          <Activity />
-          <Activity />
-          <Activity />
-          <Activity />
+          {activities.length > 0 ? (
+            activities
+              .reverse()
+              .map((activity, idx) => (
+                <Activity
+                  key={idx}
+                  name={activity.action}
+                  time={activity.time}
+                />
+              ))
+          ) : (
+            <p>No Activities</p>
+          )}
         </ul>
       </div>
       <div>
