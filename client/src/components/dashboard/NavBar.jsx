@@ -6,7 +6,7 @@ import { FaUserCircle } from "react-icons/fa";
 import { userContext } from "../../contexts/UserContext";
 import { FiLogOut } from "react-icons/fi";
 
-const NavBar = () => {
+const NavBar = ({ name }) => {
   const { userData } = useContext(userContext);
   const [isNavOpen, setisNavOpen] = useState(false);
 
@@ -117,7 +117,7 @@ const NavBar = () => {
         <div className="navbar-start w-full flex flex-col justify-evenly items-center h-35 border-b-1 border-b-slate-600">
           <FaUserCircle size={80} />
           <p className="text-lg tracking-wide">
-            <span>{userData.userName}</span>
+            <span>{userData.userName || name}</span>
           </p>
         </div>
 
