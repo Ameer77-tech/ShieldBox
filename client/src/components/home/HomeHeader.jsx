@@ -42,14 +42,14 @@ const HomeHeader = ({ active, setactive }) => {
             className="menu menu-sm dropdown-content bg-base-100 rounded-box z-1 mt-3 w-52 p-2 shadow gap-2"
           >
             <li
-              className={`text-md ${active === "home" ? "text-accent" : ""}`}
+              className={`text-md ${active === "home" ? "text-purple-600" : ""}`}
               onClick={() => setactive("home")}
             >
               <a href="#home">Home</a>
             </li>
             <li
               className={`text-md ${
-                active === "services" ? "text-accent" : ""
+                active === "services" ? "text-purple-600" : ""
               }`}
               onClick={() => setactive("services")}
             >
@@ -60,7 +60,7 @@ const HomeHeader = ({ active, setactive }) => {
 
         <Link
           to="/"
-          className="font-[rajdhani] font-semibold tracking-wider text-2xl cursor-pointer text-accent select-none"
+          className="font-[rajdhani] font-semibold tracking-wider text-2xl cursor-pointer text-purple-600 select-none"
         >
           ShieldBox
         </Link>
@@ -83,7 +83,7 @@ const HomeHeader = ({ active, setactive }) => {
           >
             <a
               href="#home"
-              className={`text-md ${active === "home" ? "text-accent" : ""}`}
+              className={`text-md ${active === "home" ? "text-purple-600" : ""}`}
               onClick={() => setactive("home")}
             >
               Home
@@ -105,7 +105,7 @@ const HomeHeader = ({ active, setactive }) => {
             <a
               href="#services"
               className={`text-md ${
-                active === "services" ? "text-accent" : ""
+                active === "services" ? "text-purple-600" : ""
               }`}
               onClick={() => setactive("services")}
             >

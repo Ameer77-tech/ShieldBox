@@ -81,8 +81,7 @@ const EnterKey = () => {
       return;
     } else {
       setSecretKey(input);
-      sessionStorage.setItem("secretkey", input)
-      navigate("/dashboard");
+      navigate("/decrypt", { state: { key: input } });
     }
   };
   return (
