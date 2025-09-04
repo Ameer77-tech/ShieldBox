@@ -20,7 +20,7 @@ const Security = () => {
         </div>
         <div className="flex items-center justify-between hover:bg-gray-700/20  md:p-2 rounded">
           <p className="tracking-wider">
-            Secret Key - <span className="text-blue-600">{secretKey}</span>
+            Secret Key - <span className="text-blue-600">********</span>
           </p>
         </div>
       </div>

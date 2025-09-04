@@ -102,7 +102,6 @@ export default function InsideSection() {
           <Link to="/sections">
             <button className="btn btn-xs btn-neutral ml-10 md:ml-0">
               <FaArrowLeft className="mr-2" />
-              back
             </button>
           </Link>
 

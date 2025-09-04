@@ -1,6 +1,7 @@
 import React, { useEffect, useState, lazy, Suspense } from "react";
 import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
 import { AnimatePresence } from "motion/react";
+import Decrypt from "./pages/auth/Decrypt";
 
 const Home = lazy(() => import("./pages/Home"));
 const Dashboard = lazy(() => import("./pages/Dashboard"));
@@ -42,6 +43,7 @@ const AnimatedRoutes = () => {
           <Route path="/enterkey" element={<EnterKey />} />
           <Route path="/resetaccount" element={<ResetAccount />} />
           <Route path="/settings" element={<AccSettings />} />
+          <Route path="/decrypt" element={<Decrypt />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </Suspense>

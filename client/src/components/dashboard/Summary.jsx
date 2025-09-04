@@ -45,7 +45,7 @@ const Summary = ({ data, important, recentViewedSections }) => {
         </h2>
         <div className="flex flex-wrap flex-col justify-center items-center shrink-0 gap-5 overflow-y-auto md:h-50 h-60">
           {recentViewedSections.length < 1 ? (
-            <p>No Sections Viewed Recently</p>
+            <p className="text-gray-600">No Sections Viewed Recently</p>
           ) : (
             recentViewedSections.map((section) => (
               <RecentlyViewed
@@ -74,7 +74,7 @@ const Summary = ({ data, important, recentViewedSections }) => {
                 />
               ))
           ) : (
-            <p>No Activities</p>
+            <p className="text-gray-600 text-center mb-30">No Activities</p>
           )}
         </ul>
       </div>

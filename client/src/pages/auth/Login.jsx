@@ -60,7 +60,7 @@ const Login = () => {
         setinCorrect(false);
         setStatus(res.reply);
         setloading(false);
-        navigate("/enterkey");
+        navigate("/enterkey", { replace: true });
       }
     }
   };

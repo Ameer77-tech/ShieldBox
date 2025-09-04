@@ -5,11 +5,28 @@ import { AnimatePresence, motion, spring } from "framer-motion";
 import { FaUserCircle } from "react-icons/fa";
 import { userContext } from "../../contexts/UserContext";
 import { FiLogOut } from "react-icons/fi";
+import { logout } from "../../utils/AuthApi";
+import { useNavigate } from "react-router-dom";
 
-const NavBar = () => {
+const NavBar = ({ name }) => {
+  const navigate = useNavigate();
   const { userData } = useContext(userContext);
   const [isNavOpen, setisNavOpen] = useState(false);
 
+  if (isNavOpen) {
+    document.body.style.overflow = "hidden";
+  } else {
+    document.body.style.overflow = "auto";
+  }
+
+  const handleLogout = async () => {
+    setisNavOpen(false);
+    const loggedOut = await logout();
+    if (loggedOut) {
+      navigate("/");
+      sessionStorage.clear();
+    } else console.log("error logging out");
+  };
   return (
     <>
       <button
@@ -55,7 +72,7 @@ const NavBar = () => {
                   delay: 0,
                 },
               }}
-              className="z-100 navbar border-r-1 border-r-slate-600 fixed inset-0 transform-none md:block py-10 px-0 flex-col justify-between items-start h-screen bg-base-300 md:max-w-1/5 max-w-3/4 shadow-black"
+              className="z-60 navbar fixed top-0 left-0 transform-none md:hidden py-10 px-0 flex-col items-start h-screen bg-base-300 w-3/4 max-w-xs shadow-black"
             >
               <div className="navbar-start w-full flex flex-col justify-evenly items-center h-35 border-b-1 border-b-slate-600">
                 <FaUserCircle size={80} />
@@ -64,7 +81,7 @@ const NavBar = () => {
                 </p>
               </div>
 
-              <div className="navbar-center md:h-100 h-150 w-full items-start mt-10">
+              <div className="navbar-center md:h-100 h-50 w-full items-start mt-10">
                 <ul className="menu w-full gap-5">
                   <li>
                     <Link to="/dashboard">Home</Link>
@@ -92,7 +109,7 @@ const NavBar = () => {
               </Link>
               <div className="w-full flex items-center gap-3 p-4 cursor-pointer py-2 hover:bg-red-600 hover:text-white select-none">
                 <FiLogOut />
-                <button onClick={1} className="btn btn-error btn-sm">
+                <button onClick={handleLogout} className="btn btn-error btn-sm">
                   Logout
                 </button>
               </div>
@@ -117,7 +134,7 @@ const NavBar = () => {
         <div className="navbar-start w-full flex flex-col justify-evenly items-center h-35 border-b-1 border-b-slate-600">
           <FaUserCircle size={80} />
           <p className="text-lg tracking-wide">
-            <span>{userData.userName}</span>
+            <span>{userData.userName || name}</span>
           </p>
         </div>
 

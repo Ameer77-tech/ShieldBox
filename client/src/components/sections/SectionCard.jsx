@@ -75,8 +75,9 @@ export default function SectionCard({
         },
       }}
       exit={{ y: -20, opacity: 0 }}
+      className="items-center justify-center m-4"
     >
-      <div className="card w-90 bg-neutral shadow-lg hover:shadow-xl transition ring-1 ring-primary/30">
+      <div className="card max-w-80 md:w-90 bg-neutral shadow-lg hover:shadow-xl transition ring-1 ring-primary/30">
         <div className="card-body items-center text-center">
           <FaFolderOpen className="text-white text-6xl mb-4" />
           {loading ? (
@@ -117,6 +118,7 @@ export default function SectionCard({
             )}
             {isEditing ? (
               <button
+              disabled={loading}
                 onClick={() => setisEditing("")}
                 className="btn btn-error btn-md"
               >

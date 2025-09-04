@@ -48,7 +48,7 @@ const AccSettings = () => {
   return (
     <div className="flex min-h-screen">
       <div>
-        <NavBar />
+        <NavBar name={userData.userName} />
       </div>
       <div className="flex flex-col md:ml-77 w-full md:p-10">
         <Profile name={userData.userName} />
