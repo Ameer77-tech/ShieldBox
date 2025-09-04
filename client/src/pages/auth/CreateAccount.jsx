@@ -73,6 +73,7 @@ const CreateAccount = () => {
         setstatus(res.reply);
         setloading(loading);
         navigate("/verify", {
+          replace: true,
           state: { fromRegister: true, email: formData.email },
         });
       }
@@ -192,7 +193,7 @@ const CreateAccount = () => {
           {loading ? (
             <span className="loading loading-spinner loading-md"></span>
           ) : (
-            "Login"
+            "Register"
           )}
         </button>
 
@@ -201,7 +202,7 @@ const CreateAccount = () => {
           <Link to="/login">
             {" "}
             <span className="text-[#1d4e7e] cursor-pointer hover:underline">
-              Register
+              Login
             </span>
           </Link>
         </p>

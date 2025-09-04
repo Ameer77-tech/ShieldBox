@@ -10,7 +10,7 @@ const Danger = () => {
   };
   return (
     <>
-      <div className="p-10">
+      <div className="md:p-10 p-5 mt-5">
         <h1 className="text-2xl font-bold text-red-600">Danger Zone</h1>
         <div className="mt-10 flex flex-col gap-1">
           <div className="flex items-center justify-center p-2">

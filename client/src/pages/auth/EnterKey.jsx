@@ -87,7 +87,7 @@ const EnterKey = () => {
   return (
     <div className="flex justify-center items-center min-h-screen select-none">
       <div className="card bg-base-300 rounded-lg justify-evenly md:px-10 md:py-10 md:w-2/6 w-[90%] px-5 py-7 gap-10 items-center">
-        <h1 className="text-xl font-[rajdhani] font-bold">
+        <h1 className="text-xl font-[rajdhani] font-bold text-center">
           Enter the registered secret key to continue
         </h1>
         <div className="flex justify-between w-full items-center ">
@@ -98,7 +98,7 @@ const EnterKey = () => {
               value={digit}
               onKeyDown={(e) => handleKey(e, idx)}
               onChange={(e) => handleInput(e, idx)}
-              className="max-w-12 text-lg border-2 border-slate-600 py-3 text-center focus:border-blue-700 outline-0 rounded-lg"
+              className="max-w-9 text-lg border-2 border-slate-600 py-2 px-2 text-center focus:border-blue-700 outline-0 rounded-lg"
             ></input>
           ))}
         </div>

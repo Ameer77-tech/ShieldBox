@@ -51,15 +51,16 @@ export async function encrypt(text, password) {
 }
 
 export async function decrypt(payload, password) {
-  const { c, s, i } = JSON.parse(payload);
-  const salt = b64ToArr(s);
-  const iv = b64ToArr(i);
+  const obj = JSON.parse(payload);
+
+  const salt = b64ToArr(obj.s);
+  const iv = b64ToArr(obj.i);
   const key = await deriveKey(password, salt);
 
   const decrypted = await crypto.subtle.decrypt(
     { name: "AES-GCM", iv },
     key,
-    b64ToArr(c)
+    b64ToArr(obj.c)
   );
 
   return dec.decode(decrypted);
