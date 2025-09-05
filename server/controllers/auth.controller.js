@@ -174,6 +174,7 @@ export const setKey = async (req, res) => {
   const email = req.user;
   console.log(email);
   try {
+
     await userModel.findOneAndUpdate(
       { email },
       {
