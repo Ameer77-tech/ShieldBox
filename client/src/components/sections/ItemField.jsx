@@ -2,12 +2,13 @@ import React, { useEffect, useState } from "react";
 import { motion } from "motion/react";
 import { FaEdit, FaTrash } from "react-icons/fa";
 import { deleteItem, updateFields } from "../../utils/AppApi";
+import { encrypt } from "../../utils/EncryptDecrypt";
 
 const ItemField = ({
+  itemId, // ✅ get itemId from parent (InsideSection → Items.map)
   name,
   value,
   sectionId,
-  itemDeleteHandler,
   isEditing,
   setisEditing,
   getFields,
@@ -15,15 +16,16 @@ const ItemField = ({
 }) => {
   const [loading, setloading] = useState(false);
   const [formData, setformData] = useState({
-    oldName: name,
+    itemId: itemId, // ✅ include ID
     updateName: name,
     updateValue: value,
   });
-  const handleItemDelete = async (name, id) => {
+
+  const handleItemDelete = async (id, secId) => {
     setloading(true);
-    const response = await deleteItem(name, id);
+    const response = await deleteItem(id, secId); // ✅ send itemId to API
     if (response.success) {
-      itemDeleteHandler(name);
+      getFields();
       setloading(false);
     } else {
       console.log("Error");
@@ -40,53 +42,54 @@ const ItemField = ({
         setisEditing(false);
         return;
       }
-      console.log(formData);
       try {
         setloading(true);
-        const response = await updateFields(sectionId, formData);
+
+        // ✅ get key from sessionStorage
+        const key = sessionStorage.getItem("secretkey");
+        if (!key) {
+          console.error("No encryption key found");
+          setloading(false);
+          return;
+        }
+
+        // ✅ Encrypt before sending
+        const encryptedData = {
+          itemId: formData.itemId,
+          updateName: await encrypt(formData.updateName, key),
+          updateValue: await encrypt(formData.updateValue, key),
+        };
+
+        const response = await updateFields(sectionId, encryptedData);
+
         if (!response.success) {
           console.log(response.error);
-          setloading(false);
         } else {
-          setloading(false);
-          setisEditing(false);
           getFields();
+          setisEditing(false);
         }
       } catch (err) {
         console.log(err);
+      } finally {
+        setloading(false);
       }
     }
   };
 
   useEffect(() => {
     setformData({
-      oldName: name,
+      itemId: itemId, // ✅ always keep id in sync
       updateName: name,
       updateValue: value,
     });
-  }, [isEditing]);
+  }, [isEditing, name, value, itemId]);
 
   return (
     <motion.tr
-      initial={{
-        opacity: 0,
-        scale: 0.99,
-        y: -20,
-      }}
-      whileHover={{
-        scale: 1.01,
-      }}
-      whileInView={{
-        scale: 1,
-        opacity: 1,
-        y: 0,
-      }}
-      transition={{
-        whileInView: {
-          ease: "easeInOut",
-          duration: 0.7,
-        },
-      }}
+      initial={{ opacity: 0, scale: 0.99, y: -20 }}
+      whileHover={{ scale: 1.01 }}
+      whileInView={{ scale: 1, opacity: 1, y: 0 }}
+      transition={{ whileInView: { ease: "easeInOut", duration: 0.7 } }}
       viewport={{ once: true }}
     >
       {isEditing ? (
@@ -107,6 +110,7 @@ const ItemField = ({
       ) : (
         <td className="font-medium">{name}</td>
       )}
+
       {isEditing ? (
         <td>
           <input
@@ -125,6 +129,7 @@ const ItemField = ({
       ) : (
         <td className="font-medium">{value}</td>
       )}
+
       <td>
         {isEditing ? (
           <button
@@ -157,7 +162,7 @@ const ItemField = ({
         ) : (
           <button
             disabled={loading}
-            onClick={() => handleItemDelete(name, sectionId)}
+            onClick={() => handleItemDelete(itemId, sectionId)} // ✅ pass itemId, not name
             className="btn btn-xs btn-error"
           >
             {loading ? (

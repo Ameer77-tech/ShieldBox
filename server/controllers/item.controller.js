@@ -2,12 +2,15 @@ import sectionModel from "../models/section-model.js";
 import userModel from "../models/user-model.js";
 import checkItemExists from "../utils/checkItemExists.js";
 import activityModel from "../models/activity-model.js";
+import { v4 as uuidv4 } from "uuid";
+
 
 export const addItem = async (req, res) => {
-  if (req.body === undefined)
+  if (!req.body)
     return res
       .status(401)
       .json({ reply: "Body must'nt be Empty", success: false });
+
   const email = req.user;
   const sectionId = req.params.sectionid;
   const { newItemName, newItemValue } = req.body;
@@ -20,30 +23,36 @@ export const addItem = async (req, res) => {
         .status(409)
         .json({ reply: "Item already exists", success: false });
     }
+
     try {
-      const response = await sectionModel.findOneAndUpdate(
+      const newItem = {
+        itemId: uuidv4(), // 👈 special unique id
+        itemName: newItemName,
+        itemValue: newItemValue,
+      };
+
+      await sectionModel.findOneAndUpdate(
         { _id: sectionId },
-        {
-          $push: {
-            items: {
-              itemName: newItemName,
-              itemValue: newItemValue,
-            },
-          },
-        }
+        { $push: { items: newItem } }
       );
+
       try {
-        const response = await activityModel.create({
+        await activityModel.create({
           userId: _id,
           action: "Added an item",
         });
       } catch (err) {
-        res.status(500).json({
+        return res.status(500).json({
           reply: "Internal Server Error (Cant log action)",
           success: false,
         });
       }
-      res.status(200).json({ reply: "Item Added Successfully", success: true });
+
+      res.status(200).json({
+        reply: "Item Added Successfully",
+        success: true,
+        item: newItem, // 👈 return item with itemId so frontend gets it
+      });
     } catch (err) {
       res.status(500).json({ reply: "Internal Server Error", success: false });
     }
@@ -76,139 +85,133 @@ export const getItems = async (req, res) => {
 };
 
 export const deleteItem = async (req, res) => {
-  if (req.body === undefined)
+  if (!req.body) {
     return res
       .status(401)
-      .json({ reply: "Body must'nt be Empty", success: false });
+      .json({ reply: "Body must not be empty", success: false });
+  }
+
   const email = req.user;
   const sectionId = req.params.sectionid;
-  const { itemName } = req.body;
-
+  const { itemId } = req.body;
   try {
     const user = await userModel.findOne({ email });
+    if (!user) {
+      return res.status(404).json({
+        reply: "User not found",
+        success: false,
+      });
+    }
+
     const _id = user._id;
+
     try {
-      const response = await sectionModel.findOneAndUpdate(
+      // ✅ delete by itemId instead of itemName
+      await sectionModel.findOneAndUpdate(
         { createdBy: _id, _id: sectionId },
         {
           $pull: {
-            items: { itemName: itemName },
+            items: { itemId: itemId },
           },
         }
       );
+
       try {
-        const response = await activityModel.create({
+        await activityModel.create({
           userId: _id,
           action: "Deleted an item",
         });
-        console.log(response);
       } catch (err) {
-        res.status(500).json({
-          reply: "Internal Server Error (Cant log action)",
+        return res.status(500).json({
+          reply: "Internal Server Error (Can't log action)",
           success: false,
         });
       }
-      res
-        .status(200)
-        .json({ reply: "Item Successfully deleted", success: true });
+
+      return res.status(200).json({
+        reply: "Item successfully deleted",
+        success: true,
+      });
     } catch (err) {
-      res
-        .status(500)
-        .json({ reply: "Internal Server Error (camt delete)", success: false });
+      return res.status(500).json({
+        reply: "Internal Server Error (Can't delete)",
+        success: false,
+      });
     }
   } catch (err) {
-    res.status(500).json({ reply: "Cant find user", success: false });
+    return res.status(500).json({
+      reply: "Internal Server Error (Can't find user)",
+      success: false,
+    });
   }
 };
 
 export const updateItem = async (req, res) => {
-  if (req.body === undefined)
+  if (!req.body)
     return res
       .status(401)
       .json({ reply: "Body must'nt be Empty", success: false });
+
   const email = req.user;
   const sectionId = req.params.sectionid;
-  const { oldName, updateName, updateValue } = req.body;
+  const { itemId, updateName, updateValue } = req.body;
 
   try {
     const { _id } = await userModel.findOne({ email });
-    try {
-      if (oldName !== updateName) {
-        const exists = await checkItemExists(_id, sectionId, updateName);
-        if (exists) {
-          return res
-            .status(409)
-            .json({ reply: "Item already Exists", success: false });
-        } else {
-          try {
-            const response = await sectionModel.findOneAndUpdate(
-              { _id: sectionId, "items.itemName": oldName },
-              {
-                $set: {
-                  "items.$.itemName": updateName,
-                  "items.$.itemValue": updateValue,
-                },
-              },
-              { new: true }
-            );
-            try {
-              const response = await activityModel.create({
-                userId: _id,
-                action: "Updated an item",
-              });
-  
-            } catch (err) {
-              res.status(500).json({
-                reply: "Internal Server Error (Cant log action)",
-                success: false,
-              });
-            }
-            res
-              .status(200)
-              .json({ reply: "Update Successfull", success: true, response });
-          } catch (err) {
-            res
-              .status(500)
-              .json({ reply: "Internal Server Error", success: false });
-          }
-        }
-      } else {
-        try {
-          const response = await sectionModel.findOneAndUpdate(
-            { _id: sectionId, "items.itemName": oldName },
-            {
-              $set: {
-                "items.$.itemName": updateName,
-                "items.$.itemValue": updateValue,
-              },
-            },
-            { new: true }
-          );
-          try {
-            const response = await activityModel.create({
-              userId: _id,
-              action: "Updated an item",
-            });
-        
-          } catch (err) {
-            res.status(500).json({
-              reply: "Internal Server Error (Cant log action)",
-              success: false,
-            });
-          }
-          res
-            .status(200)
-            .json({ reply: "Update Successfull", success: true, response });
-        } catch (err) {
-          res
-            .status(500)
-            .json({ reply: "Internal Server Error", success: false });
-        }
-      }
-    } catch (err) {
-      res.status(500).json({ reply: "Internal Server Error", success: false });
+
+    // ✅ Check if another item already has this name (collision check)
+    const section = await sectionModel.findOne({ _id: sectionId });
+
+    if (!section) {
+      return res
+        .status(404)
+        .json({ reply: "Section not found", success: false });
     }
+
+    const duplicate = section.items.find(
+      (item) => item.itemName === updateName && item.itemId !== itemId
+    );
+
+    if (duplicate) {
+      return res
+        .status(409)
+        .json({ reply: "Item with same name already exists", success: false });
+    }
+
+    // ✅ Update item by itemId
+    const response = await sectionModel.findOneAndUpdate(
+      { _id: sectionId, "items.itemId": itemId },
+      {
+        $set: {
+          "items.$.itemName": updateName,
+          "items.$.itemValue": updateValue,
+        },
+      },
+      { new: true }
+    );
+
+    // ✅ Log activity
+    try {
+      await activityModel.create({
+        userId: _id,
+        action: "Updated an item",
+      });
+    } catch (err) {
+      return res.status(500).json({
+        reply: "Internal Server Error (Cant log action)",
+        success: false,
+      });
+    }
+
+    return res.status(200).json({
+      reply: "Update Successful",
+      success: true,
+      response,
+    });
   } catch (err) {
-    res.status(500).json({ reply: "Internal Server Error", success: false });
+    console.error("UpdateItem error:", err);
+    return res
+      .status(500)
+      .json({ reply: "Internal Server Error", success: false });
   }
 };

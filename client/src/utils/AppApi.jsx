@@ -97,10 +97,10 @@ export const updateFields = async (sectionId, formData) => {
   }
 };
 
-export const deleteItem = async (name, id) => {
+export const deleteItem = async (itemId, secId) => {
   try {
-    const { data } = await axios.delete(`${apiUrl}/api/${id}/deleteitem`, {
-      data: { itemName: name },
+    const { data } = await axios.delete(`${apiUrl}/api/${secId}/deleteitem`, {
+      data: { itemId },
       withCredentials: true,
     });
     return data;
