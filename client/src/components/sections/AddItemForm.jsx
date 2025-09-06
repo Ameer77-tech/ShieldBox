@@ -1,8 +1,11 @@
 import React, { useEffect, useRef, useState } from "react";
 import { motion } from "motion/react";
 import { addField, addSection } from "../../utils/AppApi";
+import { encrypt } from "../../utils/EncryptDecrypt";
+import { useNavigate } from "react-router-dom";
 
 const AddItemForm = ({ setShowForm, getFields, sectionId }) => {
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({
     newItemName: "",
     newItemValue: "",
@@ -44,14 +47,34 @@ const AddItemForm = ({ setShowForm, getFields, sectionId }) => {
     e.preventDefault();
     if (validate()) {
       setLoading(true);
-      const response = await addField(sectionId, formData);
-      if (!response.success) {
-        setstatus(response.error);
+      const key = sessionStorage.getItem("secretkey");
+      if (!key) {
+        setstatus("No secret key found. Please login again.");
+        navigate("/enterkey");
         setLoading(false);
-      } else {
-        getFields();
-        setShowForm(false);
-        setFormData({ sectionName: "", description: "", important: false });
+        return;
+      }
+
+      try {
+        // Encrypt the values
+        const encryptedData = {
+          newItemName: await encrypt(formData.newItemName, key),
+          newItemValue: await encrypt(formData.newItemValue, key),
+        };
+
+        const response = await addField(sectionId, encryptedData);
+
+        if (!response.success) {
+          setstatus(response.error || "Something went wrong");
+        } else {
+          getFields();
+          setShowForm(false);
+          setFormData({ newItemName: "", newItemValue: "" });
+        }
+      } catch (err) {
+        console.error("Encryption error:", err);
+        setstatus("Failed to encrypt data.");
+      } finally {
         setLoading(false);
       }
     }

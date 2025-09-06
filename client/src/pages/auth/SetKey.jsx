@@ -90,8 +90,6 @@ const SetKey = () => {
       setstatus("");
       setSecretKey(key);
       const cipher = await encrypt("this is a test data", key);
-      console.log(cipher);
-
       localStorage.setItem("test-data", cipher);
       setKeyArray(["", "", "", "", "", ""]);
       const response = await isKeySet();
@@ -113,7 +111,7 @@ const SetKey = () => {
               value={digit}
               onKeyDown={(e) => handleKey(e, idx)}
               onChange={(e) => handleInput(e, idx)}
-              className="max-w-12 text-lg border-2 border-slate-600 py-3 text-center focus:border-blue-700 outline-0 rounded-lg"
+              className="max-w-9 md:max-w-12 text-lg border-2 border-slate-600 py-2 text-center focus:border-blue-700 outline-0 rounded-lg"
             ></input>
           ))}
         </div>
@@ -128,10 +126,10 @@ const SetKey = () => {
         </button>
         <div className="flex justify-center items-center">
           <p className="text-gray-700 text-sm inline text-center">
-            Note: Your key is never stored on our servers. Only you know it. If
-            you lose or forget your key, we cannot help you recover it, and you
-            will lose access to your data. Please write it down and keep it in a
-            safe place.
+            <span className="text-red-600">Warning</span>: Your key is never
+            stored on our servers. Only you know it. If you lose or forget your
+            key, we cannot help you recover it, and you will lose access to your
+            data. Please write it down and keep it in a safe place.
           </p>
         </div>
       </div>
