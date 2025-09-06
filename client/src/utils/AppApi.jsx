@@ -123,3 +123,16 @@ export const updateLastViewed = async (sectionId) => {
     console.log("Cant Get To Backend", +err);
   }
 };
+
+export const changeUserName = async (updatedName) => {
+  try {
+    const { data } = await axios.put(
+      `${apiUrl}/api/auth/changeusername`,
+      { updatedName },
+      { withCredentials: true }
+    );
+    return data;
+  } catch (error) {
+    return { error: error.response.data.reply, success: false };
+  }
+};
