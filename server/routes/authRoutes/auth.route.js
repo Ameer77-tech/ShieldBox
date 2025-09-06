@@ -5,6 +5,8 @@ import {
   verify,
   setKey,
   deleteAccount,
+  changeUserName,
+  changePassword,
 } from "../../controllers/auth.controller.js";
 import express from "express";
 import authorizeToken from "../../middlewares/authorizeToken.js";
@@ -94,5 +96,7 @@ router.get("/checkauth", authorizeToken, async (req, res) => {
 });
 router.put("/setkey", authorizeToken, setKey);
 router.post("/deleteaccount", authorizeToken, deleteAccount);
+router.put("/changeusername", authorizeToken, changeUserName)
+router.put("/changepassword", authorizeToken, changePassword)
 
 export default router;

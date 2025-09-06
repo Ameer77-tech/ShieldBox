@@ -40,7 +40,7 @@ const Summary = ({ data, important, recentViewedSections }) => {
         />
       </div>
       <div className="p-5 shadow-xl">
-        <h2 className="text-[#6a6a6b] mb-10 font-semibold text-sm">
+        <h2 className="text-xs opacity-60 mb-10 tracking-wide">
           Recently Viewed
         </h2>
         <div className="flex flex-wrap flex-col justify-center items-center shrink-0 gap-5 overflow-y-auto md:h-50 h-60">

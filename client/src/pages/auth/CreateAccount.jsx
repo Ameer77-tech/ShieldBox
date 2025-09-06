@@ -71,11 +71,11 @@ const CreateAccount = () => {
       } else {
         seterror(false);
         setstatus(res.reply);
-        setloading(loading);
         navigate("/verify", {
           replace: true,
           state: { fromRegister: true, email: formData.email },
         });
+        setloading(false);
       }
     }
   };

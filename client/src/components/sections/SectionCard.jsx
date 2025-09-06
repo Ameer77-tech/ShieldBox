@@ -42,6 +42,7 @@ export default function SectionCard({
         await renameSection(id, newName);
         await getSections();
         setisEditing("");
+        setNewName(newName);
         setLoading(false);
       }
     }
@@ -95,9 +96,9 @@ export default function SectionCard({
           <p className="text-sm text-gray-500 mb-4">{itemsPresent} items</p>
           <div className="card-actions justify-center">
             <Link to={`/sections/${name}/${id}`}>
-              <button 
-              disabled={loading}
-              className="btn btn-primary btn-md">View</button>
+              <button disabled={loading} className="btn btn-primary btn-md">
+                View
+              </button>
             </Link>
             {isEditing ? (
               <button
@@ -118,7 +119,7 @@ export default function SectionCard({
             )}
             {isEditing ? (
               <button
-              disabled={loading}
+                disabled={loading}
                 onClick={() => setisEditing("")}
                 className="btn btn-error btn-md"
               >

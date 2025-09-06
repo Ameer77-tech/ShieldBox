@@ -174,7 +174,6 @@ export const setKey = async (req, res) => {
   const email = req.user;
   console.log(email);
   try {
-
     await userModel.findOneAndUpdate(
       { email },
       {
@@ -227,6 +226,70 @@ export const deleteAccount = async (req, res) => {
             .status(500)
             .json({ reply: "Internal Server Error", success: false });
         }
+      }
+    }
+  } catch (err) {
+    res.status(500).json({ reply: "Internal Server Error", success: false });
+  }
+};
+
+export const changeUserName = async (req, res) => {
+  if (req.body === undefined)
+    return res
+      .status(401)
+      .json({ reply: "Body must'nt be Empty", success: false });
+  const { updatedName } = req.body;
+  const email = req.user;
+
+  try {
+    await userModel.findOneAndUpdate(
+      { email },
+      {
+        $set: {
+          name: updatedName,
+        },
+      },
+      { new: true }
+    );
+
+    res.status(200).json({ reply: "USERNAME UPDATED", success: true });
+  } catch (err) {
+    res.status(500).json({ reply: "Internal Server Error", success: false });
+  }
+};
+
+export const changePassword = async (req, res) => {
+  if (req.body === undefined)
+    return res
+      .status(401)
+      .json({ reply: "Body must'nt be Empty", success: false });
+
+  const { current, newPassword } = req.body;
+  const email = req.user;
+
+  try {
+    const { password } = await userModel.findOne({ email });
+    const isMatch = await bcrypt.compare(current, password);
+    if (!isMatch) {
+      return res
+        .status(500)
+        .json({ reply: "Incorrect Password", success: false });
+    } else {
+      const hashed = await bcrypt.hash(newPassword, 10);
+      try {
+        await userModel.findOneAndUpdate(
+          { email },
+          {
+            $set: {
+              password: hashed,
+            },
+          }
+        );
+        res.status(200).json({ reply: "PASSWORD UPDATED", success: true });
+      } catch (err) {
+        res
+          .status(500)
+          .json({ reply: "Internal Server Error", success: false });
       }
     }
   } catch (err) {
