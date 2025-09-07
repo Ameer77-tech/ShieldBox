@@ -22,10 +22,12 @@ const PopUp = ({ onClose }) => {
     try {
       const response = await changeUserName(updatedName);
       if (response.success) {
-        setstatus("UserName Updated Successfully");
+        setstatus(
+          "UserName Updated Successfully, if not please visit home page once"
+        );
         setTimeout(() => {
           onClose();
-        }, 1000);
+        }, 3000);
       } else {
         setstatus(response.error || "Failed to update UserName");
       }
@@ -85,7 +87,7 @@ const PopUp = ({ onClose }) => {
             Update
           </button>
         </div>
-        <p className="text-center text-white text-lg font-semibold">{status}</p>
+        <p className="text-center text-white text-lg">{status}</p>
       </motion.div>
     </div>
   );

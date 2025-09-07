@@ -136,3 +136,16 @@ export const changeUserName = async (updatedName) => {
     return { error: error.response.data.reply, success: false };
   }
 };
+
+export const changePassword = async ({ current, newPassword }) => {
+  try {
+    const { data } = await axios.put(
+      `${apiUrl}/api/auth/changepassword`,
+      { current, newPassword },
+      { withCredentials: true }
+    );
+    return data;
+  } catch (error) {
+    return { error: error.response.data.reply, success: false };
+  }
+};

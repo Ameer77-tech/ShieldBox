@@ -32,12 +32,15 @@ export default function InsideSection() {
     const response = await checkAuth();
     if (!response.success) {
       navigate("/login");
+      setloading(false);
     } else if (!response.isKeySet) {
       navigate("/setkey");
+      setloading(false);
     } else {
       const savedKey = sessionStorage.getItem("secretkey");
       if (!savedKey) {
         navigate("/enterkey");
+        setloading(false);
       } else {
         getFields();
         updateLastViewed(id);
@@ -85,6 +88,7 @@ export default function InsideSection() {
       setstatus("Failed to decrypt data");
     } finally {
       setloading(false);
+      setLoading(false);
     }
   };
 
@@ -102,7 +106,9 @@ export default function InsideSection() {
 
       <div className="p-6 w-full md:ml-76">
         {Loading && (
-          <span className="loading loading-spinner loading-xl absolute left-2/4 -translate-x-2/4 top-2/4"></span>
+          <div className="min-h-screen grid place-items-center bg-black/20 fixed inset-0 z-50">
+            <span className="loading loading-spinner loading-xl fixed left-2/4 -translate-x-2/4 top-2/4"></span>
+          </div>
         )}
         <AnimatePresence>
           {showForm && (
