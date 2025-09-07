@@ -85,95 +85,107 @@ const ItemField = ({
   }, [isEditing, name, value, itemId]);
 
   return (
-    <motion.tr
-      initial={{ opacity: 0, scale: 0.99, y: -20 }}
-      whileHover={{ scale: 1.01 }}
-      whileInView={{ scale: 1, opacity: 1, y: 0 }}
-      transition={{ whileInView: { ease: "easeInOut", duration: 0.7 } }}
+    <motion.div
+      layout
+      initial={{ opacity: 0, scale: 0.98, y: 20 }}
+      whileInView={{ opacity: 1, scale: 1, y: 0 }}
+      whileHover={{
+        scale: 1.02,
+        y: -2,
+        boxShadow: "0 8px 20px rgba(0,0,0,0.15)",
+      }}
+      transition={{ duration: 0.5, ease: "easeOut" }}
       viewport={{ once: true }}
+      className="bg-base-200 rounded-xl shadow-md p-4 flex flex-col justify-between md:min-w-[220px] md:max-w-xs w-full mx-auto"
     >
-      {isEditing ? (
-        <td>
+      {/* Name & Value */}
+      <div className="flex flex-col gap-2">
+        {isEditing ? (
           <input
-            onChange={(e) =>
-              setformData((prev) => ({
-                ...prev,
-                [e.target.name]: e.target.value,
-              }))
-            }
             type="text"
-            value={formData.updateName || ""}
             name="updateName"
-            className="p-2 text-center outline-none border-b-2 border-b-accent"
-          />
-        </td>
-      ) : (
-        <td className="font-medium">{name}</td>
-      )}
-
-      {isEditing ? (
-        <td>
-          <input
+            value={formData.updateName || ""}
             onChange={(e) =>
               setformData((prev) => ({
                 ...prev,
                 [e.target.name]: e.target.value,
               }))
             }
-            type="text"
-            value={formData.updateValue}
-            name="updateValue"
-            className="p-2 text-center outline-none border-b-2 border-b-accent"
+            placeholder="Name"
+            className="input input-bordered input-sm w-full"
           />
-        </td>
-      ) : (
-        <td className="font-medium">{value}</td>
-      )}
-
-      <td>
-        {isEditing ? (
-          <button
-            onClick={() => handleEdit("ok")}
-            className="btn btn-xs btn-neutral mr-2 text-blue-600"
-            disabled={loading}
-          >
-            {loading ? (
-              <span className="loading loading-spinner loading-xs"></span>
-            ) : (
-              "Ok"
-            )}
-          </button>
         ) : (
-          <button
-            onClick={() => handleEdit("edit")}
-            className="btn btn-xs btn-neutral mr-2"
-          >
-            <FaEdit />
-          </button>
+          <h3 className="font-semibold text-lg truncate" title={name}>
+            {name}
+          </h3>
         )}
 
         {isEditing ? (
-          <button
-            onClick={() => setisEditing("")}
-            className="btn btn-xs btn-error"
-          >
-            Cancel
-          </button>
+          <input
+            type="text"
+            name="updateValue"
+            value={formData.updateValue || ""}
+            onChange={(e) =>
+              setformData((prev) => ({
+                ...prev,
+                [e.target.name]: e.target.value,
+              }))
+            }
+            placeholder="Value"
+            className="input input-bordered input-sm w-full"
+          />
         ) : (
-          <button
-            disabled={loading}
-            onClick={() => handleItemDelete(itemId, sectionId)} // ✅ pass itemId, not name
-            className="btn btn-xs btn-error"
-          >
-            {loading ? (
-              <span className="loading loading-spinner loading-xs"></span>
-            ) : (
-              <FaTrash />
-            )}
-          </button>
+          <p className="text-gray-500 truncate" title={value}>
+            {value}
+          </p>
         )}
-      </td>
-    </motion.tr>
+      </div>
+
+      {/* Action Buttons */}
+      <div className="flex gap-2 mt-3 justify-end flex-wrap">
+        {isEditing ? (
+          <>
+            <button
+              onClick={() => handleEdit("ok")}
+              className="btn btn-success btn-xs"
+              disabled={loading}
+            >
+              {loading ? (
+                <span className="loading loading-spinner loading-xs"></span>
+              ) : (
+                "Ok"
+              )}
+            </button>
+            <button
+              onClick={() => setisEditing("")}
+              className="btn btn-error btn-xs"
+            >
+              Cancel
+            </button>
+          </>
+        ) : (
+          <>
+            <button
+              onClick={() => handleEdit("edit")}
+              className="btn btn-primary btn-xs"
+            >
+              <FaEdit />
+            </button>
+            <button
+              disabled={loading}
+              onClick={() => handleItemDelete(itemId, sectionId)}
+              className="btn btn-error btn-xs"
+            >
+              {loading ? (
+                <span className="loading loading-spinner loading-xs"></span>
+              ) : (
+                <FaTrash />
+              )}
+            </button>
+          </>
+        )}
+      </div>
+    </motion.div>
   );
 };
 
