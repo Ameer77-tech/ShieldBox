@@ -119,8 +119,8 @@ export default function InsideSection() {
               </motion.p>
             </h1>
             <motion.div
-              initial={{ x: "-100%" }}
-              animate={{ x: 0 }}
+              initial={{ x: "-100%", opacity: 0 }}
+              animate={{ x: 0, opacity: 1 }}
               transition={{ ease: "easeInOut", duration: 0.3, delay: 0.7 }}
             >
               <FaFolderOpen size={20} />

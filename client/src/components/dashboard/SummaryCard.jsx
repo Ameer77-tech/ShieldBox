@@ -21,7 +21,7 @@ const SummaryCard = (props) => {
   }, [props.count, props.index, count]);
 
   return (
-    <div className="card md:w-96 bg-base-100 md:card-xl shadow-sm">
+    <div className="card md:w-89 bg-base-100 md:card-xl shadow-sm">
       <div className="card-body">
         <div className="overflow-hidden">
           <motion.h2

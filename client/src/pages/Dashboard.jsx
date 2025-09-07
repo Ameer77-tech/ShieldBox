@@ -8,6 +8,7 @@ import { secretKeyContext } from "../contexts/KeyContext";
 import { FiLogOut } from "react-icons/fi";
 import { userContext } from "../contexts/UserContext";
 import getData from "../utils/getDataFromStorage";
+import { motion } from "motion/react";
 
 const Dashboard = () => {
   const navigate = useNavigate();
@@ -98,18 +99,40 @@ const Dashboard = () => {
   }
 
   return (
-    <div className="md:flex md:justify-between md:items-center relative min-h-screen">
-      <NavBar userName={user.name} />
-      <div className="w-full min-h-screen flex flex-col md:ml-76 md:p-2 p-5">
-        <div className="flex justify-between items-center px-5 md:h-40 pt-5 mb-10">
+    <div className="md:flex md:justify-between md:items-start relative min-h-screen bg-base-100">
+      {/* Sidebar */}
+      <div
+        className="shadow-lg"
+      >
+        <NavBar userName={user.name} />
+      </div>
+
+      {/* Main Content */}
+      <div className="w-full min-h-screen flex flex-col md:ml-76 md:p-6 p-4">
+        {/* Top Bar */}
+        <motion.div
+          initial={{ y: -50, opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          transition={{ duration: 0.7, ease: "easeOut" }}
+          className="flex justify-between items-center bg-base-200 shadow-sm rounded-xl p-4 md:h-32 mb-8"
+        >
           <MainHeading />
-          <button onClick={handleLogout} className="btn btn-outline btn-error md:flex hidden">
-            <FiLogOut />
+
+          <motion.button
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+            onClick={handleLogout}
+            className="btn btn-error btn-outline hidden md:flex gap-2"
+          >
+            <FiLogOut className="text-lg" />
             Logout
-          </button>
-        </div>
-        <div>
-          {" "}
+          </motion.button>
+        </motion.div>
+
+        {/* Summary Section */}
+        <div
+          className="w-full"
+        >
           <Summary
             data={totalCreated}
             important={important}

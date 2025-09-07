@@ -31,7 +31,7 @@ const NavBar = ({ name }) => {
     <>
       <button
         className="btn z-120 btn-square btn-ghost md:hidden fixed top-5 left-5"
-        onClick={() => setisNavOpen((prev) => !prev)} // Toggle navbar visibility
+        onClick={() => setisNavOpen(!isNavOpen)} // Toggle navbar visibility
       >
         <FiMenu size={24} />
       </button>
