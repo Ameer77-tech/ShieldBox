@@ -71,7 +71,8 @@ const Verify = () => {
         className="card bg-base-300 rounded-lg justify-evenly md:px-10 md:py-10 md:w-2/6 w-80 px-5 py-7 gap-10 items-center"
       >
         <h1 className="text-xl text-center">
-          Enter the Verification Code Sent To Your Email <span className="text-sky-500">{email}</span>
+          Enter the Verification Code Sent To Your Email{" "}
+          <span className="text-sky-500">{email}</span>
         </h1>
         <input
           onChange={(e) => setcode(e.target.value)}
@@ -90,7 +91,14 @@ const Verify = () => {
         </button>
         <p>
           Did not receive the code,{" "}
-          <button className="text-[#1d4e7e] cursor-pointer hover:underline">
+          <button
+            type="button"
+            onClick={() => {
+              setstatus("Feature coming soon");
+              seterror(false);
+            }}
+            className="text-[#1d4e7e] cursor-pointer hover:underline"
+          >
             Resend code
           </button>
         </p>

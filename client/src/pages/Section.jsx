@@ -5,21 +5,20 @@ import { useContext, useEffect, useState } from "react";
 import { checkAuth } from "../utils/AuthApi";
 import { secretKeyContext } from "../contexts/KeyContext";
 import { AnimatePresence, motion } from "motion/react";
-import ItemField from "../components/sections/ItemField";
-import { getItems, updateLastViewed } from "../utils/AppApi";
+import ItemCard from "../components/sections/ItemField" // updated ItemField → ItemCard
 import AddItemForm from "../components/sections/AddItemForm";
+import { getItems, updateLastViewed } from "../utils/AppApi";
 import { decrypt } from "../utils/EncryptDecrypt";
 
 export default function InsideSection() {
   const [Items, setItems] = useState([]);
-  const [Loading, setloading] = useState(false);
+  const [Loading, setLoading] = useState(false);
   const { secretKey, setSecretKey } = useContext(secretKeyContext);
   const [showForm, setShowForm] = useState(false);
   const params = useParams();
   const id = params.sectionid;
   const name = params.sectionname;
   const navigate = useNavigate();
-  const [loading, setLoading] = useState(true);
   const [isEditing, setisEditing] = useState("");
   const [status, setstatus] = useState("");
 
@@ -42,9 +41,9 @@ export default function InsideSection() {
         getFields();
         updateLastViewed(id);
         setSecretKey(savedKey);
-        setLoading(false);
       }
     }
+    setLoading(false);
   };
 
   const getFields = async () => {
@@ -53,26 +52,17 @@ export default function InsideSection() {
       navigate("/enterkey");
       return;
     }
-    setloading(true);
+    setLoading(true);
     try {
       const response = await getItems(id);
-
       if (!response.success) {
         console.log("Server Error");
-        setloading(false);
+        setLoading(false);
         return;
       }
 
-      let { items } = response;
-      if (!items || items.length < 1) {
-        setstatus("Empty");
-        setloading(false);
-        return;
-      }
-
-      // 🔓 Decrypt all items
       const decryptedItems = await Promise.all(
-        items.map(async (item) => ({
+        response.items.map(async (item) => ({
           ...item,
           itemName: await decrypt(item.itemName, key),
           itemValue: await decrypt(item.itemValue, key),
@@ -80,30 +70,26 @@ export default function InsideSection() {
       );
 
       setItems(decryptedItems);
+      if (decryptedItems.length === 0) setstatus("No items added yet.");
     } catch (err) {
       console.error("Decryption error:", err);
       setstatus("Failed to decrypt data");
     } finally {
-      setloading(false);
+      setLoading(false);
     }
   };
 
-  if (loading) {
-    return (
-      <div className="min-h-screen grid place-items-center">
-        <span className="loading loading-ring h-20 w-20"></span>
-      </div>
-    );
-  }
-
   return (
-    <div className="md:flex md:justify-between md:items-center">
+    <div className="md:flex md:justify-between md:items-start min-h-screen">
       <NavBar />
 
       <div className="p-6 w-full md:ml-76">
         {Loading && (
-          <span className="loading loading-spinner loading-xl absolute left-2/4 -translate-x-2/4 top-2/4"></span>
+          <div className="min-h-screen grid place-items-center bg-black/20 fixed inset-0 z-50">
+            <span className="loading loading-spinner loading-xl fixed left-2/4 -translate-x-2/4 top-2/4"></span>
+          </div>
         )}
+
         <AnimatePresence>
           {showForm && (
             <AddItemForm
@@ -132,15 +118,13 @@ export default function InsideSection() {
                 {name}
               </motion.p>
             </h1>
-            <div className="overflow-hidden">
-              <motion.div
-                initial={{ x: "-100%" }}
-                animate={{ x: 0 }}
-                transition={{ ease: "easeInOut", duration: 0.3, delay: 0.7 }}
-              >
-                <FaFolderOpen size={20} />
-              </motion.div>
-            </div>
+            <motion.div
+              initial={{ x: "-100%", opacity: 0 }}
+              animate={{ x: 0, opacity: 1 }}
+              transition={{ ease: "easeInOut", duration: 0.3, delay: 0.7 }}
+            >
+              <FaFolderOpen size={20} />
+            </motion.div>
           </div>
 
           <button
@@ -152,40 +136,31 @@ export default function InsideSection() {
           </button>
         </div>
 
-        {/* Items Table */}
-        {Items.length < 1 && (
-          <p className="text-gray-700 text-lg top-2/4 absolute left-2/4">
-            {status}
-          </p>
+        {/* Items Grid */}
+        {Items.length === 0 ? (
+          <p className="text-gray-700 text-lg text-center mt-10">{status}</p>
+        ) : (
+          <motion.div
+            layout
+            className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4"
+          >
+            <AnimatePresence>
+              {Items.map((item, idx) => (
+                <ItemCard
+                  key={item.itemId}
+                  itemId={item.itemId}
+                  name={item.itemName}
+                  value={item.itemValue}
+                  sectionId={id}
+                  index={idx}
+                  isEditing={isEditing === idx}
+                  setisEditing={setisEditing}
+                  getFields={getFields}
+                />
+              ))}
+            </AnimatePresence>
+          </motion.div>
         )}
-        <div className="overflow-x-auto relative">
-          <table className="table w-full overflow-hidden">
-            <thead>
-              <tr>
-                <th>Name</th>
-                <th>Value</th>
-                <th>Actions</th>
-              </tr>
-            </thead>
-            <motion.tbody>
-              <AnimatePresence>
-                {Items.map((item, idx) => (
-                  <ItemField
-                    key={item.itemId}
-                    itemId={item.itemId}
-                    name={item.itemName}
-                    value={item.itemValue}
-                    sectionId={id}
-                    index={idx}
-                    isEditing={isEditing === idx}
-                    setisEditing={setisEditing}
-                    getFields={getFields}
-                  />
-                ))}
-              </AnimatePresence>
-            </motion.tbody>
-          </table>
-        </div>
       </div>
     </div>
   );

@@ -88,7 +88,7 @@ const EnterKey = () => {
     <div className="flex justify-center items-center min-h-screen select-none">
       <div className="card bg-base-300 rounded-lg justify-evenly md:px-10 md:py-10 md:w-2/6 w-[90%] px-5 py-7 gap-10 items-center">
         <h1 className="text-xl font-[rajdhani] font-bold text-center">
-          Enter the registered secret key to continue
+          Enter the unlock key to continue
         </h1>
         <div className="flex justify-between w-full items-center ">
           {keyArray.map((digit, idx) => (

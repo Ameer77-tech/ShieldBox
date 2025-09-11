@@ -129,7 +129,7 @@ const Decrypt = () => {
                 isValid ? "text-green-500" : "text-red-600"
               } font-bold text-lg`}
             >
-              {isValid ? "✅ Decryption Complete" : "❌ Wrong Key"}
+              {isValid ? "✅ Decryption Complete" : ""}
             </p>
 
             {isValid && (

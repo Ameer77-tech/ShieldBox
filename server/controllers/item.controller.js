@@ -106,7 +106,6 @@ export const deleteItem = async (req, res) => {
     const _id = user._id;
 
     try {
-      // ✅ delete by itemId instead of itemName
       await sectionModel.findOneAndUpdate(
         { createdBy: _id, _id: sectionId },
         {
@@ -189,8 +188,6 @@ export const updateItem = async (req, res) => {
       },
       { new: true }
     );
-
-    // ✅ Log activity
     try {
       await activityModel.create({
         userId: _id,

@@ -1,9 +1,11 @@
-import React from "react";
+import React, { use } from "react";
 import PopUp from "./PopUp";
 import { useState } from "react";
 import { AnimatePresence } from "motion/react";
+import { useNavigate } from "react-router-dom";
 
 const Danger = () => {
+  const navigate = useNavigate();
   const [isOpen, setIsOpen] = useState(false);
   const onClose = () => {
     setIsOpen(false);
@@ -14,7 +16,12 @@ const Danger = () => {
         <h1 className="text-2xl font-bold text-red-600">Danger Zone</h1>
         <div className="mt-10 flex flex-col gap-1">
           <div className="flex items-center justify-center p-2">
-            <button className="btn btn-dash btn-error btn-wide">
+            <button
+              onClick={() => {
+                navigate("/resetaccount");
+              }}
+              className="btn btn-dash btn-error btn-wide"
+            >
               Reset My Data
             </button>
           </div>

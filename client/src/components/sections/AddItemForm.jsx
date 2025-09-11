@@ -139,7 +139,9 @@ const AddItemForm = ({ setShowForm, getFields, sectionId }) => {
         </div>
 
         {/* Submit */}
-        <button className="btn btn-primary w-full" type="submit">
+        <button 
+        disabled={loading}
+        className="btn btn-primary w-full" type="submit">
           {loading ? (
             <span className="loading loading-spinner loading-md"></span>
           ) : (
