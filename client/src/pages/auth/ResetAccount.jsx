@@ -35,11 +35,18 @@ const ResetAccount = () => {
           reset your key. If you can’t remember it, you can choose to reset your
           account — but this will permanently delete all your stored data.
         </h1>
-        <button className="btn btn-soft btn-error">Reset My Account</button>
+        <button
+          onClick={() => {
+            alert("Feature coming soon");
+          }}
+          className="btn btn-soft btn-error"
+        >
+          Reset My Account
+        </button>
       </div>
       <button
         className="btn btn-circle btn-ghost absolute top-5 left-5"
-        onClick={() => navigate("/enterkey")} // Navigate back to the previous page
+        onClick={() => navigate(-1)} // Navigate back to the previous page
       >
         <FiArrowLeft size={24} />
       </button>

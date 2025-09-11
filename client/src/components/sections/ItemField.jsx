@@ -45,7 +45,6 @@ const ItemField = ({
       try {
         setloading(true);
 
-        // ✅ get key from sessionStorage
         const key = sessionStorage.getItem("secretkey");
         if (!key) {
           console.error("No encryption key found");
@@ -53,7 +52,6 @@ const ItemField = ({
           return;
         }
 
-        // ✅ Encrypt before sending
         const encryptedData = {
           itemId: formData.itemId,
           updateName: await encrypt(formData.updateName, key),

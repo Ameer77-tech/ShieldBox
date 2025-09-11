@@ -67,6 +67,10 @@ const CreateAccount = () => {
       if (!res.success) {
         seterror(true);
         setstatus(res.reply);
+        setTimeout(() => {
+          seterror(false);
+          setstatus("");
+        }, 3000);
         setloading(false);
       } else {
         seterror(false);
@@ -207,7 +211,7 @@ const CreateAccount = () => {
           </Link>
         </p>
         <p
-          className={`absolute bottom-10 ${
+          className={`absolute md:bottom-10 bottom-3 ${
             error ? "text-red-600" : "text-[#1d4f7f]"
           }`}
         >
