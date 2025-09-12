@@ -28,7 +28,9 @@ export const register = async (req, res) => {
     const hashedPassword = await bcrypt.hash(password, 10);
     try {
       const result = Math.floor(100000 + Math.random() * 900000);
+      console.log(name, email, password);
       await sendCode(email, result);
+      console.log("Email sent");
       const code = result.toString();
       try {
         const pendingUser = await pendingUserModel.findOneAndUpdate(
@@ -46,6 +48,7 @@ export const register = async (req, res) => {
             runValidators: true,
           }
         );
+        console.log("Pending added");
         res.status(200).json({ reply: "Pending user added", success: true });
       } catch (err) {
         res
