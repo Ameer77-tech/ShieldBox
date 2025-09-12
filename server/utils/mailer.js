@@ -40,7 +40,10 @@ export const sendCode = async (to, code) => {
       </div>
     `, // message body as HTML
   };
+  console.log("INSIDE MAILER");
 
   const info = await transporter.sendMail(mailOptions);
+  console.log(info);
+
   return info;
 };
