@@ -96,7 +96,7 @@ export const login = async (req, res) => {
         httpOnly: true,
         secure: true,
         maxAge: 7 * 24 * 60 * 60 * 1000, //7days
-        sameSite: "lax",
+        sameSite: "none",
       });
       //setcookie
       res.status(200).json({ reply: "User is authorized", success: true });
@@ -148,7 +148,7 @@ export const verify = async (req, res) => {
           httpOnly: true,
           secure: true,
           expires: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000), // 7 days from now
-          sameSite: "lax",
+          sameSite: "none",
         });
         res
           .status(200)
