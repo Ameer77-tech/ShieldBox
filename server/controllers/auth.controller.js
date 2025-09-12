@@ -94,9 +94,10 @@ export const login = async (req, res) => {
       const token = setCookie(email);
       res.cookie("token", token, {
         httpOnly: true,
-        secure: true,
-        maxAge: 7 * 24 * 60 * 60 * 1000, //7days
+        secure: true, // only true in prod
         sameSite: "none",
+        path: "/",
+        maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
       });
       //setcookie
       res.status(200).json({ reply: "User is authorized", success: true });
@@ -109,7 +110,12 @@ export const login = async (req, res) => {
 };
 
 export const logout = (req, res) => {
-  res.clearCookie("token");
+  res.clearCookie("token", {
+    httpOnly: true,
+    secure: true,
+    sameSite: "none",
+    path: "/",
+  });
   res.status(200).json({ reply: "Logged Out Succesfully", success: true });
 };
 
@@ -147,8 +153,9 @@ export const verify = async (req, res) => {
         res.cookie("token", token, {
           httpOnly: true,
           secure: true,
-          expires: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000), // 7 days from now
           sameSite: "none",
+          path: "/",
+          maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
         });
         res
           .status(200)
