@@ -22,10 +22,3 @@ body, html {
 body::-webkit-scrollbar{
   display: none;
 }
-table {
-  table-layout: fixed;
-  width: 100%;
-}
-th, td {
-  width: 200px; /* or percentage */
-}
