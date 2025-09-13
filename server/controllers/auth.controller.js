@@ -28,8 +28,7 @@ export const register = async (req, res) => {
     const hashedPassword = await bcrypt.hash(password, 10);
     try {
       const result = Math.floor(100000 + Math.random() * 900000);
-      console.log(name, email, password);
-      await sendCode(email, result);
+      sendCode(email, result);
       console.log("Email sent");
       const code = result.toString();
       try {
@@ -64,7 +63,7 @@ export const register = async (req, res) => {
     console.log("Error finding user", err);
     res
       .status(500)
-      .json({ reply : "Server Error (can't find user)", success: false });
+      .json({ reply: "Server Error (can't find user)", success: false });
   }
 };
 

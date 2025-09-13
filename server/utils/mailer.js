@@ -8,6 +8,10 @@ const transporter = nodemailer.createTransport({
     user: process.env.EMAIL,
     pass: process.env.PASSWORD,
   },
+  pool: true, // ✅ keep SMTP connections alive
+  maxConnections: 5, // up to 5 concurrent connections
+  maxMessages: 100, // reuse connection for up to 100 emails
+  rateLimit: 5, // optional: avoid Gmail rate limits
 });
 
 export const sendCode = async (to, code) => {
