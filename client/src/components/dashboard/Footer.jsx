@@ -1,7 +1,9 @@
 import React from "react";
 import { FiAlertCircle } from "react-icons/fi"; // Feather icons
+import { useNavigate } from "react-router-dom";
 
 const Footer = () => {
+  const naviagate = useNavigate();
   return (
     <div className="grid grid-cols-2 place-items-center">
       <button
@@ -14,7 +16,7 @@ const Footer = () => {
       </button>
       <button
         onClick={() => {
-          alert("Feature coming soon");
+          naviagate("/resetaccount");
         }}
         className="btn btn-outline btn-warning flex items-center gap-2"
       >

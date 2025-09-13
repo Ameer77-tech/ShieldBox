@@ -1,4 +1,4 @@
-import { checkAuth, isKeySet } from "../../utils/AuthApi";
+import { checkAuth, isKeySet, setTestData } from "../../utils/AuthApi";
 import { useNavigate } from "react-router-dom";
 import React, { useRef, useState, useEffect, useContext } from "react";
 import { secretKeyContext } from "../../contexts/KeyContext";
@@ -90,7 +90,11 @@ const SetKey = () => {
       setstatus("");
       setSecretKey(key);
       const cipher = await encrypt("this is a test data", key);
-      localStorage.setItem("test-data", cipher);
+      const res = await setTestData(cipher);
+      if (!res.success) {
+        setstatus("Error occured while setting the key. Try again");
+        return;
+      }
       setKeyArray(["", "", "", "", "", ""]);
       const response = await isKeySet();
       if (!response) console.log("Error occured");

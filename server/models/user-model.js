@@ -25,6 +25,10 @@ const userSchema = new mongoose.Schema(
       ref: "section",
       default: [],
     },
+    testString: {
+      type: String,
+      default: "",
+    },
   },
   { timestamps: true }
 );

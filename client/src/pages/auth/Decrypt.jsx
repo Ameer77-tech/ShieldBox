@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { encrypt, decrypt } from "../../utils/EncryptDecrypt";
 import { motion } from "motion/react";
+import { getTestData } from "../../utils/AuthApi";
 
 const Decrypt = () => {
   const [loading, setLoading] = useState(true); // State for loading process
@@ -36,15 +37,13 @@ const Decrypt = () => {
 
         setTimeout(async () => {
           try {
-            const cipher = localStorage.getItem("test-data");
+            const cipher = await getTestData();
             if (!cipher) {
-              console.error("No cipher text found in localStorage!");
+              console.error("No cipher text found!");
               setLoading(false);
               return;
             }
-
-            const testData = await decrypt(cipher, key);
-            console.log("Decrypted:", testData);
+            await decrypt(cipher.encryptedString, key);
             setisValid(true);
             sessionStorage.setItem("secretkey", key);
           } catch (err) {

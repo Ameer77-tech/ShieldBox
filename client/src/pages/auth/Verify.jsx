@@ -110,6 +110,11 @@ const Verify = () => {
           {status}
         </p>
       </form>
+      <p className="text-sm text-gray-600 mt-2">
+        ⚠️ The verification code email may land in your{" "}
+        <span className="font-semibold text-red-500">Spam</span> folder. Please
+        check there if you don’t see it in your inbox.
+      </p>
     </div>
   );
 };

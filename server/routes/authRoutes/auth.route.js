@@ -7,6 +7,9 @@ import {
   deleteAccount,
   changeUserName,
   changePassword,
+  setTestData,
+  getTestData,
+  resetAccount,
 } from "../../controllers/auth.controller.js";
 import express from "express";
 import authorizeToken from "../../middlewares/authorizeToken.js";
@@ -98,5 +101,8 @@ router.put("/setkey", authorizeToken, setKey);
 router.post("/deleteaccount", authorizeToken, deleteAccount);
 router.put("/changeusername", authorizeToken, changeUserName)
 router.put("/changepassword", authorizeToken, changePassword)
+router.post("/settestdata",authorizeToken, setTestData)
+router.get("/gettestdata",authorizeToken, getTestData)
+router.delete("/resetaccount", authorizeToken, resetAccount)
 
 export default router;

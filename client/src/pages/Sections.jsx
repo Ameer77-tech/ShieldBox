@@ -22,6 +22,7 @@ const Sections = () => {
   const [loading, setLoading] = useState(true);
   const [sectionsLoading, setSectionsLoading] = useState(false);
   const [allSections, setAllSections] = useState([]);
+  const [copySections, setcopySections] = useState([]);
   const [isEditing, setisEditing] = useState("");
   useEffect(() => {
     checkAuthorization();
@@ -61,6 +62,7 @@ const Sections = () => {
       });
       setSectionsLoading(false);
       setAllSections(existingSections);
+      setcopySections(existingSections);
     } else console.log("Error fetching sections");
   };
 
@@ -99,11 +101,15 @@ const Sections = () => {
           )}
         </AnimatePresence>
 
-        <div className="flex items-center ml-10 md:ml-0" >
+        <div className="flex items-center ml-10 md:ml-0">
           <Link to="/dashboard">
             <FaChevronLeft size={25} className="hover:opacity-80" />
           </Link>
-          <Search />
+          <Search
+            allSections={allSections}
+            setAllSections={setAllSections}
+            copySections={copySections}
+          />
         </div>
         <div className="flex justify-between items-center mt-13">
           <p className="font-medium text-3xl">My Sections</p>

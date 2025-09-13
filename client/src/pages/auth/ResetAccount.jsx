@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { checkAuth } from "../../utils/AuthApi";
+import { checkAuth, resetAccount } from "../../utils/AuthApi";
 import { useNavigate } from "react-router-dom";
 import { FiArrowLeft } from "react-icons/fi";
 
@@ -20,6 +20,19 @@ const ResetAccount = () => {
     }
   };
 
+  const reset = async () => {
+    const ok = window.confirm(
+      "Are you sure you want to reset your account? This action is irreversible and will permanently delete all your stored data."
+    );
+    if (!ok) return;
+    try {
+      await resetAccount();
+      navigate("/dashboard");
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
   if (loading) {
     return (
       <div className="min-h-screen grid place-items-center">
@@ -37,7 +50,7 @@ const ResetAccount = () => {
         </h1>
         <button
           onClick={() => {
-            alert("Feature coming soon");
+            reset();
           }}
           className="btn btn-soft btn-error"
         >
@@ -46,7 +59,7 @@ const ResetAccount = () => {
       </div>
       <button
         className="btn btn-circle btn-ghost absolute top-5 left-5"
-        onClick={() => navigate(-1)} // Navigate back to the previous page
+        onClick={() => navigate(-1)}
       >
         <FiArrowLeft size={24} />
       </button>

@@ -141,3 +141,40 @@ export const deleteAccount = async (password) => {
     };
   }
 };
+
+export const setTestData = async (encryptedString) => {
+  try {
+    const response = await axios.post(
+      `${apiUrl}/api/auth/settestdata`,
+      { encryptedString },
+      {
+        withCredentials: true,
+      }
+    );
+    return response.data;
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+export const getTestData = async () => {
+  try {
+    const response = await axios.get(`${apiUrl}/api/auth/gettestdata`, {
+      withCredentials: true,
+    });
+    return response.data;
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+export const resetAccount = async () => {
+  try {
+    const response = await axios.delete(`${apiUrl}/api/auth/resetaccount`, {
+      withCredentials: true,
+    });
+    return response.data;
+  } catch (err) {
+    console.log(err);
+  }
+};

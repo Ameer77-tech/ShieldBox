@@ -2,6 +2,7 @@ import bcrypt from "bcrypt";
 import userModel from "../models/user-model.js";
 import sectionModel from "../models/section-model.js";
 import pendingUserModel from "../models/pending-user-model.js";
+import activityModel from "../models/activity-model.js";
 import dotenv from "dotenv";
 dotenv.config();
 import setCookie from "../middlewares/setCookie.js";
@@ -301,6 +302,57 @@ export const changePassword = async (req, res) => {
           .json({ reply: "Internal Server Error", success: false });
       }
     }
+  } catch (err) {
+    res.status(500).json({ reply: "Internal Server Error", success: false });
+  }
+};
+
+export const setTestData = async (req, res) => {
+  const email = req.user;
+  const { encryptedString } = req.body;
+  try {
+    await userModel.findOneAndUpdate(
+      { email },
+      {
+        $set: {
+          testString: encryptedString,
+        },
+      }
+    );
+    res.status(200).json({ reply: "Data Set", success: true });
+  } catch (err) {
+    res.status(500).json({ reply: "Internal Server Error", success: false });
+  }
+};
+
+export const getTestData = async (req, res) => {
+  const email = req.user;
+  try {
+    const { testString } = await userModel.findOne({ email });
+    res
+      .status(200)
+      .json({ reply: "Data Set", success: true, encryptedString: testString });
+  } catch (err) {
+    res.status(500).json({ reply: "Internal Server Error", success: false });
+  }
+};
+export const resetAccount = async (req, res) => {
+  const email = req.user;
+  try {
+    const { createdBy } = userModel.findOne({ email });
+    await userModel.updateOne(
+      { email },
+      {
+        $set: {
+          sections: [],
+        },
+      }
+    );
+    await sectionModel.deleteMany({ createdBy });
+    await activityModel.deleteMany({
+      userId: createdBy,
+    });
+    res.status(200).json({ reply: "Data reset Success", success: true });
   } catch (err) {
     res.status(500).json({ reply: "Internal Server Error", success: false });
   }
