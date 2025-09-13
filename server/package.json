@@ -5,13 +5,14 @@
   "type": "module",
   "scripts": {
     "start": "nodemon index.js",
-    "start:prod": "node src/index.js"                
+    "start:prod": "node src/index.js"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "description": "",
   "dependencies": {
+    "@sendgrid/mail": "^8.1.5",
     "bcrypt": "^6.0.0",
     "cookie-parser": "^1.4.7",
     "cors": "^2.8.5",

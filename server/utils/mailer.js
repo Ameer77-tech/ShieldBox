@@ -42,8 +42,10 @@ export const sendCode = async (to, code) => {
   };
   console.log("INSIDE MAILER");
 
-  const info = await transporter.sendMail(mailOptions);
-  console.log(info);
-
-  return info;
+  try {
+    const info = await transporter.sendMail(mailOptions);
+    console.log("Email sent:", info.response);
+  } catch (err) {
+    console.error("Nodemailer error:", err);
+  }
 };

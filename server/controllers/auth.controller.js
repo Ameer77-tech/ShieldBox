@@ -64,7 +64,7 @@ export const register = async (req, res) => {
     console.log("Error finding user", err);
     res
       .status(500)
-      .json({ replay: "Server Error (can't find user)", success: false });
+      .json({ reply : "Server Error (can't find user)", success: false });
   }
 };
 
