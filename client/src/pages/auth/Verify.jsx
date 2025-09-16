@@ -65,7 +65,7 @@ const Verify = () => {
     );
   }
   return (
-    <div className="flex justify-center items-center min-h-screen select-none">
+    <div className="flex flex-col justify-center items-center min-h-screen select-none">
       <form
         onSubmit={(e) => handleSubmit(e)}
         className="card bg-base-300 rounded-lg justify-evenly md:px-10 md:py-10 md:w-2/6 w-80 px-5 py-7 gap-10 items-center"
@@ -110,7 +110,7 @@ const Verify = () => {
           {status}
         </p>
       </form>
-      <p className="text-sm text-gray-600 mt-2">
+      <p className="md:text-lg text-gray-600 mt-2 max-w-md text-center px-2">
         ⚠️ The verification code email may land in your{" "}
         <span className="font-semibold text-red-500">Spam</span> folder. Please
         check there if you don’t see it in your inbox.

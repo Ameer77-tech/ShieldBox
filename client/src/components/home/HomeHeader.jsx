@@ -115,7 +115,7 @@ const HomeHeader = ({ active, setactive }) => {
         </ul>
       </motion.div>
       <div className="navbar-end">
-        <Link to="login">
+        <Link to="/register">
           {" "}
           <button className="btn btn-soft btn-primary px-7 overflow-hidden">
             <motion.span
@@ -131,7 +131,7 @@ const HomeHeader = ({ active, setactive }) => {
                 delay: 1,
               }}
             >
-              Login
+              Register
             </motion.span>
           </button>{" "}
         </Link>

@@ -1,7 +1,7 @@
 import React, { useRef, useState, useEffect, useContext } from "react";
-import { FiAlertTriangle } from "react-icons/fi";
+import { FiAlertTriangle, FiLogOut } from "react-icons/fi";
 import { Link, useNavigate } from "react-router-dom";
-import { checkAuth } from "../../utils/AuthApi";
+import { checkAuth, logout } from "../../utils/AuthApi";
 import { secretKeyContext } from "../../contexts/KeyContext";
 
 const EnterKey = () => {
@@ -86,6 +86,17 @@ const EnterKey = () => {
   };
   return (
     <div className="flex justify-center items-center min-h-screen select-none">
+      <div className="btn btn-error font-semibold absolute top-10 left-10">
+        <FiLogOut size={20} className="rotate-z-180" />
+        <button
+          onClick={() => {
+            logout();
+            navigate("/login");
+          }}
+        >
+          LOGOUT
+        </button>
+      </div>
       <div className="card bg-base-300 rounded-lg justify-evenly md:px-10 md:py-10 md:w-2/6 w-[90%] px-5 py-7 gap-10 items-center">
         <h1 className="text-xl font-[rajdhani] font-bold text-center">
           Enter the unlock key to continue
