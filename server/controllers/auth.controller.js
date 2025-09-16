@@ -222,6 +222,7 @@ export const deleteAccount = async (req, res) => {
           await userModel.findOneAndDelete({ email });
           try {
             await sectionModel.deleteMany({ createdBy: id });
+            await activityModel.deleteMany({ userId : id })
           } catch (err) {
             res
               .status(500)
@@ -339,7 +340,7 @@ export const getTestData = async (req, res) => {
 export const resetAccount = async (req, res) => {
   const email = req.user;
   try {
-    const { createdBy } = userModel.findOne({ email });
+    const { _id } = await userModel.findOne({ email });
     await userModel.updateOne(
       { email },
       {
@@ -348,9 +349,9 @@ export const resetAccount = async (req, res) => {
         },
       }
     );
-    await sectionModel.deleteMany({ createdBy });
+    await sectionModel.deleteMany({ createdBy: _id });
     await activityModel.deleteMany({
-      userId: createdBy,
+      userId: _id,
     });
     res.status(200).json({ reply: "Data reset Success", success: true });
   } catch (err) {
