@@ -2,7 +2,7 @@
 > A secure key–value data manager with sections, full encryption, and a clean UI.
 ---
 # ✨ Features
-📂 Organized Storage – Create multiple sections and store data as key–value pairs.
+📂 Organized Storage – Create multiple sections and store data as key–value pairs.<br>
 
 🔐 Security First –
 
@@ -13,17 +13,17 @@ Unlock key not stored → can’t be recovered if lost.
 
 # 📊 Dashboard –
 
-Sections, items & important counts.
-Recently viewed sections.
-Activity log with timestamps (e.g., added/deleted).
-🌓 UI/UX – Modern design with light & dark themes, smooth animations, built using React + Tailwind + DaisyUI + Framer Motion.
+Sections, items & important counts.<br>
+Recently viewed sections.<br>
+Activity log with timestamps (e.g., added/deleted).<br>
+🌓 UI/UX – Modern design with light & dark themes, smooth animations, built using React + Tailwind + DaisyUI + Framer Motion.<br>
 ---
 
 # 🛠 Tech Stack
 
-Frontend: React, TailwindCSS, DaisyUI, Framer Motion
-Backend: Node.js, Express.js
-Database: MongoDB
+Frontend: React, TailwindCSS, DaisyUI, Framer Motion<br>
+Backend: Node.js, Express.js<br>
+Database: MongoDB<br>
 ---
 
 # 🚀 Live Demo
@@ -32,20 +32,20 @@ Database: MongoDB
 
 # ⚡ Getting Started
 
-Clone the repository
+Clone the repository<br>
 
-git clone https://github.com/your-username/shieldbox.git
-cd shieldbox
+git clone https://github.com/your-username/shieldbox.git<br>
+cd shieldbox<br>
 
--> Run frontend
+-> Run frontend<br>
 
-cd client
-npm start
+cd client<br>
+npm start<br>
 
--> Run backend
+-> Run backend<br>
 
-cd server
-npm start
+cd server<br>
+npm start<br>
 
 ---
 📝 License
