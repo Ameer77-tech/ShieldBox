@@ -156,7 +156,7 @@ export const verify = async (req, res) => {
         res.cookie("token", token, {
           httpOnly: true,
           secure: true,
-          sameSite: "lax",
+          sameSite: "none",
           path: "/",
           maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
         });
@@ -222,7 +222,7 @@ export const deleteAccount = async (req, res) => {
           await userModel.findOneAndDelete({ email });
           try {
             await sectionModel.deleteMany({ createdBy: id });
-            await activityModel.deleteMany({ userId : id })
+            await activityModel.deleteMany({ userId: id });
           } catch (err) {
             res
               .status(500)
