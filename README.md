@@ -11,20 +11,16 @@ App locked with unlock key + JWT auth.
 Unlock key not stored → can’t be recovered if lost.
 👤 Account Management – Change username & password (with current password), reset all data, or delete account.
 
-# 📊 Dashboard –
-
+# 📊 Dashboard
 Sections, items & important counts.<br>
 Recently viewed sections.<br>
 Activity log with timestamps (e.g., added/deleted).<br>
 🌓 UI/UX – Modern design with light & dark themes, smooth animations, built using React + Tailwind + DaisyUI + Framer Motion.<br>
----
 
 # 🛠 Tech Stack
-
 Frontend: React, TailwindCSS, DaisyUI, Framer Motion<br>
 Backend: Node.js, Express.js<br>
 Database: MongoDB<br>
----
 
 # 🚀 Live Demo
 👉 https://shield-box.vercel.app
